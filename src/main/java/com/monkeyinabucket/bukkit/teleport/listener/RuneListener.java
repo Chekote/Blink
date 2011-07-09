@@ -45,6 +45,11 @@ public class RuneListener extends PlayerListener {
 
     plugin.logInfo("Player clicked a block of type " + block.getType());
 
+    if (block.getType() != Material.OBSIDIAN) {
+      plugin.logInfo("Clicked block is not obsidian");
+      return;
+    }
+
     if (!Rune.hasRuneShell(block)) {
       plugin.logInfo("Block does not have a rune shell");
       return;
