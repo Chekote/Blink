@@ -34,11 +34,13 @@ public class TeleportRune {
   }
 
   public TeleportRune(Location loc) {
-    this.loc = loc;
+    // save defensive copy
+    this.loc = loc.clone();
   }
 
   public Location getLocation() {
-    return loc;
+    // return a defensive copy
+    return loc.clone();
   }
 
   public TeleportSignature getSignature() {

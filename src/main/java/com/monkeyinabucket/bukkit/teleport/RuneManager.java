@@ -4,6 +4,7 @@
  */
 package com.monkeyinabucket.bukkit.teleport;
 
+import com.monkeyinabucket.bukkit.SerializableLocation;
 import com.monkeyinabucket.bukkit.teleport.group.TeleportGroup;
 import com.monkeyinabucket.bukkit.teleport.rune.TeleportRune;
 import java.util.ArrayList;
@@ -115,5 +116,20 @@ public class RuneManager {
     }
  
     return null;
+  }
+
+  public ArrayList<SerializableLocation> getLocationsForSave() {
+    ArrayList<SerializableLocation> locs = new ArrayList<SerializableLocation>();
+
+    // we need to loop through the groups instead of the runes, so that when the runes are loaded
+    // later, they are created and added back to groups in the same order.
+    for (TeleportGroup group : groups) {
+      ArrayList<TeleportRune> members = group.getMembers();
+      for (TeleportRune rune : members) {
+        locs.add(new SerializableLocation(rune.getLocation()));
+      }
+    }
+
+    return locs;
   }
 }

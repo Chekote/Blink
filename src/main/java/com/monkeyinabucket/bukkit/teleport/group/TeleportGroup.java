@@ -44,6 +44,11 @@ public class TeleportGroup {
     members.remove(rune);
   }
 
+  public ArrayList<TeleportRune> getMembers() {
+    // return a defensive copy
+    return (ArrayList<TeleportRune>) members.clone();
+  }
+
   public int size() {
     return members.size();
   }
