@@ -1,12 +1,12 @@
-package com.monkeyinabucket.bukkit.teleport.listener;
+package com.monkeyinabucket.bukkit.blink.listener;
 
 
 import java.util.logging.Logger;
 
-import com.monkeyinabucket.bukkit.teleport.Plugin;
-import com.monkeyinabucket.bukkit.teleport.RuneManager;
-import com.monkeyinabucket.bukkit.teleport.rune.Rune;
-import com.monkeyinabucket.bukkit.teleport.rune.TeleportRune;
+import com.monkeyinabucket.bukkit.blink.Plugin;
+import com.monkeyinabucket.bukkit.blink.RuneManager;
+import com.monkeyinabucket.bukkit.blink.rune.Rune;
+import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
 import java.util.ArrayList;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -62,7 +62,7 @@ public class RuneListener extends PlayerListener {
     Player player = event.getPlayer();
 
     // determine if this rune is already registered
-    TeleportRune rune = runeManager.getRuneByCenter(block);
+    BlinkRune rune = runeManager.getRuneByCenter(block);
 
     if (rune != null) {
       // existing rune...
@@ -74,7 +74,7 @@ public class RuneListener extends PlayerListener {
 
       Plugin.logInfo("Found potential new rune.");
 
-      rune = new TeleportRune(block);
+      rune = new BlinkRune(block);
 
       // determine if any of the blocks are overlapping with another rune
       if (runeManager.runeHasOverlap(rune)) {

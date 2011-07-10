@@ -1,4 +1,4 @@
-package com.monkeyinabucket.bukkit.teleport;
+package com.monkeyinabucket.bukkit.blink;
 
 import org.bukkit.Material;
 
@@ -6,14 +6,14 @@ import org.bukkit.Material;
  *
  * @author dtyler
  */
-public class TeleportSignature {
+public class BlinkSignature {
 
   protected Material north;
   protected Material east;
   protected Material south;
   protected Material west;
 
-  public TeleportSignature(Material north, Material east, Material south, Material west) {
+  public BlinkSignature(Material north, Material east, Material south, Material west) {
     this.north = north;
     this.east = east;
     this.south = south;
@@ -36,7 +36,7 @@ public class TeleportSignature {
     return west;
   }
 
-  public boolean equals(TeleportSignature signature) {
+  public boolean equals(BlinkSignature signature) {
     return
         signature.getNorth().equals(north) &&
         signature.getEast().equals(east)   &&
@@ -50,14 +50,14 @@ public class TeleportSignature {
     return true;
   }
 
-  public TeleportSignature clone() {
-    return new TeleportSignature(north, east, south, west);
+  public BlinkSignature clone() {
+    return new BlinkSignature(north, east, south, west);
   }
 
   public String toString() {
     StringBuilder b = new StringBuilder();
 
-    b.append("TeleportSignature{north=");
+    b.append("BlinkSignature{north=");
     b.append(north);
     b.append(",east=");
     b.append(east);

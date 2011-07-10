@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.monkeyinabucket.bukkit.teleport.listener;
+package com.monkeyinabucket.bukkit.blink.listener;
 
-import com.monkeyinabucket.bukkit.teleport.Plugin;
-import com.monkeyinabucket.bukkit.teleport.RuneManager;
-import com.monkeyinabucket.bukkit.teleport.rune.TeleportRune;
+import com.monkeyinabucket.bukkit.blink.Plugin;
+import com.monkeyinabucket.bukkit.blink.RuneManager;
+import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -26,7 +26,7 @@ public class BlockListener extends org.bukkit.event.block.BlockListener {
 
   @Override
   public void onBlockDamage(BlockDamageEvent event) {
-    TeleportRune rune = runeManager.getRuneByPart(event.getBlock());
+    BlinkRune rune = runeManager.getRuneByPart(event.getBlock());
     if (rune == null) {
       return;
     }
@@ -36,7 +36,7 @@ public class BlockListener extends org.bukkit.event.block.BlockListener {
 
   @Override
   public void onBlockBreak(BlockBreakEvent event) {
-    TeleportRune rune = runeManager.getRuneByPart(event.getBlock());
+    BlinkRune rune = runeManager.getRuneByPart(event.getBlock());
     if (rune == null) {
       return;
     }

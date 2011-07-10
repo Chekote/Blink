@@ -2,9 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.monkeyinabucket.bukkit.teleport.rune;
+package com.monkeyinabucket.bukkit.blink.rune;
 
-import com.monkeyinabucket.bukkit.teleport.Plugin;
+import com.monkeyinabucket.bukkit.blink.Plugin;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

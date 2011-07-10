@@ -1,9 +1,9 @@
-package com.monkeyinabucket.bukkit.teleport.rune;
+package com.monkeyinabucket.bukkit.blink.rune;
 
-import com.monkeyinabucket.bukkit.teleport.Plugin;
-import com.monkeyinabucket.bukkit.teleport.group.TeleportGroup;
-import com.monkeyinabucket.bukkit.teleport.TeleportSignature;
-import com.monkeyinabucket.bukkit.teleport.group.NoSuchMemberException;
+import com.monkeyinabucket.bukkit.blink.Plugin;
+import com.monkeyinabucket.bukkit.blink.group.BlinkGroup;
+import com.monkeyinabucket.bukkit.blink.BlinkSignature;
+import com.monkeyinabucket.bukkit.blink.group.NoSuchMemberException;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.bukkit.Location;
@@ -17,15 +17,15 @@ import org.bukkit.entity.Player;
  *
  * @author dtyler
  */
-public class TeleportRune {
+public class BlinkRune {
 
   protected Location loc;
-  protected TeleportSignature signature;
-  protected TeleportGroup group;
+  protected BlinkSignature signature;
+  protected BlinkGroup group;
 
-  public TeleportRune(Block block) {
+  public BlinkRune(Block block) {
     this.loc = block.getLocation();
-    this.signature = new TeleportSignature(
+    this.signature = new BlinkSignature(
       block.getFace(BlockFace.NORTH).getType(),
       block.getFace(BlockFace.EAST).getType(),
       block.getFace(BlockFace.SOUTH).getType(),
@@ -33,7 +33,7 @@ public class TeleportRune {
     );
   }
 
-  public TeleportRune(Location loc) {
+  public BlinkRune(Location loc) {
     // save defensive copy
     this.loc = loc.clone();
   }
@@ -43,15 +43,15 @@ public class TeleportRune {
     return loc.clone();
   }
 
-  public TeleportSignature getSignature() {
+  public BlinkSignature getSignature() {
     return signature;
   }
 
-  public void setGroup(TeleportGroup group) {
+  public void setGroup(BlinkGroup group) {
     this.group = group;
   }
 
-  public TeleportGroup getGroup() {
+  public BlinkGroup getGroup() {
     return group;
   }
 
@@ -104,7 +104,7 @@ public class TeleportRune {
    * @param rune the rune to check
    * @return true if the runes overlap, false if not
    */
-  public boolean overlaps(TeleportRune rune) {
+  public boolean overlaps(BlinkRune rune) {
     Plugin.logInfo("Checking for overlap...");
     
     Collection<Block> parts = rune.getParts();
@@ -140,7 +140,7 @@ public class TeleportRune {
   }
 
   public void activate(Player player) {
-    TeleportRune targetRune = null;
+    BlinkRune targetRune = null;
     try {
       targetRune = group.getNext(this);
     } catch (NoSuchMemberException e) {
@@ -149,17 +149,17 @@ public class TeleportRune {
     }
 
     if (targetRune == null) {
-      Plugin.logInfo("Failed to activate rune. No other teleport runes in group");
+      Plugin.logInfo("Failed to activate rune. No other blink runes in group");
       return;
     }
 
     Location targetLoc = null;
 
-    // we need to find two stacked blocks of empty space for the player to teleport safely, this
+    // we need to find two stacked blocks of empty space for the player to blink safely, this
     // could ultimately be the top of the world.
     Block currentBlock = targetRune.getLocation().getBlock().getFace(BlockFace.UP);
     if (currentBlock == null) {
-      // there is no block above the rune, so it must be at the top of the world. Teleport directly
+      // there is no block above the rune, so it must be at the top of the world. Blink directly
       // above it.
       targetLoc = targetRune.getLocation();
       targetLoc.setY(targetLoc.getY() + 1);

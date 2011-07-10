@@ -1,12 +1,12 @@
-package com.monkeyinabucket.bukkit.teleport;
+package com.monkeyinabucket.bukkit.blink;
 
 import com.monkeyinabucket.bukkit.SerializableLocation;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.monkeyinabucket.bukkit.teleport.listener.RuneListener;
-import com.monkeyinabucket.bukkit.teleport.listener.BlockListener;
-import com.monkeyinabucket.bukkit.teleport.rune.TeleportRune;
+import com.monkeyinabucket.bukkit.blink.listener.RuneListener;
+import com.monkeyinabucket.bukkit.blink.listener.BlockListener;
+import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,8 +28,8 @@ import org.bukkit.plugin.PluginManager;
 public class Plugin extends JavaPlugin {
 
   private static final Logger log = Logger.getLogger("Minecraft");
-  private static String logPrefix = "[Teleport] ";
-  private static String saveFile = "plugins/teleport.sav";
+  private static String logPrefix = "[Blink] ";
+  private static String saveFile = "plugins/blink.sav";
 
   private final RuneManager runeManager = new RuneManager();
   private final RuneListener playerListener = new RuneListener(runeManager);
@@ -67,7 +67,7 @@ public class Plugin extends JavaPlugin {
 
     Server server = getServer();
     for (SerializableLocation loc : locs) {
-      TeleportRune rune = new TeleportRune(loc.getLocation(server).getBlock());
+      BlinkRune rune = new BlinkRune(loc.getLocation(server).getBlock());
       runeManager.addRune(rune);
     }
 

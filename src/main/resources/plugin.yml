@@ -1,5 +1,5 @@
-name: Teleport Rune
-main: com.monkeyinabucket.bukkit.teleport.Plugin
+name: Blink
+main: com.monkeyinabucket.bukkit.blink.Plugin
 version: 0.1 Snapshot
 #commands:
 #  pos:

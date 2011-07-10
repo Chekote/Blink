@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.monkeyinabucket.bukkit.teleport;
+package com.monkeyinabucket.bukkit.blink;
 
 import com.monkeyinabucket.bukkit.SerializableLocation;
-import com.monkeyinabucket.bukkit.teleport.group.TeleportGroup;
-import com.monkeyinabucket.bukkit.teleport.rune.TeleportRune;
+import com.monkeyinabucket.bukkit.blink.group.BlinkGroup;
+import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
 import java.util.ArrayList;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -18,20 +18,20 @@ import org.bukkit.block.BlockFace;
  */
 public class RuneManager {
 
-  private final ArrayList<TeleportRune> runes;
-  private final ArrayList<TeleportGroup> groups;
+  private final ArrayList<BlinkRune> runes;
+  private final ArrayList<BlinkGroup> groups;
 
   public RuneManager() {
-    runes = new ArrayList<TeleportRune>();
-    groups = new ArrayList<TeleportGroup>();
+    runes = new ArrayList<BlinkRune>();
+    groups = new ArrayList<BlinkGroup>();
   }
 
-  public TeleportRune getRuneByCenter(Block block) {
+  public BlinkRune getRuneByCenter(Block block) {
     return getRuneByCenter(block.getLocation());
   }
 
-  public TeleportRune getRuneByCenter(Location loc) {
-    for(TeleportRune rune : runes) {
+  public BlinkRune getRuneByCenter(Location loc) {
+    for(BlinkRune rune : runes) {
       if (rune.getLocation().equals(loc)) {
         return rune;
       }
@@ -40,12 +40,12 @@ public class RuneManager {
     return null;
   }
 
-  public TeleportRune getRuneByPart(Block block) {
+  public BlinkRune getRuneByPart(Block block) {
     return getRuneByPart(block.getLocation());
   }
 
-  public TeleportRune getRuneByPart(Location loc) {
-    for(TeleportRune rune : runes) {
+  public BlinkRune getRuneByPart(Location loc) {
+    for(BlinkRune rune : runes) {
       if (rune.isPart(loc)) {
         return rune;
       }
@@ -54,19 +54,19 @@ public class RuneManager {
     return null;
   }
 
-  public void addRune(TeleportRune rune) {
+  public void addRune(BlinkRune rune) {
     runes.add(rune);
 
-    TeleportGroup group = getOrCreateGroup(rune.getSignature());
+    BlinkGroup group = getOrCreateGroup(rune.getSignature());
     group.add(rune);
 
     rune.setGroup(group);
   }
 
-  public void removeRune(TeleportRune rune) {
+  public void removeRune(BlinkRune rune) {
     runes.remove(rune);
 
-    TeleportGroup group = rune.getGroup();
+    BlinkGroup group = rune.getGroup();
     group.remove(rune);
 
     rune.setGroup(null);
@@ -77,8 +77,8 @@ public class RuneManager {
     }
   }
 
-  public boolean runeHasOverlap(TeleportRune newRune) {
-    for(TeleportRune rune : runes) {
+  public boolean runeHasOverlap(BlinkRune newRune) {
+    for(BlinkRune rune : runes) {
       if (rune.overlaps(newRune)) {
         return true;
       }
@@ -87,25 +87,25 @@ public class RuneManager {
     return false;
   }
 
-  protected TeleportGroup getOrCreateGroup(TeleportSignature signature) {
-    Plugin.logInfo("Looking up TeleportGroup for signature:");
+  protected BlinkGroup getOrCreateGroup(BlinkSignature signature) {
+    Plugin.logInfo("Looking up BlinkGroup for signature:");
     Plugin.logInfo(signature);
 
-    TeleportGroup group = getGroup(signature);
+    BlinkGroup group = getGroup(signature);
 
     if (group == null) {
-      Plugin.logInfo("Creating new TeleportGroup.");
-      group = new TeleportGroup(signature.clone());
+      Plugin.logInfo("Creating new BlinkGroup.");
+      group = new BlinkGroup(signature.clone());
       groups.add(group);
     } else {
-      Plugin.logInfo("Found existing TeleportGroup.");      
+      Plugin.logInfo("Found existing BlinkGroup.");      
     }
 
     return group;
   }
 
-  public TeleportGroup getGroup(TeleportSignature signature) {
-    for (TeleportGroup group : groups) {
+  public BlinkGroup getGroup(BlinkSignature signature) {
+    for (BlinkGroup group : groups) {
       if (group.getSignature().equals(signature)) {
         return group;
       }
@@ -123,9 +123,9 @@ public class RuneManager {
 
     // we need to loop through the groups instead of the runes, so that when the runes are loaded
     // later, they are created and added back to groups in the same order.
-    for (TeleportGroup group : groups) {
-      ArrayList<TeleportRune> members = group.getMembers();
-      for (TeleportRune rune : members) {
+    for (BlinkGroup group : groups) {
+      ArrayList<BlinkRune> members = group.getMembers();
+      for (BlinkRune rune : members) {
         locs.add(new SerializableLocation(rune.getLocation()));
       }
     }

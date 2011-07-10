@@ -1,6 +1,6 @@
-package com.monkeyinabucket.bukkit.teleport.command;
+package com.monkeyinabucket.bukkit.blink.command;
 
-import com.monkeyinabucket.bukkit.teleport.Plugin;
+import com.monkeyinabucket.bukkit.blink.Plugin;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.command.Command;
@@ -39,7 +39,7 @@ public class RuneList implements CommandExecutor {
 //        double y = Double.parseDouble(split[1]);
 //        double z = Double.parseDouble(split[2]);
 //
-//        player.teleport(new Location(player.getWorld(), x, y, z));
+//        player.blink(new Location(player.getWorld(), x, y, z));
 //      } catch (NumberFormatException ex) {
 //        player.sendMessage("Given location is invalid");
 //      }

@@ -3,9 +3,8 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.monkeyinabucket.bukkit</groupId>
-  <artifactId>teleport</artifactId>
+  <artifactId>blink</artifactId>
   <version>0.1-SNAPSHOT</version>
-  <name>Bukkit Teleport Plugin</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -38,4 +37,6 @@
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
+    <name>Blink</name>
+    <description>Teleport plugin for Bukkit (http://bukkit.org)</description>
 </project>
