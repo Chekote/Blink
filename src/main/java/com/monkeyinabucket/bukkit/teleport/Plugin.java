@@ -12,7 +12,6 @@ import org.bukkit.plugin.PluginManager;
 /**
  * TODO: Implement saving of runes (record coords only, not need to save objects)
  * TODO: Implement loading of runes
- * TODO: Implement destruction of runes (ensure runes are removed from groups)
  * @author dtyler
  */
 public class Plugin extends JavaPlugin {
@@ -37,6 +36,7 @@ public class Plugin extends JavaPlugin {
     PluginManager pm = getServer().getPluginManager();
     pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
     pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Normal, this);
+    pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Normal, this);
 
     // TODO: load saved runes
 

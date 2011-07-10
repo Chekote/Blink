@@ -62,6 +62,20 @@ public class RuneManager {
     rune.setGroup(group);
   }
 
+  public void removeRune(TeleportRune rune) {
+    runes.remove(rune);
+
+    TeleportGroup group = rune.getGroup();
+    group.remove(rune);
+
+    rune.setGroup(null);
+
+    // if the group is now empty, remove it
+    if (group.size() == 0) {
+      groups.remove(group);
+    }
+  }
+
   public boolean runeHasOverlap(TeleportRune newRune) {
     for(TeleportRune rune : runes) {
       if (rune.overlaps(newRune)) {

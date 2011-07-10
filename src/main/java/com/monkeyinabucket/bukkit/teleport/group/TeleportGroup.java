@@ -4,6 +4,8 @@ import com.monkeyinabucket.bukkit.teleport.Plugin;
 import com.monkeyinabucket.bukkit.teleport.TeleportSignature;
 import com.monkeyinabucket.bukkit.teleport.rune.TeleportRune;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import org.bukkit.Material;
 
 /**
@@ -40,6 +42,10 @@ public class TeleportGroup {
     Plugin.logInfo(this);
 
     members.remove(rune);
+  }
+
+  public int size() {
+    return members.size();
   }
 
   public TeleportRune getNext(TeleportRune srcRune) throws NoSuchMemberException {
