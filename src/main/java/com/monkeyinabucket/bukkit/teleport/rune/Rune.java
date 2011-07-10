@@ -4,6 +4,7 @@
  */
 package com.monkeyinabucket.bukkit.teleport.rune;
 
+import com.monkeyinabucket.bukkit.teleport.Plugin;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -36,7 +37,7 @@ public class Rune {
         builder.append(row);
         builder.append(", is of type ");
         builder.append(block.getType());
-        System.out.println(builder.toString());
+        Plugin.logInfo(builder.toString());
 
         // column 3, row 2 & 4 and , column 2 & 4, does not need to be obsidian
         if ((col == 2 && (row == 1 || row == 3)) || row == 2 && (col == 1 || col == 3)) {

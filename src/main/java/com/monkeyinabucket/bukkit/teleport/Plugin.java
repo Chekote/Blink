@@ -12,11 +12,11 @@ import org.bukkit.plugin.PluginManager;
 public class Plugin extends JavaPlugin {
 
   private static final Logger log = Logger.getLogger("Minecraft");
-  private String logPrefix = "[Teleport] ";
+  private static String logPrefix = "[Teleport] ";
 
-  private final RuneManager runeManager = new RuneManager(this);
-  private final RuneListener playerListener = new RuneListener(this, runeManager);
-  private final BlockListener blockListener = new BlockListener(this, runeManager);
+  private final RuneManager runeManager = new RuneManager();
+  private final RuneListener playerListener = new RuneListener(runeManager);
+  private final BlockListener blockListener = new BlockListener(runeManager);
 
   public RuneManager getManager() {
     return runeManager;
@@ -60,7 +60,7 @@ public class Plugin extends JavaPlugin {
     logInfo(builder.toString());
   }
 
-  public void logInfo(String message) {
+  public static void logInfo(String message) {
     StringBuilder builder = new StringBuilder();
     builder.append(logPrefix);
     builder.append(message);

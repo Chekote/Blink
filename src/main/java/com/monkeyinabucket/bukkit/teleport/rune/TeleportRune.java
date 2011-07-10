@@ -1,5 +1,6 @@
 package com.monkeyinabucket.bukkit.teleport.rune;
 
+import com.monkeyinabucket.bukkit.teleport.Plugin;
 import com.monkeyinabucket.bukkit.teleport.TeleportSignature;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -90,20 +91,20 @@ public class TeleportRune {
    * @return true if the runes overlap, false if not
    */
   public boolean overlaps(TeleportRune rune) {
-    System.out.println("Checking for overlap...");
+    Plugin.logInfo("Checking for overlap...");
     
     Collection<Block> parts = rune.getParts();
 
     for (Block b : parts) {
-      System.out.println("Processing block: " + b);
+      Plugin.logInfo("Processing block: " + b);
 
       if (isPart(b)) {
-        System.out.println("overlap found");
+        Plugin.logInfo("overlap found");
         return true;
       }
     }
 
-    System.out.println("no overlap");
+    Plugin.logInfo("no overlap");
     return false;
   }
 

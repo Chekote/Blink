@@ -26,11 +26,9 @@ import org.bukkit.event.player.PlayerListener;
  */
 public class RuneListener extends PlayerListener {
 
-  private final Plugin plugin;
   private final RuneManager runeManager;
 
-  public RuneListener(final Plugin plugin, final RuneManager runeManager) {
-    this.plugin = plugin;
+  public RuneListener(final RuneManager runeManager) {
     this.runeManager = runeManager;
   }
 
@@ -43,19 +41,19 @@ public class RuneListener extends PlayerListener {
 
     Block block = event.getClickedBlock();
 
-    plugin.logInfo("Player clicked a block of type " + block.getType());
+    Plugin.logInfo("Player clicked a block of type " + block.getType());
 
     if (block.getType() != Material.OBSIDIAN) {
-      plugin.logInfo("Clicked block is not obsidian");
+      Plugin.logInfo("Clicked block is not obsidian");
       return;
     }
 
     if (!Rune.hasRuneShell(block)) {
-      plugin.logInfo("Block does not have a rune shell");
+      Plugin.logInfo("Block does not have a rune shell");
       return;
     }
 
-    plugin.logInfo("Block has a rune shell");
+    Plugin.logInfo("Block has a rune shell");
     processRuneInteract(event);
   }
 
@@ -69,30 +67,30 @@ public class RuneListener extends PlayerListener {
     if (rune != null) {
       // existing rune...
       player.sendMessage("Activating rune.");
-      plugin.logInfo("Rune is already registered. Activating...");
+      Plugin.logInfo("Rune is already registered. Activating...");
       rune.activate();
     } else {
       // potential new rune...
 
-      plugin.logInfo("Found potential new rune.");
+      Plugin.logInfo("Found potential new rune.");
 
       rune = new TeleportRune(block);
 
       // determine if any of the blocks are overlapping with another rune
       if (runeManager.runeHasOverlap(rune)) {
         player.sendMessage("Cannot create new rune, it overlaps with an existing rune");
-        plugin.logInfo("Cannot register new rune, it overlaps with an existing rune");
+        Plugin.logInfo("Cannot register new rune, it overlaps with an existing rune");
         return;
       }
 
       if (!rune.getSignature().isValid()) {
         player.sendMessage("Cannot create new rune, it's signature is invalid");
-        plugin.logInfo("Cannot register new rune, it's signature is invalid");
+        Plugin.logInfo("Cannot register new rune, it's signature is invalid");
         return;
       }
 
       player.sendMessage("A new rune has been created");
-      plugin.logInfo("Registering new rune.");
+      Plugin.logInfo("Registering new rune.");
       runeManager.addRune(rune);
 
       // TODO: setup grouping

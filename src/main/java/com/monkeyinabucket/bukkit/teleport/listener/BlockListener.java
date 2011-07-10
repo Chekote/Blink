@@ -15,11 +15,9 @@ import org.bukkit.event.block.BlockDamageEvent;
  */
 public class BlockListener extends org.bukkit.event.block.BlockListener {
 
-  private final Plugin plugin;
   private final RuneManager runeManager;
 
-  public BlockListener(final Plugin plugin, final RuneManager runeManager) {
-    this.plugin = plugin;
+  public BlockListener(final RuneManager runeManager) {
     this.runeManager = runeManager;
   }
 

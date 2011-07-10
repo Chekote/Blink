@@ -16,12 +16,10 @@ import org.bukkit.block.BlockFace;
  */
 public class RuneManager {
 
-  private final Plugin plugin;
   private final ArrayList<TeleportRune> runes;
   private final ArrayList<TeleportGroup> groups;
 
-  public RuneManager(Plugin plugin) {
-    this.plugin = plugin;
+  public RuneManager() {
     runes = new ArrayList<TeleportRune>();
     groups = new ArrayList<TeleportGroup>();
   }
