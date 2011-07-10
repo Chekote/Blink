@@ -9,6 +9,12 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
+/**
+ * TODO: Implement saving of runes (record coords only, not need to save objects)
+ * TODO: Implement loading of runes
+ * TODO: Implement destruction of runes (ensure runes are removed from groups)
+ * @author dtyler
+ */
 public class Plugin extends JavaPlugin {
 
   private static final Logger log = Logger.getLogger("Minecraft");
@@ -60,10 +66,24 @@ public class Plugin extends JavaPlugin {
     logInfo(builder.toString());
   }
 
-  public static void logInfo(String message) {
+  public static void logInfo(Object message) {
     StringBuilder builder = new StringBuilder();
     builder.append(logPrefix);
     builder.append(message);
     log.info(builder.toString());
+  }
+
+  public static void logWarning(Object message) {
+    StringBuilder builder = new StringBuilder();
+    builder.append(logPrefix);
+    builder.append(message);
+    log.warning(builder.toString());
+  }
+
+  public static void logSevere(Object message) {
+    StringBuilder builder = new StringBuilder();
+    builder.append(logPrefix);
+    builder.append(message);
+    log.severe(builder.toString());
   }
 }

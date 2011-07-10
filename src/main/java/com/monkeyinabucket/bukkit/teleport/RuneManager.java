@@ -4,6 +4,7 @@
  */
 package com.monkeyinabucket.bukkit.teleport;
 
+import com.monkeyinabucket.bukkit.teleport.group.TeleportGroup;
 import com.monkeyinabucket.bukkit.teleport.rune.TeleportRune;
 import java.util.ArrayList;
 import org.bukkit.Location;
@@ -54,6 +55,11 @@ public class RuneManager {
 
   public void addRune(TeleportRune rune) {
     runes.add(rune);
+
+    TeleportGroup group = getOrCreateGroup(rune.getSignature());
+    group.add(rune);
+
+    rune.setGroup(group);
   }
 
   public boolean runeHasOverlap(TeleportRune newRune) {
@@ -64,5 +70,36 @@ public class RuneManager {
     }
 
     return false;
+  }
+
+  protected TeleportGroup getOrCreateGroup(TeleportSignature signature) {
+    Plugin.logInfo("Looking up TeleportGroup for signature:");
+    Plugin.logInfo(signature);
+
+    TeleportGroup group = getGroup(signature);
+
+    if (group == null) {
+      Plugin.logInfo("Creating new TeleportGroup.");
+      group = new TeleportGroup(signature.clone());
+      groups.add(group);
+    } else {
+      Plugin.logInfo("Found existing TeleportGroup.");      
+    }
+
+    return group;
+  }
+
+  public TeleportGroup getGroup(TeleportSignature signature) {
+    for (TeleportGroup group : groups) {
+      if (group.getSignature().equals(signature)) {
+        return group;
+      }
+      
+      Plugin.logInfo("Signatures don't match:");
+      Plugin.logInfo(group.getSignature());
+      Plugin.logInfo(signature);
+    }
+ 
+    return null;
   }
 }

@@ -49,4 +49,24 @@ public class TeleportSignature {
 
     return true;
   }
+
+  public TeleportSignature clone() {
+    return new TeleportSignature(north, east, south, west);
+  }
+
+  public String toString() {
+    StringBuilder builder = new StringBuilder();
+
+    builder.append("TeleportSignature{north=");
+    builder.append(north);
+    builder.append(",east=");
+    builder.append(east);
+    builder.append(",south=");
+    builder.append(south);
+    builder.append(",west=");
+    builder.append(west);
+    builder.append("}");
+
+    return builder.toString();
+  }
 }

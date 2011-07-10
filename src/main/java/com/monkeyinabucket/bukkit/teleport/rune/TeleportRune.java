@@ -1,7 +1,9 @@
 package com.monkeyinabucket.bukkit.teleport.rune;
 
 import com.monkeyinabucket.bukkit.teleport.Plugin;
+import com.monkeyinabucket.bukkit.teleport.group.TeleportGroup;
 import com.monkeyinabucket.bukkit.teleport.TeleportSignature;
+import com.monkeyinabucket.bukkit.teleport.group.NoSuchMemberException;
 import java.util.ArrayList;
 import java.util.Collection;
 import org.bukkit.Location;
@@ -9,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 
 /**
  *
@@ -18,6 +21,7 @@ public class TeleportRune {
 
   protected Location loc;
   protected TeleportSignature signature;
+  protected TeleportGroup group;
 
   public TeleportRune(Block block) {
     this.loc = block.getLocation();
@@ -39,6 +43,14 @@ public class TeleportRune {
 
   public TeleportSignature getSignature() {
     return signature;
+  }
+
+  public void setGroup(TeleportGroup group) {
+    this.group = group;
+  }
+
+  public TeleportGroup getGroup() {
+    return group;
   }
 
   /**
@@ -117,7 +129,101 @@ public class TeleportRune {
     }
   }
 
-  public void activate() {
-    // TODO: implement
+  public void activate(Player player) {
+    TeleportRune targetRune = null;
+    try {
+      targetRune = group.getNext(this);
+    } catch (NoSuchMemberException e) {
+      Plugin.logSevere("Failed to activate rune. It's group claimed it was not a member!");
+      return;
+    }
+
+    if (targetRune == null) {
+      Plugin.logInfo("Failed to activate rune. No other teleport runes in group");
+      return;
+    }
+
+    Location targetLoc = null;
+
+    // we need to find two stacked blocks of empty space for the player to teleport safely, this
+    // could ultimately be the top of the world.
+    Block currentBlock = targetRune.getLocation().getBlock().getFace(BlockFace.UP);
+    if (currentBlock == null) {
+      // there is no block above the rune, so it must be at the top of the world. Teleport directly
+      // above it.
+      targetLoc = targetRune.getLocation();
+      targetLoc.setY(targetLoc.getY() + 1);
+    } else {
+      // proceed to check all blocks vertically, until we get to a valid destination.
+      while (currentBlock != null) {
+        if (isValidDestination(currentBlock)) {
+          targetLoc = currentBlock.getLocation();
+          break;
+        }
+
+        currentBlock = currentBlock.getFace(BlockFace.UP);
+      }
+    }
+
+    player.teleport(targetLoc);
+  }
+
+  protected boolean isValidDestination(Block block) {
+    if (block == null) {
+      return true;
+    }
+
+    if (!blockIsSolid(block) && !blockIsSolid(block.getFace(BlockFace.UP))) {
+      return true;
+    }
+
+    return false;
+  }
+
+  protected boolean blockIsSolid(Block block) {
+    if (block == null) {
+      return false;
+    }
+
+    Material m = block.getType();
+    if (
+        m == Material.AIR ||
+        m == Material.LAVA ||
+        m == Material.STATIONARY_LAVA ||
+        m == Material.CROPS ||
+        m == Material.DEAD_BUSH ||
+        m == Material.DETECTOR_RAIL ||
+        m == Material.SAPLING ||
+        m == Material.WATER ||
+        m == Material.STATIONARY_WATER ||
+        m == Material.WALL_SIGN ||
+        m == Material.POWERED_RAIL ||
+        m == Material.LONG_GRASS ||
+        m == Material.YELLOW_FLOWER ||
+        m == Material.RED_ROSE ||
+        m == Material.BROWN_MUSHROOM ||
+        m == Material.RED_MUSHROOM ||
+        m == Material.TORCH ||
+        m == Material.FIRE ||
+        m == Material.REDSTONE_WIRE ||
+        m == Material.CROPS ||
+        m == Material.WOODEN_DOOR ||
+        m == Material.LADDER ||
+        m == Material.RAILS ||
+        m == Material.LEVER ||
+        m == Material.STONE_PLATE ||
+        m == Material.IRON_DOOR_BLOCK ||
+        m == Material.REDSTONE_TORCH_OFF ||
+        m == Material.REDSTONE_TORCH_ON ||
+        m == Material.STONE_BUTTON ||
+        m == Material.PORTAL ||
+        m == Material.DIODE_BLOCK_OFF ||
+        m == Material.DIODE_BLOCK_ON ||
+        m == Material.TRAP_DOOR
+        ) {
+      return false;
+    }
+
+    return true;
   }
 }

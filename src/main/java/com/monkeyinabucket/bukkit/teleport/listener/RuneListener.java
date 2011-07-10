@@ -68,7 +68,7 @@ public class RuneListener extends PlayerListener {
       // existing rune...
       player.sendMessage("Activating rune.");
       Plugin.logInfo("Rune is already registered. Activating...");
-      rune.activate();
+      rune.activate(player);
     } else {
       // potential new rune...
 
@@ -92,8 +92,6 @@ public class RuneListener extends PlayerListener {
       player.sendMessage("A new rune has been created");
       Plugin.logInfo("Registering new rune.");
       runeManager.addRune(rune);
-
-      // TODO: setup grouping
     }
   }
 }
