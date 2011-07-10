@@ -55,18 +55,18 @@ public class TeleportSignature {
   }
 
   public String toString() {
-    StringBuilder builder = new StringBuilder();
+    StringBuilder b = new StringBuilder();
 
-    builder.append("TeleportSignature{north=");
-    builder.append(north);
-    builder.append(",east=");
-    builder.append(east);
-    builder.append(",south=");
-    builder.append(south);
-    builder.append(",west=");
-    builder.append(west);
-    builder.append("}");
+    b.append("TeleportSignature{north=");
+    b.append(north);
+    b.append(",east=");
+    b.append(east);
+    b.append(",south=");
+    b.append(south);
+    b.append(",west=");
+    b.append(west);
+    b.append("}");
 
-    return builder.toString();
+    return b.toString();
   }
 }

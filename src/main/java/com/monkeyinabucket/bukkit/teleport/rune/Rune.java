@@ -30,14 +30,14 @@ public class Rune {
       for (int row = 0; row < 5; ++row) {
         Block block = topLeft.getFace(BlockFace.EAST, col).getFace(BlockFace.SOUTH, row);
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("Block at col ");
-        builder.append(col);
-        builder.append(", row ");
-        builder.append(row);
-        builder.append(", is of type ");
-        builder.append(block.getType());
-        Plugin.logInfo(builder.toString());
+        StringBuilder b = new StringBuilder();
+        b.append("Block at col ");
+        b.append(col);
+        b.append(", row ");
+        b.append(row);
+        b.append(", is of type ");
+        b.append(block.getType());
+        Plugin.logInfo(b);
 
         // column 3, row 2 & 4 and , column 2 & 4, does not need to be obsidian
         if ((col == 2 && (row == 1 || row == 3)) || row == 2 && (col == 1 || col == 3)) {

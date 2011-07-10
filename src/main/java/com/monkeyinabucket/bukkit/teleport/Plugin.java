@@ -43,12 +43,12 @@ public class Plugin extends JavaPlugin {
     // log that we're enabled
     PluginDescriptionFile pdfFile = this.getDescription();
 
-    StringBuilder builder = new StringBuilder();
-    builder.append(pdfFile.getName());
-    builder.append(" version ");
-    builder.append(pdfFile.getVersion());
-    builder.append(" is enabled!");
-    logInfo(builder.toString());
+    StringBuilder b = new StringBuilder();
+    b.append(pdfFile.getName());
+    b.append(" version ");
+    b.append(pdfFile.getVersion());
+    b.append(" is enabled!");
+    logInfo(b);
   }
 
   /**
@@ -58,32 +58,32 @@ public class Plugin extends JavaPlugin {
   public void onDisable() {
     PluginDescriptionFile pdfFile = this.getDescription();
     
-    StringBuilder builder = new StringBuilder();
-    builder.append(pdfFile.getName());
-    builder.append(" version ");
-    builder.append(pdfFile.getVersion());
-    builder.append(" is disabled.");
-    logInfo(builder.toString());
+    StringBuilder b = new StringBuilder();
+    b.append(pdfFile.getName());
+    b.append(" version ");
+    b.append(pdfFile.getVersion());
+    b.append(" is disabled.");
+    logInfo(b);
   }
 
   public static void logInfo(Object message) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(logPrefix);
-    builder.append(message);
-    log.info(builder.toString());
+    StringBuilder b = new StringBuilder();
+    b.append(logPrefix);
+    b.append(message);
+    log.info(b.toString());
   }
 
   public static void logWarning(Object message) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(logPrefix);
-    builder.append(message);
-    log.warning(builder.toString());
+    StringBuilder b = new StringBuilder();
+    b.append(logPrefix);
+    b.append(message);
+    log.warning(b.toString());
   }
 
   public static void logSevere(Object message) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(logPrefix);
-    builder.append(message);
-    log.severe(builder.toString());
+    StringBuilder b = new StringBuilder();
+    b.append(logPrefix);
+    b.append(message);
+    log.severe(b.toString());
   }
 }
