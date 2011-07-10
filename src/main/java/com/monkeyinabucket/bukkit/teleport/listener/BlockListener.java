@@ -41,8 +41,7 @@ public class BlockListener extends org.bukkit.event.block.BlockListener {
       return;
     }
 
-    Location loc = rune.getLocation();
-    loc.getWorld().strikeLightning(loc);
+    rune.onDestroy();
 
     runeManager.removeRune(rune);
   }

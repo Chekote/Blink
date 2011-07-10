@@ -89,9 +89,10 @@ public class RuneListener extends PlayerListener {
         return;
       }
 
-      player.sendMessage("A new rune has been created");
       Plugin.logInfo("Registering new rune.");
       runeManager.addRune(rune);
+
+      rune.onCreate();
     }
   }
 }

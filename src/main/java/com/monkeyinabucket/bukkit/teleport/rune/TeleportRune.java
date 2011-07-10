@@ -129,6 +129,14 @@ public class TeleportRune {
     }
   }
 
+  public void onCreate() {
+    loc.getWorld().strikeLightningEffect(loc);
+  }
+
+  public void onDestroy() {
+    loc.getWorld().strikeLightningEffect(loc);
+  }
+
   public void activate(Player player) {
     TeleportRune targetRune = null;
     try {
