@@ -139,17 +139,11 @@ public class RuneManager {
    * @return the BlinkGroup
    */
   protected BlinkGroup getOrCreateGroup(BlinkSignature signature) {
-    Plugin.logInfo("Looking up BlinkGroup for signature:");
-    Plugin.logInfo(signature);
-
     BlinkGroup group = getGroup(signature);
 
     if (group == null) {
-      Plugin.logInfo("Creating new BlinkGroup.");
       group = new BlinkGroup(signature.clone());
       groups.add(group);
-    } else {
-      Plugin.logInfo("Found existing BlinkGroup.");      
     }
 
     return group;
@@ -165,10 +159,6 @@ public class RuneManager {
       if (group.getSignature().equals(signature)) {
         return group;
       }
-      
-      Plugin.logInfo("Signatures don't match:");
-      Plugin.logInfo(group.getSignature());
-      Plugin.logInfo(signature);
     }
  
     return null;

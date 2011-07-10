@@ -44,11 +44,6 @@ public class BlinkGroup {
    * @param rune the BlinkRune to add
    */
   public void add(BlinkRune rune) {
-    Plugin.logInfo("Adding: ");
-    Plugin.logInfo(rune);
-    Plugin.logInfo("To: ");
-    Plugin.logInfo(this);
-
     members.add(rune);
   }
 
@@ -57,11 +52,6 @@ public class BlinkGroup {
    * @param rune the BlinkRune to remove
    */
   public void remove(BlinkRune rune) {
-    Plugin.logInfo("Removing: ");
-    Plugin.logInfo(rune);
-    Plugin.logInfo("From: ");
-    Plugin.logInfo(this);
-
     members.remove(rune);
   }
 

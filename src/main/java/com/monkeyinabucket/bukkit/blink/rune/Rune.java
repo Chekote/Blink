@@ -1,6 +1,5 @@
 package com.monkeyinabucket.bukkit.blink.rune;
 
-import com.monkeyinabucket.bukkit.blink.Plugin;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -39,15 +38,6 @@ public class Rune {
     for (int col = 0; col < 5; ++col) {
       for (int row = 0; row < 5; ++row) {
         Block block = topLeft.getFace(BlockFace.EAST, col).getFace(BlockFace.SOUTH, row);
-
-        StringBuilder b = new StringBuilder();
-        b.append("Block at col ");
-        b.append(col);
-        b.append(", row ");
-        b.append(row);
-        b.append(", is of type ");
-        b.append(block.getType());
-        Plugin.logInfo(b);
 
         // column 3, row 2 & 4 and , column 2 & 4, does not need to be obsidian
         if ((col == 2 && (row == 1 || row == 3)) || row == 2 && (col == 1 || col == 3)) {

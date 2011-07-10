@@ -139,20 +139,14 @@ public class BlinkRune {
    * @return true if the runes overlap, false if not
    */
   public boolean overlaps(BlinkRune rune) {
-    Plugin.logInfo("Checking for overlap...");
-    
     Collection<Block> parts = rune.getParts();
 
     for (Block b : parts) {
-      Plugin.logInfo("Processing block: " + b);
-
       if (isPart(b)) {
-        Plugin.logInfo("overlap found");
         return true;
       }
     }
 
-    Plugin.logInfo("no overlap");
     return false;
   }
 
@@ -198,7 +192,6 @@ public class BlinkRune {
     }
 
     if (targetRune == null) {
-      Plugin.logInfo("Failed to activate rune. No other blink runes in group");
       return;
     }
 
