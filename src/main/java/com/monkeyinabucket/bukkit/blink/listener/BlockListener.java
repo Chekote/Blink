@@ -1,10 +1,7 @@
 package com.monkeyinabucket.bukkit.blink.listener;
 
-import com.monkeyinabucket.bukkit.blink.Plugin;
 import com.monkeyinabucket.bukkit.blink.RuneManager;
 import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 

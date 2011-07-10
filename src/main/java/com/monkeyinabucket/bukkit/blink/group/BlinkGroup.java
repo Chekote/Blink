@@ -1,12 +1,8 @@
 package com.monkeyinabucket.bukkit.blink.group;
 
-import com.monkeyinabucket.bukkit.blink.Plugin;
 import com.monkeyinabucket.bukkit.blink.BlinkSignature;
 import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import org.bukkit.Material;
 
 /**
  * Represents a group of BlinkRunes in a specific order, united by a common BlinkSignature.

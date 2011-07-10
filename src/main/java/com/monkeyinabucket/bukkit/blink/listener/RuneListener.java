@@ -1,18 +1,12 @@
 package com.monkeyinabucket.bukkit.blink.listener;
 
-
-import java.util.logging.Logger;
-
 import com.monkeyinabucket.bukkit.blink.RuneManager;
 import com.monkeyinabucket.bukkit.blink.rune.Rune;
 import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
-import java.util.ArrayList;
-import org.bukkit.Location;
 import org.bukkit.Material;
 
 import org.bukkit.block.Block;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerListener;

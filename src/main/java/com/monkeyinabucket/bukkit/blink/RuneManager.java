@@ -6,7 +6,6 @@ import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
 import java.util.ArrayList;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 
 /**
  * Managers runes, groups and their life-cycles.
