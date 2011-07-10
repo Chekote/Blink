@@ -21,26 +21,44 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
 
 /**
+ * Main class for the Blink plugin. Handles the enabling and disabling process, provides centralized
+ * logging features, and acts as the primary container for all objects in the plugin.
+ * 
  * TODO: Handle events that may change or break a rune: ice melt, piston push, block placed in
  *       air signature slot, grass grow, etc.
- * @author dtyler
+ *
+ * @author Donald Tyler (chekote69@gmail.com)
  */
 public class Plugin extends JavaPlugin {
 
+  /** The MineCraft Logger to send messages through */
   private static final Logger log = Logger.getLogger("Minecraft");
+
+  /** A prefix that will be appended to all log messages from this plugin */
   private static String logPrefix = "[Blink] ";
+
+  /** The data file that will be used to save and load rune locations */
   private static String saveFile = "plugins/blink.sav";
 
+  /** The primary object used to manager runes in the plugin */
   private final RuneManager runeManager = new RuneManager();
+
+  /** The listener responsible for detecting and handling player/rune interactions */
   private final RuneListener playerListener = new RuneListener(runeManager);
+
+  /** The listener responsible for detecting and handling block/rune interactions */
   private final BlockListener blockListener = new BlockListener(runeManager);
 
+  /**
+   * Provides the runeManager instance
+   * @return the RuneManager
+   */
   public RuneManager getManager() {
     return runeManager;
   }
 
   /**
-   * Called when this Plugin is enabled
+   * Called when this Plugin is enabled. Initializes the plugin and loads all saved Runes.
    */
   @Override
   public void onEnable() {
@@ -89,7 +107,7 @@ public class Plugin extends JavaPlugin {
   }
 
   /**
-   * Called when this Plugin is disabled
+   * Called when this Plugin is disabled. Shuts down the plugin, and saves all Runes.
    */
   @Override
   public void onDisable() {
@@ -119,6 +137,10 @@ public class Plugin extends JavaPlugin {
     logInfo(b);
   }
 
+  /**
+   * Logs an INFO level message to the logger.
+   * @param message the thing to log
+   */
   public static void logInfo(Object message) {
     StringBuilder b = new StringBuilder();
     b.append(logPrefix);
@@ -126,6 +148,10 @@ public class Plugin extends JavaPlugin {
     log.info(b.toString());
   }
 
+  /**
+   * Logs a WARNING level message to the logger.
+   * @param message the thing to log
+   */
   public static void logWarning(Object message) {
     StringBuilder b = new StringBuilder();
     b.append(logPrefix);
@@ -133,6 +159,10 @@ public class Plugin extends JavaPlugin {
     log.warning(b.toString());
   }
 
+  /**
+   * Logs a SEVERE level message to the logger.
+   * @param message the thing to log
+   */
   public static void logSevere(Object message) {
     StringBuilder b = new StringBuilder();
     b.append(logPrefix);

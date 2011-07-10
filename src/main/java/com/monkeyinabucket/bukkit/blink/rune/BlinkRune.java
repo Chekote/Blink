@@ -14,15 +14,24 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 
 /**
- *
- * @author dtyler
+ * Represents a BlinkRune.
+ * @author Donald Tyler (chekote69@gmail.com)
  */
 public class BlinkRune {
 
+  /** The Location of the center Block of this BlinkRune */
   protected Location loc;
+
+  /** The BlinkSignature of this BlinkRune */
   protected BlinkSignature signature;
+
+  /** The BlinkGroup that this BlinkRune belongs to */
   protected BlinkGroup group;
 
+  /**
+   * Constructor
+   * @param block 
+   */
   public BlinkRune(Block block) {
     this.loc = block.getLocation();
     this.signature = new BlinkSignature(
@@ -33,30 +42,50 @@ public class BlinkRune {
     );
   }
 
+  /**
+   * Constructor
+   * @param loc 
+   */
   public BlinkRune(Location loc) {
     // save defensive copy
     this.loc = loc.clone();
   }
 
+  /**
+   * Provides a defensive copy of the location of the center Block if this BlinkRune
+   * @return the Location
+   */
   public Location getLocation() {
-    // return a defensive copy
     return loc.clone();
   }
 
+  /**
+   * Provides the signature of this BlinkRune
+   * TODO: return a defensive copy
+   * @return the BlinkSignature
+   */
   public BlinkSignature getSignature() {
     return signature;
   }
 
+  /**
+   * Sets the BlinkGroup that this BlinkRune belongs to
+   * @param group 
+   */
   public void setGroup(BlinkGroup group) {
     this.group = group;
   }
 
+  /**
+   * Gets the BlinkGroup that this BlinkRune belongs to
+   * @return the BlinkGroup
+   */
   public BlinkGroup getGroup() {
     return group;
   }
 
   /**
-   * provides a list of all blocks that comprise this rune
+   * provides a list of all Blocks that comprise this BlinkRune
    * @return the list of blocks
    */
   public Collection<Block> getParts() {
@@ -81,14 +110,19 @@ public class BlinkRune {
   }
 
   /**
-   * determines if the specified block is a part of this rune
-   * @param block the block to check
-   * @return true if the block is a part of this rune, false if not
+   * Determines if the specified Block is a part of this BlinkRune
+   * @param block the Block to check
+   * @return true if the Block is a part of this BlinkRune, false if not
    */
   public boolean isPart(Block block) {
     return isPart(block.getLocation());
   }
 
+  /**
+   * Determines if the specified Location is a part of this BlinkRune
+   * @param otherLoc the Location to check
+   * @return true if the Location is part of this BlinkRune, false if not
+   */
   public boolean isPart(Location otherLoc) {
     return
       otherLoc.getWorld().equals(loc.getWorld()) &&
@@ -122,6 +156,10 @@ public class BlinkRune {
     return false;
   }
 
+  /**
+   * Invoked when any Block in this BlinkRune is damaged. Damaging a Block of a BlinkRune will
+   * set the entire BlinkRune on fire.
+   */
   public void onDamage() {
     for(Block b : getParts()) {
       Block above = b.getFace(BlockFace.UP);
@@ -131,14 +169,25 @@ public class BlinkRune {
     }
   }
 
+  /**
+   * Invoked when a BlinkRune is created. A successfully created BlinkRune will be struck by
+   * lightning.
+   */
   public void onCreate() {
     loc.getWorld().strikeLightningEffect(loc);
   }
 
+  /**
+   * Invoked when a BlinkRune is destroyed. A destroyed BlinkRune will be struck by lightning.
+   */
   public void onDestroy() {
     loc.getWorld().strikeLightningEffect(loc);
   }
 
+  /**
+   * Activates the BlinkRune, teleporting the Player to the next BlinkRune in the BlinkGroup. Note:
+   * @param player the Player that activated the BlinkRune
+   */
   public void activate(Player player) {
     BlinkRune targetRune = null;
     try {
@@ -178,6 +227,13 @@ public class BlinkRune {
     player.teleport(targetLoc);
   }
 
+  /**
+   * Determines if a Block is a valid teleport destination for a Pleyer. A Block is considered a
+   * valid destination if it is not solid and the Block directly above it is also not solid. This
+   * will provide enough room for the Player to teleport in without suffocating.
+   * @param block the Block to check
+   * @return true if the destination is valid, false if not
+   */
   protected boolean isValidDestination(Block block) {
     if (block == null) {
       return true;
@@ -190,6 +246,11 @@ public class BlinkRune {
     return false;
   }
 
+  /**
+   * Determines if a Block is solid. A solid Block is any Block that would suffocate a Player.
+   * @param block the Block to check
+   * @return true if the Block is solid, false if not
+   */
   protected boolean blockIsSolid(Block block) {
     if (block == null) {
       return false;

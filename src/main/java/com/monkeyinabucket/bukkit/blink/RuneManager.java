@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.monkeyinabucket.bukkit.blink;
 
 import com.monkeyinabucket.bukkit.SerializableLocation;
@@ -13,23 +9,46 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 /**
+ * Managers runes, groups and their life-cycles.
  *
- * @author dtyler
+ * This class is responsible for:
+ * - Processing newly created runes, ensuring they are added to the correct group
+ * - Processing destroyed runes, ensuring they are removed from the correct group
+ * - Creating and destroying groups as needed
+ * - Providing serializable locations of the Runes for saving
+ *
+ * @author Donald Tyler (chekote69@gmail.com)
  */
 public class RuneManager {
 
+  /** All runes that are currently active on the server */
   private final ArrayList<BlinkRune> runes;
+
+  /** All rune groups that are currently active on the server */
   private final ArrayList<BlinkGroup> groups;
 
+  /**
+   * Constructor
+   */
   public RuneManager() {
     runes = new ArrayList<BlinkRune>();
     groups = new ArrayList<BlinkGroup>();
   }
 
+  /**
+   * Returns the BlinkRune who's center Block matches the specified Block
+   * @param block the block to use as the point of reference
+   * @return the BlinkRune, or null if there is no BlinkRune at the specified Block
+   */
   public BlinkRune getRuneByCenter(Block block) {
     return getRuneByCenter(block.getLocation());
   }
 
+  /**
+   * Returns the BlinkRune who's center Location matches the specified Location
+   * @param loc the Location to use as the point of reference
+   * @return the BlinkRune, or null if there is no BlinkRune at the specified Location
+   */
   public BlinkRune getRuneByCenter(Location loc) {
     for(BlinkRune rune : runes) {
       if (rune.getLocation().equals(loc)) {
@@ -40,10 +59,20 @@ public class RuneManager {
     return null;
   }
 
+  /**
+   * Returns the BlinkRune which contains the specified Block
+   * @param block the Block to use as the point of reference
+   * @return the BlinkRune, or null if the specified Block is not part of a BlinkRune
+   */
   public BlinkRune getRuneByPart(Block block) {
     return getRuneByPart(block.getLocation());
   }
 
+  /**
+   * Returns the BlinkRune which contains the specified Location
+   * @param loc the Location to use as the point of reference
+   * @return the BlinkRune, or null if the specified Location is not part of a BlinkRune
+   */
   public BlinkRune getRuneByPart(Location loc) {
     for(BlinkRune rune : runes) {
       if (rune.isPart(loc)) {
@@ -54,6 +83,11 @@ public class RuneManager {
     return null;
   }
 
+  /**
+   * Adds a new BlinkRune to the manager, and sets up the group associations based on the BlinkRunes
+   * signature.
+   * @param rune the BlinkRune to add
+   */
   public void addRune(BlinkRune rune) {
     runes.add(rune);
 
@@ -63,6 +97,11 @@ public class RuneManager {
     rune.setGroup(group);
   }
 
+  /**
+   * Removes a BlinkRune from the manager, and cleans up the group associations. This method will
+   * essentially deactivate the rune.
+   * @param rune the BlinkRune to remove
+   */
   public void removeRune(BlinkRune rune) {
     runes.remove(rune);
 
@@ -77,6 +116,12 @@ public class RuneManager {
     }
   }
 
+  /**
+   * Determines if the specified BlinkRune overlaps with any other BlinkRune already registered with
+   * this RuneManager.
+   * @param newRune the BlinkRune to check
+   * @return true if the BlinkRune overlaps, false if not.
+   */
   public boolean runeHasOverlap(BlinkRune newRune) {
     for(BlinkRune rune : runes) {
       if (rune.overlaps(newRune)) {
@@ -87,6 +132,12 @@ public class RuneManager {
     return false;
   }
 
+  /**
+   * Either returns the existing BlinkGroup for the specified BlinkSignature, or creates a new one
+   * and returns that.
+   * @param signature the BlinkSignature to get the BlinkGroup for
+   * @return the BlinkGroup
+   */
   protected BlinkGroup getOrCreateGroup(BlinkSignature signature) {
     Plugin.logInfo("Looking up BlinkGroup for signature:");
     Plugin.logInfo(signature);
@@ -104,6 +155,11 @@ public class RuneManager {
     return group;
   }
 
+  /**
+   * Returns the BlinkGroup for the specified BlinkSignature.
+   * @param signature the BlinkSignature to get the BlinkGroup for
+   * @return the BlinkGroup, or null if no BlinkGroup currently exists for the specified BlinkSignature
+   */
   public BlinkGroup getGroup(BlinkSignature signature) {
     for (BlinkGroup group : groups) {
       if (group.getSignature().equals(signature)) {
@@ -118,6 +174,10 @@ public class RuneManager {
     return null;
   }
 
+  /**
+   * Provides a list of SerializebleLocations for each registered BlinkRune for saving.
+   * @return the list of rune locations
+   */
   public ArrayList<SerializableLocation> getLocationsForSave() {
     ArrayList<SerializableLocation> locs = new ArrayList<SerializableLocation>();
 

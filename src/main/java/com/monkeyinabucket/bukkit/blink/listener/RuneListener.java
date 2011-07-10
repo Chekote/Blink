@@ -19,19 +19,28 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerListener;
 
 /**
+ * Responsible for handling Player events that affect BlinkRunes.
  * @author Donald Tyler (chekote69@gmail.com)
- * 
- * Possible bugs:
- *  - Overlapping runes
  */
 public class RuneListener extends PlayerListener {
 
+  /** Reference to the plugin's runeManager */
   private final RuneManager runeManager;
 
+  /**
+   * Constructor
+   * @param runeManager 
+   */
   public RuneListener(final RuneManager runeManager) {
     this.runeManager = runeManager;
   }
 
+  /**
+   * Handles PlayerInteractEvents. If the player right clicks on a block (excluding placing a block),
+   * then this method will determine if a new BlinkRune is being created, or an existing BlinkRune
+   * is being activated.
+   * @param event the PlayerInteractEvent
+   */
   @Override
   public void onPlayerInteract(PlayerInteractEvent event) {
     // only handle right clicks, and only when not placing blocks
@@ -57,6 +66,15 @@ public class RuneListener extends PlayerListener {
     processRuneInteract(event);
   }
 
+  /**
+   * Invoked once the RuneListener has determined that the player has interacted with a BlinkRune
+   * (either a new one, or an existing one).
+   *
+   * This method will check with the RuneManager to determine if the BlinkRune already exists,
+   * otherwise it will create the new BlinkRune.
+   *
+   * @param event the PlayerInteractEvent
+   */
   protected void processRuneInteract(PlayerInteractEvent event) {
     Block block = event.getClickedBlock();
     Player player = event.getPlayer();

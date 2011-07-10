@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.monkeyinabucket.bukkit;
 
 import java.io.Serializable;
@@ -10,8 +6,10 @@ import org.bukkit.Server;
 import org.bukkit.World;
 
 /**
+ * Wrapper for a bukkit Location that implements Serializable. This is used to save the location
+ * of runes.
  *
- * @author dtyler
+ * @author Donald Tyler (chekote69@gmail.com)
  */
 public class SerializableLocation implements Serializable {
 
@@ -22,6 +20,10 @@ public class SerializableLocation implements Serializable {
     private float pitch;
     private float yaw;
 
+    /**
+     * Constructor
+     * @param loc the location to serialize
+     */
     public SerializableLocation(Location loc) {
       worldUID = loc.getWorld().getUID();
       x = loc.getX();
@@ -31,6 +33,12 @@ public class SerializableLocation implements Serializable {
       yaw = loc.getYaw();
     }
 
+    /**
+     * Provides the Location that this object serialized.
+     *
+     * @param server the server that we are running in
+     * @return the Location
+     */
     public Location getLocation(Server server) {
       World world = server.getWorld(worldUID);
       return new Location(world, x, y, z, yaw, pitch);

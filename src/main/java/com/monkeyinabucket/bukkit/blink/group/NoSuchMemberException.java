@@ -1,12 +1,8 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.monkeyinabucket.bukkit.blink.group;
 
 /**
- *
- * @author dtyler
+ * Thrown when a BlinkRune was represented as a member of a specific BlinkGroup, but it was not.
+ * @author Donald Tyler (chekote69@gmail.com)
  */
 public class NoSuchMemberException extends Exception {
   

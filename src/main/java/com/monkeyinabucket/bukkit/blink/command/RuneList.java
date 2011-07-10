@@ -8,8 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 /**
- * Handler for the /runelist sample command.
- * @author SpaceManiac
+ * Handler for the /runelist command.
+ * @author Donald Tyler (chekote69@gmail.com)
  */
 public class RuneList implements CommandExecutor {
 

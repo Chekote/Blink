@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.monkeyinabucket.bukkit.blink.rune;
 
 import com.monkeyinabucket.bukkit.blink.Plugin;
@@ -10,11 +6,25 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 
 /**
- *
- * @author dtyler
+ * General Rune class. This class could eventually be the base class for other Runes.
+ * @author Donald Tyler (chekote69@gmail.com)
  */
 public class Rune {
 
+  /**
+   * Determines if the specified Block is the center of a rune (has a "Rune Shell"). Currently a
+   * rune shell is defined as the obsidian shell of a BlinkRune: (X == Obsidian)
+   * 
+   *  X X X X X
+   *  X X   X X
+   *  X   X   X
+   *  X X X X X
+   *  X X   X X
+   *  X X X X X
+   * 
+   * @param center the Block to check
+   * @return true if the Block has a rune shell, false if not
+   */
   public static boolean hasRuneShell(Block center) {
     // most of the time, the block clicked is not obsidian (which the center of a rune always is)
     // so for performance reasons, we check this first.
