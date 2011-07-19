@@ -1,6 +1,7 @@
 package com.monkeyinabucket.bukkit;
 
 import java.io.Serializable;
+import java.util.UUID;
 import org.bukkit.Location;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -13,7 +14,7 @@ import org.bukkit.World;
  */
 public class SerializableLocation implements Serializable {
 
-    private long worldUID;
+    private UUID worldUID;
     private double x;
     private double y;
     private double z;
