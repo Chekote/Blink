@@ -2,6 +2,8 @@ package com.monkeyinabucket.bukkit.blink.listener;
 
 import com.monkeyinabucket.bukkit.blink.RuneManager;
 import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 
@@ -9,7 +11,7 @@ import org.bukkit.event.block.BlockDamageEvent;
  * Responsible for handling Block events that affect BlinkRunes.
  * @author Donald Tyler (chekote69@gmail.com)
  */
-public class BlockListener extends org.bukkit.event.block.BlockListener {
+public class BlockListener implements Listener {
 
   /** Reference to the plugin's runeManager */
   private final RuneManager runeManager;
@@ -27,7 +29,7 @@ public class BlockListener extends org.bukkit.event.block.BlockListener {
    * call the BlineRunes onDamage method.
    * @param event 
    */
-  @Override
+  @EventHandler
   public void onBlockDamage(BlockDamageEvent event) {
     BlinkRune rune = runeManager.getRuneByPart(event.getBlock());
     if (rune == null) {
@@ -42,7 +44,7 @@ public class BlockListener extends org.bukkit.event.block.BlockListener {
    * invoke the BlinkRunes onDestroy event, and remove the BlinkRune from the RuneManager.
    * @param event 
    */
-  @Override
+  @EventHandler
   public void onBlockBreak(BlockBreakEvent event) {
     BlinkRune rune = runeManager.getRuneByPart(event.getBlock());
     if (rune == null) {

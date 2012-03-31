@@ -1,24 +1,17 @@
 package com.monkeyinabucket.bukkit.blink;
 
 import com.monkeyinabucket.bukkit.SerializableLocation;
-import java.io.IOException;
+import com.monkeyinabucket.bukkit.blink.listener.BlockListener;
+import com.monkeyinabucket.bukkit.blink.listener.RuneListener;
+import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import com.monkeyinabucket.bukkit.blink.listener.RuneListener;
-import com.monkeyinabucket.bukkit.blink.listener.BlockListener;
-import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import org.bukkit.Server;
-import org.bukkit.event.Event.Priority;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Main class for the Blink plugin. Handles the enabling and disabling process, provides centralized
@@ -64,9 +57,8 @@ public class Plugin extends JavaPlugin {
   public void onEnable() {
     // Register our events
     PluginManager pm = getServer().getPluginManager();
-    pm.registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Priority.Normal, this);
-    pm.registerEvent(Event.Type.BLOCK_DAMAGE, blockListener, Priority.Normal, this);
-    pm.registerEvent(Event.Type.BLOCK_BREAK, blockListener, Priority.Normal, this);
+    pm.registerEvents(playerListener, this);
+    pm.registerEvents(blockListener, this);
 
     // TODO: load saved runes
     ArrayList<SerializableLocation> locs = null;

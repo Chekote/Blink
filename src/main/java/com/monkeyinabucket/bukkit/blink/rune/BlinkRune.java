@@ -1,8 +1,8 @@
 package com.monkeyinabucket.bukkit.blink.rune;
 
+import com.monkeyinabucket.bukkit.blink.BlinkSignature;
 import com.monkeyinabucket.bukkit.blink.Plugin;
 import com.monkeyinabucket.bukkit.blink.group.BlinkGroup;
-import com.monkeyinabucket.bukkit.blink.BlinkSignature;
 import com.monkeyinabucket.bukkit.blink.group.NoSuchMemberException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,10 +35,10 @@ public class BlinkRune {
   public BlinkRune(Block block) {
     this.loc = block.getLocation();
     this.signature = new BlinkSignature(
-      block.getFace(BlockFace.NORTH).getType(),
-      block.getFace(BlockFace.EAST).getType(),
-      block.getFace(BlockFace.SOUTH).getType(),
-      block.getFace(BlockFace.WEST).getType()
+      block.getRelative(BlockFace.NORTH).getType(),
+      block.getRelative(BlockFace.EAST).getType(),
+      block.getRelative(BlockFace.SOUTH).getType(),
+      block.getRelative(BlockFace.WEST).getType()
     );
   }
 
@@ -156,7 +156,7 @@ public class BlinkRune {
    */
   public void onDamage() {
     for(Block b : getParts()) {
-      Block above = b.getFace(BlockFace.UP);
+      Block above = b.getRelative(BlockFace.UP);
       if (above.getType() == Material.AIR) {
         above.setType(Material.FIRE);
       }
@@ -199,7 +199,7 @@ public class BlinkRune {
 
     // we need to find two stacked blocks of empty space for the player to blink safely, this
     // could ultimately be the top of the world.
-    Block currentBlock = targetRune.getLocation().getBlock().getFace(BlockFace.UP);
+    Block currentBlock = targetRune.getLocation().getBlock().getRelative(BlockFace.UP);
     if (currentBlock == null) {
       // there is no block above the rune, so it must be at the top of the world. Blink directly
       // above it.
@@ -213,7 +213,7 @@ public class BlinkRune {
           break;
         }
 
-        currentBlock = currentBlock.getFace(BlockFace.UP);
+        currentBlock = currentBlock.getRelative(BlockFace.UP);
       }
     }
 
@@ -232,7 +232,7 @@ public class BlinkRune {
       return true;
     }
 
-    if (!blockIsSolid(block) && !blockIsSolid(block.getFace(BlockFace.UP))) {
+    if (!blockIsSolid(block) && !blockIsSolid(block.getRelative(BlockFace.UP))) {
       return true;
     }
 

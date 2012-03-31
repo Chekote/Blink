@@ -1,21 +1,21 @@
 package com.monkeyinabucket.bukkit.blink.listener;
 
 import com.monkeyinabucket.bukkit.blink.RuneManager;
-import com.monkeyinabucket.bukkit.blink.rune.Rune;
 import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
+import com.monkeyinabucket.bukkit.blink.rune.Rune;
 import org.bukkit.Material;
-
 import org.bukkit.block.Block;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerInteractEvent;
 
 /**
  * Responsible for handling Player events that affect BlinkRunes.
  * @author Donald Tyler (chekote69@gmail.com)
  */
-public class RuneListener extends PlayerListener {
+public class RuneListener implements Listener {
 
   /** Reference to the plugin's runeManager */
   private final RuneManager runeManager;
@@ -34,7 +34,7 @@ public class RuneListener extends PlayerListener {
    * is being activated.
    * @param event the PlayerInteractEvent
    */
-  @Override
+  @EventHandler
   public void onPlayerInteract(PlayerInteractEvent event) {
     // only handle right clicks, and only when not placing blocks
     if (event.getAction() != Action.RIGHT_CLICK_BLOCK || event.isBlockInHand()) {

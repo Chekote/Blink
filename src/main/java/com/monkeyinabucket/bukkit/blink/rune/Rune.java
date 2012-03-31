@@ -31,13 +31,13 @@ public class Rune {
       return false;
     }
 
-    Block topLeft = center.getFace(BlockFace.NORTH, 2).getFace(BlockFace.WEST, 2);
+    Block topLeft = center.getRelative(BlockFace.NORTH, 2).getRelative(BlockFace.WEST, 2);
 
     // loop over the columns and rows, checking for obsidian
     // note: the first row is row 0, not row 1. same for columns.
     for (int col = 0; col < 5; ++col) {
       for (int row = 0; row < 5; ++row) {
-        Block block = topLeft.getFace(BlockFace.EAST, col).getFace(BlockFace.SOUTH, row);
+        Block block = topLeft.getRelative(BlockFace.EAST, col).getRelative(BlockFace.SOUTH, row);
 
         // column 3, row 2 & 4 and , column 2 & 4, does not need to be obsidian
         if ((col == 2 && (row == 1 || row == 3)) || row == 2 && (col == 1 || col == 3)) {
