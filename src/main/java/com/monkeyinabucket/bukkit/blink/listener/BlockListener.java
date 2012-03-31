@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
+import org.bukkit.event.block.BlockEvent;
 
 /**
  * Responsible for handling Block events that affect BlinkRunes.
@@ -51,8 +52,6 @@ public class BlockListener implements Listener {
       return;
     }
 
-    rune.onDestroy();
-
-    runeManager.removeRune(rune);
+    rune.onDestroy();  
   }
 }

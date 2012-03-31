@@ -2,6 +2,7 @@ package com.monkeyinabucket.bukkit.blink.rune;
 
 import com.monkeyinabucket.bukkit.blink.BlinkSignature;
 import com.monkeyinabucket.bukkit.blink.Plugin;
+import com.monkeyinabucket.bukkit.blink.RuneManager;
 import com.monkeyinabucket.bukkit.blink.group.BlinkGroup;
 import com.monkeyinabucket.bukkit.blink.group.NoSuchMemberException;
 import java.util.ArrayList;
@@ -28,6 +29,8 @@ public class BlinkRune implements Comparable<BlinkRune> {
   /** The BlinkGroup that this BlinkRune belongs to */
   protected BlinkGroup group;
 
+  protected RuneManager runeManager;
+
   /**
    * Constructor
    * @param block 
@@ -40,6 +43,8 @@ public class BlinkRune implements Comparable<BlinkRune> {
       block.getRelative(BlockFace.SOUTH).getType(),
       block.getRelative(BlockFace.WEST).getType()
     );
+    
+    runeManager = RuneManager.getInstance();
   }
 
   /**
@@ -176,6 +181,7 @@ public class BlinkRune implements Comparable<BlinkRune> {
    */
   public void onDestroy() {
     loc.getWorld().strikeLightningEffect(loc);
+    runeManager.removeRune(this);
   }
 
   /**
