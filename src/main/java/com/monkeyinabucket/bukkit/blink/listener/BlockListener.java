@@ -32,6 +32,10 @@ public class BlockListener implements Listener {
    */
   @EventHandler
   public void onBlockDamage(BlockDamageEvent event) {
+    if (event.isCancelled()) {
+      return;
+    }
+
     BlinkRune rune = runeManager.getRuneByPart(event.getBlock());
     if (rune == null) {
       return;
@@ -47,6 +51,10 @@ public class BlockListener implements Listener {
    */
   @EventHandler
   public void onBlockBreak(BlockBreakEvent event) {
+    if (event.isCancelled()) {
+      return;
+    }
+
     BlinkRune rune = runeManager.getRuneByPart(event.getBlock());
     if (rune == null) {
       return;
