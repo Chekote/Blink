@@ -24,8 +24,8 @@ public class RuneListener implements Listener {
    * Constructor
    * @param runeManager 
    */
-  public RuneListener(final RuneManager runeManager) {
-    this.runeManager = runeManager;
+  public RuneListener() {
+    runeManager = RuneManager.getInstance();
   }
 
   /**

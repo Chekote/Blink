@@ -34,13 +34,13 @@ public class Plugin extends JavaPlugin {
   private static String saveFile = "plugins/blink.sav";
 
   /** The primary object used to manager runes in the plugin */
-  private final RuneManager runeManager = new RuneManager();
+  private final RuneManager runeManager = RuneManager.getInstance();
 
   /** The listener responsible for detecting and handling player/rune interactions */
-  private final RuneListener playerListener = new RuneListener(runeManager);
+  private final RuneListener playerListener = new RuneListener();
 
   /** The listener responsible for detecting and handling block/rune interactions */
-  private final BlockListener blockListener = new BlockListener(runeManager);
+  private final BlockListener blockListener = new BlockListener();
 
   /**
    * Provides the runeManager instance

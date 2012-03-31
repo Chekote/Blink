@@ -20,8 +20,8 @@ public class BlockListener implements Listener {
    * Constructor
    * @param runeManager 
    */
-  public BlockListener(final RuneManager runeManager) {
-    this.runeManager = runeManager;
+  public BlockListener() {
+    runeManager = RuneManager.getInstance();
   }
 
   /**

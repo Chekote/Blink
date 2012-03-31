@@ -26,10 +26,20 @@ public class RuneManager {
   /** All rune groups that are currently active on the server */
   private final ArrayList<BlinkGroup> groups;
 
+  private static RuneManager instance;
+
+  public static RuneManager getInstance() {
+    if (instance == null) {
+      instance = new RuneManager();
+    }
+    
+    return instance;
+  }
+
   /**
    * Constructor
    */
-  public RuneManager() {
+  private RuneManager() {
     runes = new ArrayList<BlinkRune>();
     groups = new ArrayList<BlinkGroup>();
   }
