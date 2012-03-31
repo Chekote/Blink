@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Represents a group of BlinkRunes in a specific order, united by a common BlinkSignature.
  * @author Donald Tyler (chekote69@gmail.com)
  */
-public class BlinkGroup {
+public class BlinkGroup implements Comparable<BlinkGroup> {
 
   /** The BlinkSignature that unites the BlinkRunes in this group */
   protected BlinkSignature signature;
@@ -112,5 +112,18 @@ public class BlinkGroup {
     s.append("}");
 
     return s.toString();
+  }
+
+  @Override
+  public int compareTo(BlinkGroup group) {
+    if (group == null) {
+      return 0;
+    }
+
+    if (group.getSignature().equals(signature)) {
+      return 0;
+    }
+    
+    return -1;
   }
 }

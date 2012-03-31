@@ -17,7 +17,7 @@ import org.bukkit.entity.Player;
  * Represents a BlinkRune.
  * @author Donald Tyler (chekote69@gmail.com)
  */
-public class BlinkRune {
+public class BlinkRune implements Comparable<BlinkRune> {
 
   /** The Location of the center Block of this BlinkRune */
   protected Location loc;
@@ -289,5 +289,18 @@ public class BlinkRune {
     }
 
     return true;
+  }
+
+  @Override
+  public int compareTo(BlinkRune rune) {
+    if (rune == null) {
+      return 0;
+    }
+
+    if (rune.getLocation().equals(loc)) {
+      return 0;
+    }
+    
+    return -1;
   }
 }

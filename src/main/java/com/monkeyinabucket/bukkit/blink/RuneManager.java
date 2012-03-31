@@ -4,6 +4,8 @@ import com.monkeyinabucket.bukkit.SerializableLocation;
 import com.monkeyinabucket.bukkit.blink.group.BlinkGroup;
 import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
@@ -21,10 +23,10 @@ import org.bukkit.block.Block;
 public class RuneManager {
 
   /** All runes that are currently active on the server */
-  private final ArrayList<BlinkRune> runes;
+  private final Set<BlinkRune> runes;
 
   /** All rune groups that are currently active on the server */
-  private final ArrayList<BlinkGroup> groups;
+  private final Set<BlinkGroup> groups;
 
   private static RuneManager instance;
 
@@ -40,8 +42,8 @@ public class RuneManager {
    * Constructor
    */
   private RuneManager() {
-    runes = new ArrayList<BlinkRune>();
-    groups = new ArrayList<BlinkGroup>();
+    runes = new TreeSet<BlinkRune>();
+    groups = new TreeSet<BlinkGroup>();
   }
 
   /**
