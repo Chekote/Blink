@@ -176,6 +176,14 @@ public class RuneManager {
   }
 
   /**
+   * Returns all of the BlinkGroups.
+   * @return the BlinkGroups
+   */
+  public Set<BlinkGroup> getGroups() {
+    return groups;
+  }
+
+  /**
    * Provides a list of SerializebleLocations for each registered BlinkRune for saving.
    * @return the list of rune locations
    */

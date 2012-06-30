@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockEvent;
+import org.bukkit.event.block.BlockPhysicsEvent;
 
 /**
  * Responsible for handling Block events that affect BlinkRunes.

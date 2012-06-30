@@ -101,13 +101,13 @@ public class BlinkSignature {
   public String toString() {
     StringBuilder b = new StringBuilder();
 
-    b.append("BlinkSignature{north=");
+    b.append("BlinkSignature{n=");
     b.append(north);
-    b.append(",east=");
+    b.append(", e=");
     b.append(east);
-    b.append(",south=");
+    b.append(", s=");
     b.append(south);
-    b.append(",west=");
+    b.append(", w=");
     b.append(west);
     b.append("}");
 

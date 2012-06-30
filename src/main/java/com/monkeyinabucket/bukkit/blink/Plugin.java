@@ -4,6 +4,7 @@ import com.monkeyinabucket.bukkit.SerializableLocation;
 import com.monkeyinabucket.bukkit.blink.listener.BlockListener;
 import com.monkeyinabucket.bukkit.blink.listener.RuneListener;
 import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
+import com.monkeyinabucket.bukkit.blink.command.List;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -59,6 +60,8 @@ public class Plugin extends JavaPlugin {
     PluginManager pm = getServer().getPluginManager();
     pm.registerEvents(playerListener, this);
     pm.registerEvents(blockListener, this);
+
+    getCommand("blinklist").setExecutor(new List(this));
 
     // TODO: load saved runes
     ArrayList<SerializableLocation> locs = null;

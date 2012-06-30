@@ -1,5 +1,6 @@
 package com.monkeyinabucket.bukkit.blink.group;
 
+import com.google.common.base.Joiner;
 import com.monkeyinabucket.bukkit.blink.BlinkSignature;
 import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
 import java.util.ArrayList;
@@ -101,13 +102,17 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
 
     s.append("BlinkGroup{\n");
     
-    s.append("\tsignature=");
+    s.append("\tsig=");
     s.append(signature);
     s.append(",\n");
 
-    s.append("\tmembers=");
-    s.append(members);
-    s.append(",\n");
+    s.append("\trunes=[\n");
+
+    s.append("\t\t");
+    s.append(Joiner.on(",\n\t\t").join(members));
+    s.append("\n");
+
+    s.append("\t]\n");
     
     s.append("}");
 

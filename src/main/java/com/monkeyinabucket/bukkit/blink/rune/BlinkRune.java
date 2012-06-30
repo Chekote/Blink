@@ -298,6 +298,23 @@ public class BlinkRune implements Comparable<BlinkRune> {
   }
 
   @Override
+  public String toString() {
+    StringBuilder b = new StringBuilder();
+
+    b.append("BlinkRune{world=");
+    b.append(loc.getWorld().getName());
+    b.append(", x=");
+    b.append(loc.getX());
+    b.append(", y=");
+    b.append(loc.getY());
+    b.append(", z=");
+    b.append(loc.getZ());
+    b.append("}");
+
+    return b.toString();
+  }
+
+  @Override
   public int compareTo(BlinkRune rune) {
     if (rune == null) {
       return 0;
