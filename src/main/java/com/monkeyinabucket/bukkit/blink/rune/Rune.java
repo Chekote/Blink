@@ -39,8 +39,12 @@ public class Rune {
       for (int row = 0; row < 5; ++row) {
         Block block = topLeft.getRelative(BlockFace.EAST, col).getRelative(BlockFace.SOUTH, row);
 
-        // column 3, row 2 & 4 and , column 2 & 4, does not need to be obsidian
+        // column 3, row 2 & 4 and , column 2 & 4, cannot be obsidian
         if ((col == 2 && (row == 1 || row == 3)) || row == 2 && (col == 1 || col == 3)) {
+          if (block.getType() == Material.OBSIDIAN) {
+            return false;
+          }
+
           continue;
         }
 
