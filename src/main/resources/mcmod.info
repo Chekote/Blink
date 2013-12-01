@@ -1,0 +1,14 @@
+[{
+  "modid": "Blink",
+  "name": "Blink",
+  "description": "Rune based teleport mod",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "https://github.com/Chekote/Blink",
+  "updateUrl": "",
+  "authorList": ["Chekote"],
+  "credits": "The Forge and FML guys, for making this mod possible",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}]

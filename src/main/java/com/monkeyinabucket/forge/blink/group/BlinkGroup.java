@@ -1,13 +1,13 @@
-package com.monkeyinabucket.bukkit.blink.group;
+package com.monkeyinabucket.forge.blink.group;
+
+import java.util.ArrayList;
 
 import com.google.common.base.Joiner;
-import com.monkeyinabucket.bukkit.blink.BlinkSignature;
-import com.monkeyinabucket.bukkit.blink.rune.BlinkRune;
-import java.util.ArrayList;
+import com.monkeyinabucket.forge.blink.rune.BlinkRune;
+import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 
 /**
  * Represents a group of BlinkRunes in a specific order, united by a common BlinkSignature.
- * @author Donald Tyler (chekote69@gmail.com)
  */
 public class BlinkGroup implements Comparable<BlinkGroup> {
 
@@ -19,6 +19,7 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
 
   /**
    * Constructor
+   * 
    * @param signature the BlinkSignature for this BlinkGroup
    */
   public BlinkGroup(BlinkSignature signature) {
@@ -28,16 +29,18 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
 
   /**
    * Provides the BlinkSignature for this BlinkGroup
-   * TODO: Make this return a defensive copy
+   *
    * @return the BlinkSignature
    */
   public BlinkSignature getSignature() {
-    return signature;
+    return signature.clone();
   }
 
   /**
-   * Adds a BlinkRune to this BlinkGroup. The BlinkRune will be added to the end of the members
-   * list, and will therefore be the last BlinkRune destination in this BlinkGroup.
+   * Adds a BlinkRune to this BlinkGroup. The BlinkRune will be added to the end
+   * of the members list, and will therefore be the last BlinkRune destination
+   * in this BlinkGroup.
+   * 
    * @param rune the BlinkRune to add
    */
   public void add(BlinkRune rune) {
@@ -46,6 +49,7 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
 
   /**
    * Removes a BlinkRune from this BlinkGroup.
+   * 
    * @param rune the BlinkRune to remove
    */
   public void remove(BlinkRune rune) {
@@ -54,14 +58,16 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
 
   /**
    * Provides a defensive copy of all members of this BlinkGroup.
+   * 
    * @return the members
    */
   public ArrayList<BlinkRune> getMembers() {
-    return (ArrayList<BlinkRune>) members.clone();
+    return new ArrayList<BlinkRune>(members);
   }
 
   /**
    * Provides the number of BlinkRunes in this BlinkGroup
+   * 
    * @return the size
    */
   public int size() {
@@ -69,56 +75,55 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
   }
 
   /**
-   * Given an existing BlinkRune from this BlinkGroup, provides the next BlinkRune in the members
-   * list. This is used to determine the Players destination when activating a BlinkRune.
+   * Given an existing BlinkRune from this BlinkGroup, provides the next
+   * BlinkRune in the members list. This is used to determine the Players
+   * destination when activating a BlinkRune.
+   * 
    * @param srcRune the existing BlinkRune reference point
-   * @return the next BlinkRune, or null if the specified BlinkRune is the only one in this BlinkGroup
-   * @throws NoSuchMemberException if the specified BlinkRune is not a member of this BlinkGroup
+   * @throws NoSuchMemberException if the specified BlinkRune is not a member of
+   *           this BlinkGroup
+   * @return the next BlinkRune, or null if the specified BlinkRune is the only
+   *         one in this BlinkGroup
    */
   public BlinkRune getNext(BlinkRune srcRune) throws NoSuchMemberException {
-    int size = members.size();
-    if (size == 1) {
-      return null;
-    }
-
+    // ensure the source rune is in this group
     int i = members.indexOf(srcRune);
     if (i == -1) {
       throw new NoSuchMemberException();
     }
 
+    // return null if the source rune is the only rune in the group
+    int size = members.size();
+    if (size == 1) {
+      return null;
+    }
+
+    // return the first rune in the group if the source rune is the last
     if (i == size - 1) {
       return members.get(0);
-    } else {
-      return members.get(i + 1);
     }
+
+    // return the next rune in the group
+    return members.get(i + 1);
   }
 
   /**
    * Provides a String representation of this BlinkGroup
+   * 
    * @return the string
    */
   public String toString() {
-    StringBuilder s = new StringBuilder();
-
-    s.append("BlinkGroup{\n");
-    
-    s.append("\tsig=");
-    s.append(signature);
-    s.append(",\n");
-
-    s.append("\trunes=[\n");
-
-    s.append("\t\t");
-    s.append(Joiner.on(",\n\t\t").join(members));
-    s.append("\n");
-
-    s.append("\t]\n");
-    
-    s.append("}");
-
-    return s.toString();
+    return "BlinkGroup{\n" +
+      "\tsig=" + signature + ",\n" +
+      "\trunes=[\n" +
+        "\t\t" + Joiner.on(",\n\t\t").join(members) + "\n" +
+      "\t]\n" +
+    "}";
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public int compareTo(BlinkGroup group) {
     if (group == null) {
@@ -128,7 +133,7 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
     if (group.getSignature().equals(signature)) {
       return 0;
     }
-    
+
     return -1;
   }
 }

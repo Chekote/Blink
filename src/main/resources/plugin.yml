@@ -1,7 +1,0 @@
-name: Blink
-main: com.monkeyinabucket.bukkit.blink.Plugin
-version: 0.2 Snapshot
-commands:
-  blinklist:
-    description: Lists all of the Blink Runes currently registered in the world.
-    usage: "Usage: '/blinklist'"
