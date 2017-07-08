@@ -109,7 +109,6 @@ public class Blink {
    */
   @EventHandler
   public void onServerStarted(FMLServerStartedEvent event) {
-    Logger.info("Registering for events");
     MinecraftForge.EVENT_BUS.register(this);
     FMLCommonHandler.instance().bus().register(this);
 
@@ -122,7 +121,6 @@ public class Blink {
    */
   @EventHandler
   public void unload(FMLServerStoppingEvent event) {
-    Logger.info("unload()");
     saveRunes();
   }
 
@@ -134,19 +132,13 @@ public class Blink {
   public void loadRunes() {
     runeManager.clearRunes();
 
-    Logger.info("loadRunes()");
     ArrayList<SerializableLocation> locs;
     ObjectInputStream stream = null;
     try {
-      Logger.info("Loading file " + saveFile);
-
       File file = new File(saveFile);
-      Logger.info(file.exists() ? "Save file exists" : "Save file does not exist");
 
       stream = new ObjectInputStream(new FileInputStream(saveFile));
       locs = (ArrayList<SerializableLocation>) stream.readObject();
-
-      Logger.info("Loaded " + locs.size() + " runes");
     } catch (FileNotFoundException ex) {
       locs = new ArrayList<SerializableLocation>();
     } catch (ClassNotFoundException ex) {
@@ -179,7 +171,6 @@ public class Blink {
    * Saves the currently registered runes to a save file in the world folder.
    */
   public void saveRunes() {
-    Logger.info("saveRunes()");
     ArrayList<SerializableLocation> locs = runeManager.getLocationsForSave();
     ObjectOutputStream os = null;
     try {
@@ -198,8 +189,6 @@ public class Blink {
         Logger.severe(ex.getMessage());
       }
     }
-
-    Logger.info("Saved " + locs.size() + " runes");
   }
 
   /**
@@ -213,14 +202,11 @@ public class Blink {
    */
   @SubscribeEvent
   public void onWorldLoad(WorldEvent.Load event) {
-    Logger.info("onWorldLoad()");
     if (runeFileLoaded) {
-      Logger.info("Rune file is already loaded. returning");
       return;
     }
 
     if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-      Logger.info("Loaded world is remote. returning");
       return;
     }
 
@@ -238,8 +224,6 @@ public class Blink {
    */
   @SubscribeEvent
   public void onBlockBreak(BlockEvent.BreakEvent event) {
-  	Logger.info("onBlockBreak()");
-
   	// The server will handle the event if the world is remote
   	if (event.world.isRemote) {
   	  return;
@@ -265,20 +249,16 @@ public class Blink {
    * @param event the event that describes the block damage.
    */
   public void onBlockDamage(PlayerInteractEvent event) {
-    Logger.info("onBlockDamage()");
     if (event.isCanceled()) {
-      Logger.info("Event is cancelled. Returning");
       return;
     }
 
     Location loc = new Location(event);
     BlinkRune rune = runeManager.getRuneByPart(loc);
     if (rune == null) {
-      Logger.info("Block is not part of rune. Returning");
       return;
     }
 
-    Logger.info("Calling rune.onDamage()");
     rune.onDamage();
   }
 
@@ -296,7 +276,6 @@ public class Blink {
   	  return;
   	}
 
-  	Logger.info("ServerProxy::onPlayerInteract()");
     if (event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK) {
       onBlockDamage(event);
     }
