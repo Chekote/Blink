@@ -135,8 +135,6 @@ public class Blink {
     ArrayList<SerializableLocation> locs;
     ObjectInputStream stream = null;
     try {
-      File file = new File(saveFile);
-
       stream = new ObjectInputStream(new FileInputStream(saveFile));
       locs = (ArrayList<SerializableLocation>) stream.readObject();
     } catch (FileNotFoundException ex) {
