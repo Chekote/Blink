@@ -28,7 +28,7 @@ public class RuneCore extends Block {
    * @param material the material that the block is made of.
    */
   public RuneCore(Material material) {
-	super(material);
+    super(material);
 
     setHardness(1.0F);
     setStepSound(Block.soundTypeMetal);
@@ -41,7 +41,7 @@ public class RuneCore extends Block {
    * Called upon block activation (right click on the block.)
    */
   public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int dim,
-      float playerX, float playerY, float playerZ) {
+    float playerX, float playerY, float playerZ) {
 
     if (hasRuneShell(world, x, y, z)) {
       switch (FMLCommonHandler.instance().getEffectiveSide()) {

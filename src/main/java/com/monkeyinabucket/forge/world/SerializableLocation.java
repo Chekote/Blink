@@ -6,16 +6,20 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 /**
- * Wrapper for a bukkit Location that implements Serializable. This is used to
- * save the location of runes.
- * 
- * @author Donald Tyler (domhnal.tilliere@gmail.com)
+ * Wrapper for a Location that implements Serializable. This is used to save the location of runes.
  */
 public class SerializableLocation implements Serializable {
 
+  /** The ID of the dimension that this location is within */
   private int dimensionId;
+
+  /** The x coordinate of this location */
   private int x;
+
+  /** The y coordinate of this location */
   private int y;
+
+  /** The z coordinate of this location */
   private int z;
 
   /**
