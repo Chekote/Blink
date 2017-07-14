@@ -43,7 +43,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  *
  * TODO: Handle events that may change or break a rune: ice melt, piston push, block placed in air signature slot, grass grow, etc.
  */
-@Mod(modid = "Blink", name = "Blink", version = "3.0.0")
+@Mod(modid = "blink", name = "Blink", version = "3.0.0")
 public class Blink {
 
   /** Flag to track whether the runes save file has already been loaded */
