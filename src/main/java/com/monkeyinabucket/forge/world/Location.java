@@ -116,10 +116,11 @@ public class Location {
    * {@inheritDoc}
    */
   public String toString() {
-    StringBuilder sb = new StringBuilder().append("Location{").append("d=")
-        .append(world.provider.dimensionId).append(", x=").append(x).append(", y=").append(y)
-        .append(", z=").append(z).append("}");
-
-    return sb.toString();
+    return "Location{" +
+      "d=" + world.provider.dimensionId +
+      ", x=" + x +
+      ", y=" + y +
+      ", z=" + z +
+    "}";
   }
 }
