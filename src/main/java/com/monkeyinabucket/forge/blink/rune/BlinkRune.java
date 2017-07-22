@@ -12,8 +12,6 @@ import com.monkeyinabucket.forge.world.Location;
 
 /**
  * Represents a BlinkRune.
- *
- * FIXME Find out why localization is not working. Rune name is showing as tile.runecore.name. What about block?
  */
 public class BlinkRune extends Rune implements Comparable<BlinkRune> {
 
