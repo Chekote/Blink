@@ -1,10 +1,10 @@
 package com.monkeyinabucket.forge.blink.group;
 
-import java.util.ArrayList;
-
 import com.google.common.base.Joiner;
 import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
+
+import java.util.ArrayList;
 
 /**
  * Represents a group of BlinkRunes in a specific order, united by a common BlinkSignature.

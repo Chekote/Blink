@@ -1,8 +1,9 @@
 package com.monkeyinabucket.forge.world;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
@@ -14,28 +15,18 @@ public class Location {
   /** The world that this location is within */
   public World world;
 
-  /** The x coordinate of this location */
-  public int x;
-
-  /** The y coordinate of this location */
-  public int y;
-
-  /** The z coordinate of this location */
-  public int z;
+  /** The coordinates of this location */
+  public BlockPos pos;
 
   /**
    * Constructor for creating a location from specific coordinates.
    *
    * @param world the world that the location is within.
-   * @param x the x coordination for the location.
-   * @param y the y coordination for the location.
-   * @param z the z coordination for the location.
+   * @param pos   the coordinates of the block.
    */
-  public Location(World world, int x, int y, int z) {
+  public Location(World world, BlockPos pos) {
     this.world = world;
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.pos = pos;
   }
 
   /**
@@ -45,9 +36,7 @@ public class Location {
    */
   public Location(BlockEvent event) {
     this.world = event.world;
-    this.x = event.x;
-    this.y = event.y;
-    this.z = event.z;
+    this.pos = event.pos;
   }
 
   /**
@@ -56,10 +45,8 @@ public class Location {
    * @param event the PlayerInteract to create the Location from.
    */
   public Location(PlayerInteractEvent event) {
-    this.world = event.entityPlayer.worldObj;
-    this.x = event.x;
-    this.y = event.y;
-    this.z = event.z;
+    this.world = event.world;
+    this.pos = event.pos;
   }
 
   /**
@@ -68,7 +55,7 @@ public class Location {
    * @return the block.
    */
   public Block getBlock() {
-    return world.getBlock(x, y, z);
+    return world.getBlockState(pos).getBlock();
   }
 
   /**
@@ -77,7 +64,7 @@ public class Location {
    * @param block the block to place.
    */
   public void setBlock(Block block) {
-    world.setBlock(x, y, z, block);
+    world.setBlockState(pos, block.getDefaultState());
   }
 
   /**
@@ -86,8 +73,10 @@ public class Location {
    * @param direction the relative direction.
    * @return the location.
    */
-  public Location getRelative(ForgeDirection direction) {
-    return new Location(world, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ);
+  public Location getRelative(EnumFacing direction) {
+    BlockPos relative = pos.add(direction.getFrontOffsetX(), direction.getFrontOffsetY(), direction.getFrontOffsetZ());
+
+    return new Location(world, relative);
   }
 
   /**
@@ -95,7 +84,7 @@ public class Location {
    */
   @Override
   public Location clone() {
-    return new Location(world, x, y, z);
+    return new Location(world, pos);
   }
 
   /**
@@ -108,8 +97,7 @@ public class Location {
    * @return true if the location is equal, false if not.
    */
   public boolean equals(Location loc) {
-    return this.world.provider.dimensionId == loc.world.provider.dimensionId && this.x == loc.x
-        && this.y == loc.y && this.z == loc.z;
+    return this.world.provider.getDimensionId() == loc.world.provider.getDimensionId() && pos.equals(loc.pos);
   }
 
   /**
@@ -117,10 +105,10 @@ public class Location {
    */
   public String toString() {
     return "Location{" +
-      "d=" + world.provider.dimensionId +
-      ", x=" + x +
-      ", y=" + y +
-      ", z=" + z +
+      "d=" + world.provider.getDimensionId() +
+      ", x=" + pos.getX() +
+      ", y=" + pos.getY() +
+      ", z=" + pos.getZ() +
     "}";
   }
 }

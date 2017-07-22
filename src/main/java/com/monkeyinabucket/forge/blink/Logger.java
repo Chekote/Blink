@@ -1,6 +1,6 @@
 package com.monkeyinabucket.forge.blink;
 
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
+import net.minecraftforge.fml.relauncher.FMLRelaunchLog;
 
 @SuppressWarnings("unused")
 public class Logger {

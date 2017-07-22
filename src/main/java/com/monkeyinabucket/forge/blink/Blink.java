@@ -1,9 +1,13 @@
 package com.monkeyinabucket.forge.blink;
 
-import java.io.*;
-import java.util.ArrayList;
-
-import cpw.mods.fml.relauncher.Side;
+import com.monkeyinabucket.forge.blink.block.RuneCore;
+import com.monkeyinabucket.forge.blink.command.BlinkList;
+import com.monkeyinabucket.forge.blink.command.BlinkLoad;
+import com.monkeyinabucket.forge.blink.command.BlinkSave;
+import com.monkeyinabucket.forge.blink.rune.BlinkRune;
+import com.monkeyinabucket.forge.blink.rune.RuneManager;
+import com.monkeyinabucket.forge.world.Location;
+import com.monkeyinabucket.forge.world.SerializableLocation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -14,27 +18,17 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
-import com.monkeyinabucket.forge.blink.block.RuneCore;
-import com.monkeyinabucket.forge.blink.command.BlinkList;
-import com.monkeyinabucket.forge.blink.command.BlinkLoad;
-import com.monkeyinabucket.forge.blink.command.BlinkSave;
-import com.monkeyinabucket.forge.blink.rune.BlinkRune;
-import com.monkeyinabucket.forge.blink.rune.RuneManager;
-import com.monkeyinabucket.forge.world.Location;
-import com.monkeyinabucket.forge.world.SerializableLocation;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+import java.io.*;
+import java.util.ArrayList;
 
 /**
  * Main class for the Blink plugin. Handles the enabling and disabling process,
@@ -43,7 +37,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
  *
  * TODO: Handle events that may change or break a rune: ice melt, piston push, block placed in air signature slot, grass grow, etc.
  */
-@Mod(modid = "blink", name = "Blink", version = "3.0.0")
+@Mod(modid = "blink", name = "Blink", version = "1.0.0")
 public class Blink {
 
   /** Flag to track whether the runes save file has already been loaded */

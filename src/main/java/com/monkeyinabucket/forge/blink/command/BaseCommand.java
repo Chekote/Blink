@@ -1,11 +1,11 @@
 package com.monkeyinabucket.forge.blink.command;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.dedicated.DedicatedServer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handler for the /BlinkLoad command.
@@ -72,18 +72,6 @@ public abstract class BaseCommand implements ICommand {
   }
 
   /**
-   * Provides a list of available options for tab auto-completion.
-   *
-   * @param sender the command sender.
-   * @param command the command being executed.
-   * @return the list of auto-completion options.
-   */
-  @Override
-  public List addTabCompletionOptions(ICommandSender sender, String[] command) {
-    return null;
-  }
-
-  /**
    * Determines if the specified command parameter index is a username parameter.
    *
    * @param command the command being executed.
@@ -93,13 +81,5 @@ public abstract class BaseCommand implements ICommand {
   @Override
   public boolean isUsernameIndex(String[] command, int i) {
     return false;
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public int compareTo(Object object) {
-    return 0;
   }
 }

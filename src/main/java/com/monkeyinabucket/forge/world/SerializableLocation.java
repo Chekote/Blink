@@ -1,9 +1,10 @@
 package com.monkeyinabucket.forge.world;
 
-import java.io.Serializable;
-
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
+
+import java.io.Serializable;
 
 /**
  * Wrapper for a Location that implements Serializable. This is used to save the location of runes.
@@ -28,10 +29,10 @@ public class SerializableLocation implements Serializable {
    * @param loc the location to serialize
    */
   public SerializableLocation(Location loc) {
-    dimensionId = loc.world.provider.dimensionId;
-    x = loc.x;
-    y = loc.y;
-    z = loc.z;
+    dimensionId = loc.world.provider.getDimensionId();
+    x = loc.pos.getX();
+    y = loc.pos.getY();
+    z = loc.pos.getZ();
   }
 
   /**
@@ -43,12 +44,12 @@ public class SerializableLocation implements Serializable {
   public Location getLocation(MinecraftServer server) {
     World world = null;
     for (World nextWorld : server.worldServers) {
-      if (nextWorld.provider.dimensionId == dimensionId) {
+      if (nextWorld.provider.getDimensionId() == dimensionId) {
         world = nextWorld;
         break;
       }
     }
 
-    return new Location(world, x, y, z);
+    return new Location(world, new BlockPos(x, y, z));
   }
 }

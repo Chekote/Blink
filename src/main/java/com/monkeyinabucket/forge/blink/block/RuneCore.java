@@ -1,18 +1,17 @@
 package com.monkeyinabucket.forge.blink.block;
 
+import com.monkeyinabucket.forge.blink.rune.BlinkRune;
+import com.monkeyinabucket.forge.blink.rune.RuneManager;
+import com.monkeyinabucket.forge.world.Location;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
-
-import com.monkeyinabucket.forge.blink.rune.BlinkRune;
-import com.monkeyinabucket.forge.blink.rune.RuneManager;
-import com.monkeyinabucket.forge.world.Location;
-
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 /**
  * The central block for the Rune.
@@ -32,21 +31,20 @@ public class RuneCore extends Block {
 
     setHardness(1.0F);
     setStepSound(Block.soundTypeMetal);
-    setBlockName("runecore");
+    setUnlocalizedName("runecore");
     setCreativeTab(CreativeTabs.tabBlock);
-    setBlockTextureName("blink:runecore");
   }
 
   /**
    * Called upon block activation (right click on the block.)
    */
-  public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int dim,
+  public boolean onBlockActivated(World world, BlockPos pos, EntityPlayer player, int dim,
     float playerX, float playerY, float playerZ) {
 
-    if (hasRuneShell(world, x, y, z)) {
+    if (hasRuneShell(world, pos)) {
       switch (FMLCommonHandler.instance().getEffectiveSide()) {
       case SERVER:
-        activate(new Location(world, x, y, z), player);
+        activate(new Location(world, pos), player);
         break;
       case CLIENT:
         // no action required. Server will handle Rune interaction.
@@ -74,22 +72,21 @@ public class RuneCore extends Block {
    * </pre>
    * 
    * @param world The world to check.
-   * @param x     The x coordinate of the block to check.
-   * @param y     The y coordinate of the block to check.
-   * @param z     The z coordinate of the block to check.
+   * @param pos   The coordinates of the block to check.
    * @return true if the Block has a rune shell, false if not
    */
-  protected boolean hasRuneShell(World world, int x, int y, int z) {
+  protected boolean hasRuneShell(World world, BlockPos pos) {
     // We were passed the coordinates for the center, but we need to start at the
     // North/West corner
-    x -= 2;
-    z -= 2;
+    int x = pos.getX() - 2;
+    int z = pos.getZ() - 2;
+    int y = pos.getY();
 
     // loop over the columns and rows, checking for obsidian
     // note: the first row is row 0, not row 1. same for columns.
     for (int col = 0; col < 5; ++col) {
       for (int row = 0; row < 5; ++row) {
-        Block block = world.getBlock(x + col, y, z + row);
+        Block block = world.getBlockState(new BlockPos(x + col, y, z + row)).getBlock();
 
         // column 3, row 2 & 4 and , column 2 & 4, cannot be obsidian
         if ((col == 2 && (row == 1 || row == 3)) || row == 2 && (col == 1 || col == 3)) {

@@ -1,12 +1,12 @@
 package com.monkeyinabucket.forge.blink.rune;
 
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
-
 import com.monkeyinabucket.forge.blink.group.BlinkGroup;
 import com.monkeyinabucket.forge.world.Location;
 import com.monkeyinabucket.forge.world.SerializableLocation;
+
+import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Manages runes, groups and their life-cycles.

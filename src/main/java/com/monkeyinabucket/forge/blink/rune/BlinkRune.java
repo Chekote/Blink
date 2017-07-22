@@ -1,14 +1,13 @@
 package com.monkeyinabucket.forge.blink.rune;
 
+import com.monkeyinabucket.forge.blink.group.BlinkGroup;
+import com.monkeyinabucket.forge.blink.group.NoSuchMemberException;
+import com.monkeyinabucket.forge.world.Location;
 import net.minecraft.block.Block;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraftforge.common.util.ForgeDirection;
-
-import com.monkeyinabucket.forge.blink.group.BlinkGroup;
-import com.monkeyinabucket.forge.blink.group.NoSuchMemberException;
-import com.monkeyinabucket.forge.world.Location;
+import net.minecraft.util.EnumFacing;
 
 /**
  * Represents a BlinkRune.
@@ -32,9 +31,9 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
     // save defensive copy
     this.loc = loc.clone();
 
-    this.signature = new BlinkSignature(loc.getRelative(ForgeDirection.NORTH).getBlock(), loc
-        .getRelative(ForgeDirection.EAST).getBlock(), loc.getRelative(ForgeDirection.SOUTH)
-        .getBlock(), loc.getRelative(ForgeDirection.WEST).getBlock());
+    this.signature = new BlinkSignature(loc.getRelative(EnumFacing.NORTH).getBlock(), loc
+        .getRelative(EnumFacing.EAST).getBlock(), loc.getRelative(EnumFacing.SOUTH)
+        .getBlock(), loc.getRelative(EnumFacing.WEST).getBlock());
 
     runeManager = RuneManager.getInstance();
   }
@@ -82,8 +81,8 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    */
   public void onDamage() {
     for (Location loc : getParts()) {
-      if (loc.world.isAirBlock(loc.x, loc.y + 1, loc.z)) {
-        loc.getRelative(ForgeDirection.UP).setBlock(Blocks.fire);
+      if (loc.world.isAirBlock(loc.pos.add(0, 1, 0))) {
+        loc.getRelative(EnumFacing.UP).setBlock(Blocks.fire);
       }
     }
   }
@@ -93,7 +92,7 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    * be struck by lightning.
    */
   public void onCreate() {
-    loc.world.addWeatherEffect(new EntityLightningBolt(loc.world, loc.x, loc.y + 1, loc.z));
+    loc.world.addWeatherEffect(new EntityLightningBolt(loc.world, loc.pos.getX(), loc.pos.getY() + 1, loc.pos.getZ()));
   }
 
   /**
@@ -101,7 +100,7 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    * by lightning.
    */
   public void onDestroy() {
-    loc.world.addWeatherEffect(new EntityLightningBolt(loc.world, loc.x, loc.y + 1, loc.z));
+    loc.world.addWeatherEffect(new EntityLightningBolt(loc.world, loc.pos.getX(), loc.pos.getY() + 1, loc.pos.getZ()));
     runeManager.removeRune(this);
   }
 
@@ -124,20 +123,20 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
 
     // We need to find two stacked blocks of empty space for the player to blink
     // safely, this could ultimately be the top of the world.
-    Location targetLoc = targetRune.getLocation().getRelative(ForgeDirection.UP);
+    Location targetLoc = targetRune.getLocation().getRelative(EnumFacing.UP);
     while (targetLoc.getBlock() != null) {
       if (isValidDestination(targetLoc)) {
         break;
       }
 
-      targetLoc = targetLoc.getRelative(ForgeDirection.UP);
+      targetLoc = targetLoc.getRelative(EnumFacing.UP);
     }
 
-    if (targetLoc.world.provider.dimensionId != player.dimension) {
-      player.travelToDimension(targetLoc.world.provider.dimensionId);
+    if (targetLoc.world.provider.getDimensionId() != player.dimension) {
+      player.travelToDimension(targetLoc.world.provider.getDimensionId());
     }
 
-    player.setPositionAndUpdate(targetLoc.x + 0.5, targetLoc.y, targetLoc.z + 0.5);
+    player.setPositionAndUpdate(targetLoc.pos.getX() + 0.5, targetLoc.pos.getY(), targetLoc.pos.getZ() + 0.5);
   }
 
   /**
@@ -156,7 +155,7 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
     }
 
     if (!block.getMaterial().isSolid()) {
-      Block blockAbove = loc.getRelative(ForgeDirection.UP).getBlock();
+      Block blockAbove = loc.getRelative(EnumFacing.UP).getBlock();
 
       if (blockAbove == null || !blockAbove.getMaterial().isSolid()) {
         return true;
@@ -172,10 +171,10 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
   @Override
   public String toString() {
     return "BlinkRune{" +
-      "dimension=" + loc.world.provider.dimensionId +
-      ", x=" + loc.x +
-      ", y=" + loc.y +
-      ", z=" + loc.z +
+      "dimension=" + loc.world.provider.getDimensionId() +
+      ", x=" + loc.pos.getX() +
+      ", y=" + loc.pos.getY() +
+      ", z=" + loc.pos.getZ() +
     "}";
   }
 
