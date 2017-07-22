@@ -8,10 +8,13 @@ import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.RuneManager;
 import com.monkeyinabucket.forge.world.Location;
 import com.monkeyinabucket.forge.world.SerializableLocation;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -40,12 +43,15 @@ import java.util.ArrayList;
 @Mod(modid = "blink", name = "Blink", version = "1.0.0")
 public class Blink {
 
+  /** The id of this mod */
+  public static String mod_id = "blink";
+
   /** Flag to track whether the runes save file has already been loaded */
   private Boolean runeFileLoaded = false;
 
   /** The name of the rune save file. This will be stored in the world folder */
   @SuppressWarnings("FieldCanBeLocal")
-  private static String SAVE_FILE_NAME = "blink.sav";
+  private static String SAVE_FILE_NAME = mod_id + ".sav";
 
   /** The data file that will be used to save and load rune locations */
   protected String saveFile;
@@ -53,7 +59,7 @@ public class Blink {
   /** The primary object used to manage runes in the plugin */
   protected final RuneManager runeManager = RuneManager.getInstance();
 
-  public static Block runecore;
+  public static RuneCore runecore;
 
   @Instance(value = "Blink")
   public static Blink instance;
@@ -93,6 +99,18 @@ public class Blink {
       'z',
       obsidianStack
     );
+
+    // setup rendering
+    if (event.getSide() == Side.CLIENT) {
+      RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
+
+      // blocks
+      renderItem.getItemModelMesher().register(
+          Item.getItemFromBlock(runecore),
+          0,
+          new ModelResourceLocation(mod_id + ":" + runecore.getName(), "inventory")
+      );
+    }
   }
 
   /**

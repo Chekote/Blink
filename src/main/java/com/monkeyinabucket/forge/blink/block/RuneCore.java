@@ -1,5 +1,6 @@
 package com.monkeyinabucket.forge.blink.block;
 
+import com.monkeyinabucket.forge.blink.Blink;
 import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.RuneManager;
 import com.monkeyinabucket.forge.world.Location;
@@ -18,6 +19,8 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
  */
 public class RuneCore extends Block {
 
+  private final String name = "runecore";
+
   /** The primary object used to manage runes in the plugin */
   private final RuneManager runeManager = RuneManager.getInstance();
 
@@ -31,8 +34,17 @@ public class RuneCore extends Block {
 
     setHardness(1.0F);
     setStepSound(Block.soundTypeMetal);
-    setUnlocalizedName("runecore");
+    setUnlocalizedName(Blink.mod_id + "_" + name);
     setCreativeTab(CreativeTabs.tabBlock);
+  }
+
+  /**
+   * Provides the name of this block.
+   *
+   * @return the name.
+   */
+  public String getName() {
+    return name;
   }
 
   /**
@@ -40,6 +52,7 @@ public class RuneCore extends Block {
    */
   public boolean onBlockActivated(World world, BlockPos pos, EntityPlayer player, int dim,
     float playerX, float playerY, float playerZ) {
+    System.out.println("onBlockActivated");
 
     if (hasRuneShell(world, pos)) {
       switch (FMLCommonHandler.instance().getEffectiveSide()) {
