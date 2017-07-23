@@ -1,7 +1,7 @@
 package com.monkeyinabucket.forge.blink.rune;
 
 import com.monkeyinabucket.forge.world.Location;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -44,7 +44,7 @@ public class Rune {
    * @return true if the Location is part of this BlinkRune, false if not
    */
   public boolean isPart(Location otherLoc) {
-    return otherLoc.world.provider.getDimensionId() == loc.world.provider.getDimensionId()
+    return otherLoc.world.provider.getDimension() == loc.world.provider.getDimension()
         && otherLoc.pos.getY() == loc.pos.getY()
         && otherLoc.pos.getZ() >= loc.pos.getZ() - 2
         && otherLoc.pos.getZ() <= loc.pos.getZ() + 2

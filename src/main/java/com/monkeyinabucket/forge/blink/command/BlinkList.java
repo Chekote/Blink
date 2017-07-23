@@ -2,17 +2,25 @@ package com.monkeyinabucket.forge.blink.command;
 
 import com.monkeyinabucket.forge.blink.group.BlinkGroup;
 import com.monkeyinabucket.forge.blink.rune.RuneManager;
+import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentString;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 /**
  * Handler for the /blink-list command.
  */
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlinkList extends BaseCommand implements ICommand {
 
   /** The primary name that can be used to execute this command. */
@@ -44,7 +52,7 @@ public class BlinkList extends BaseCommand implements ICommand {
    * {@inheritDoc}
    */
   @Override
-  public String getCommandUsage(ICommandSender sender) {
+  public String getCommandUsage(@Nullable ICommandSender sender) {
     return BlinkList.NAME;
   }
 
@@ -52,10 +60,22 @@ public class BlinkList extends BaseCommand implements ICommand {
    * {@inheritDoc}
    */
   @Override
-  public void processCommand(ICommandSender sender, String[] command) {
+  public void execute(
+      @Nullable MinecraftServer server,
+      @Nullable ICommandSender sender,
+      @Nullable String[] args
+  ) throws CommandException {
+    if (sender == null) {
+      if (server != null) {
+        server.addChatMessage(new TextComponentString("Warn: Received " + NAME + " command from null sender"));
+      }
+
+      return;
+    }
+
     Set<BlinkGroup> groups = runeManager.getGroups();
     if (groups.size() == 0) {
-      sender.addChatMessage(new ChatComponentText("No Runes currently registered"));
+      sender.addChatMessage(new TextComponentString("No Runes currently registered"));
     }
 
     for (BlinkGroup group : runeManager.getGroups()) {
@@ -63,22 +83,22 @@ public class BlinkList extends BaseCommand implements ICommand {
           .replaceAll("BlinkSignature", "").split("\n");
 
       for (String item : list) {
-        sender.addChatMessage(new ChatComponentText(item));
+        sender.addChatMessage(new TextComponentString(item));
       }
     }
   }
 
   /**
-   * Provides a list of available options for tab auto-completion.
-   *
-   * @param sender the command sender.
-   * @param args   the arguments that were passed to the command.
-   * @param pos    the position of the block that the command is being executed against.
-   * @return the list of auto-completion options.
+   * {@inheritDoc}
    */
   @Override
-  public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
-    return null;
+  public List<String> getTabCompletionOptions(
+      MinecraftServer server,
+      ICommandSender sender,
+      String[] args,
+      @Nullable BlockPos pos
+  ) {
+    return new ArrayList<String>();
   }
 
   /**

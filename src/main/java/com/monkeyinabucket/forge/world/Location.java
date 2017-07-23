@@ -1,7 +1,7 @@
 package com.monkeyinabucket.forge.world;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -35,8 +35,8 @@ public class Location {
    * @param event the BlockEvent to create the Location from.
    */
   public Location(BlockEvent event) {
-    this.world = event.world;
-    this.pos = event.pos;
+    this.world = event.getWorld();
+    this.pos = event.getPos();
   }
 
   /**
@@ -45,8 +45,8 @@ public class Location {
    * @param event the PlayerInteract to create the Location from.
    */
   public Location(PlayerInteractEvent event) {
-    this.world = event.world;
-    this.pos = event.pos;
+    this.world = event.getWorld();
+    this.pos = event.getPos();
   }
 
   /**
@@ -97,7 +97,7 @@ public class Location {
    * @return true if the location is equal, false if not.
    */
   public boolean equals(Location loc) {
-    return this.world.provider.getDimensionId() == loc.world.provider.getDimensionId() && pos.equals(loc.pos);
+    return this.world.provider.getDimension() == loc.world.provider.getDimension() && pos.equals(loc.pos);
   }
 
   /**
@@ -105,7 +105,7 @@ public class Location {
    */
   public String toString() {
     return "Location{" +
-      "d=" + world.provider.getDimensionId() +
+      "d=" + world.provider.getDimension() +
       ", x=" + pos.getX() +
       ", y=" + pos.getY() +
       ", z=" + pos.getZ() +

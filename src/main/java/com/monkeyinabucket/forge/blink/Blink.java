@@ -10,11 +10,12 @@ import com.monkeyinabucket.forge.world.Location;
 import com.monkeyinabucket.forge.world.SerializableLocation;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.client.renderer.RenderItem;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -61,6 +62,8 @@ public class Blink {
 
   public static RuneCore runecore;
 
+  public static ItemBlock runecoreItem;
+
   @Instance(value = "Blink")
   public static Blink instance;
 
@@ -73,8 +76,11 @@ public class Blink {
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
-    runecore = new RuneCore(Material.iron);
+    runecore = new RuneCore(Material.IRON);
     runecore.setHarvestLevel("pickaxe", 3);
+
+    runecoreItem = new ItemBlock(runecore);
+    runecoreItem.setRegistryName(runecore.getRegistryName());
   }
 
   /**
@@ -82,11 +88,12 @@ public class Blink {
    */
   @EventHandler
   public void onInit(FMLInitializationEvent event) {
-    GameRegistry.registerBlock(runecore, "runecore");
+    GameRegistry.register(runecore);
+    GameRegistry.register(runecoreItem);
 
-    ItemStack ironStack = new ItemStack(Items.iron_ingot);
-    ItemStack emeraldStack = new ItemStack(Items.emerald);
-    ItemStack obsidianStack = new ItemStack(Blocks.obsidian);
+    ItemStack ironStack = new ItemStack(Items.IRON_INGOT);
+    ItemStack emeraldStack = new ItemStack(Items.EMERALD);
+    ItemStack obsidianStack = new ItemStack(Blocks.OBSIDIAN);
     GameRegistry.addRecipe(
       new ItemStack(runecore),
       "xxx",
@@ -122,10 +129,10 @@ public class Blink {
   @EventHandler
   public void onServerStarted(FMLServerStartedEvent event) {
     MinecraftForge.EVENT_BUS.register(this);
-    FMLCommonHandler.instance().bus().register(this);
 
-    saveFile = "saves" + "/" + MinecraftServer.getServer().getFolderName() + '/'
-        + SAVE_FILE_NAME;
+    MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+
+    saveFile = "saves" + "/" + server.getFolderName() + '/' + SAVE_FILE_NAME;
   }
 
   /**
@@ -167,7 +174,7 @@ public class Blink {
       }
     }
 
-    MinecraftServer server = MinecraftServer.getServer();
+    MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
     for (SerializableLocation savedLoc : locs) {
       Location loc = savedLoc.getLocation(server);
       BlinkRune rune = new BlinkRune(loc);
@@ -235,7 +242,7 @@ public class Blink {
   @SubscribeEvent
   public void onBlockBreak(BlockEvent.BreakEvent event) {
   	// The server will handle the event if the world is remote
-  	if (event.world.isRemote) {
+  	if (event.getWorld().isRemote) {
   	  return;
   	}
 
@@ -282,11 +289,11 @@ public class Blink {
   @SubscribeEvent
   public void onPlayerInteract(PlayerInteractEvent event) {
   	// The server will handle the event if the world is remote
-  	if (event.world.isRemote) {
+  	if (event.getWorld().isRemote) {
   	  return;
   	}
 
-    if (event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK) {
+    if (event instanceof PlayerInteractEvent.LeftClickBlock) {
       onBlockDamage(event);
     }
   }

@@ -1,15 +1,22 @@
 package com.monkeyinabucket.forge.blink.command;
 
+import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Handler for the /BlinkLoad command.
  */
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class BaseCommand implements ICommand {
 
   /** List of aliases that can be used to invoke this command. */
@@ -28,7 +35,7 @@ public abstract class BaseCommand implements ICommand {
    * @return the aliases.
    */
   @Override
-  public List getCommandAliases() {
+  public List<String> getCommandAliases() {
     return this.aliases;
   }
 
@@ -47,16 +54,21 @@ public abstract class BaseCommand implements ICommand {
    * @return the usage syntax.
    */
   @Override
-  public abstract String getCommandUsage(ICommandSender sender);
+  public abstract String getCommandUsage(@Nullable ICommandSender sender);
 
   /**
    * Executes the command.
    *
-   * @param sender  the command sender.
-   * @param command the full command execution string.
+   * @param server the server that the command is being executed against.
+   * @param sender the command sender.
+   * @param args   the arguments for the command.
    */
   @Override
-  public abstract void processCommand(ICommandSender sender, String[] command);
+  public abstract void execute(
+      @Nullable MinecraftServer server,
+      @Nullable ICommandSender sender,
+      @Nullable String[] args
+  ) throws CommandException;
 
   /**
    * Determines if a particular command sender can execute this command.
@@ -67,7 +79,7 @@ public abstract class BaseCommand implements ICommand {
    * @return true if the sender can execute the command, false if not.
    */
   @Override
-  public boolean canCommandSenderUseCommand(ICommandSender sender) {
+  public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
     return Helper.isOperator(sender) || sender instanceof DedicatedServer;
   }
 

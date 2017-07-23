@@ -9,6 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 
+import javax.annotation.Nullable;
+
 /**
  * Represents a BlinkRune.
  */
@@ -82,7 +84,7 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
   public void onDamage() {
     for (Location loc : getParts()) {
       if (loc.world.isAirBlock(loc.pos.add(0, 1, 0))) {
-        loc.getRelative(EnumFacing.UP).setBlock(Blocks.fire);
+        loc.getRelative(EnumFacing.UP).setBlock(Blocks.FIRE);
       }
     }
   }
@@ -92,7 +94,9 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    * be struck by lightning.
    */
   public void onCreate() {
-    loc.world.addWeatherEffect(new EntityLightningBolt(loc.world, loc.pos.getX(), loc.pos.getY() + 1, loc.pos.getZ()));
+    loc.world.addWeatherEffect(
+        new EntityLightningBolt(loc.world, loc.pos.getX(), loc.pos.getY() + 1, loc.pos.getZ(), true)
+    );
   }
 
   /**
@@ -100,7 +104,9 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    * by lightning.
    */
   public void onDestroy() {
-    loc.world.addWeatherEffect(new EntityLightningBolt(loc.world, loc.pos.getX(), loc.pos.getY() + 1, loc.pos.getZ()));
+    loc.world.addWeatherEffect(
+        new EntityLightningBolt(loc.world, loc.pos.getX(), loc.pos.getY() + 1, loc.pos.getZ(), true)
+    );
     runeManager.removeRune(this);
   }
 
@@ -132,8 +138,8 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
       targetLoc = targetLoc.getRelative(EnumFacing.UP);
     }
 
-    if (targetLoc.world.provider.getDimensionId() != player.dimension) {
-      player.travelToDimension(targetLoc.world.provider.getDimensionId());
+    if (targetLoc.world.provider.getDimension() != player.dimension) {
+      player.changeDimension(targetLoc.world.provider.getDimension());
     }
 
     player.setPositionAndUpdate(targetLoc.pos.getX() + 0.5, targetLoc.pos.getY(), targetLoc.pos.getZ() + 0.5);
@@ -154,10 +160,11 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
       return true;
     }
 
-    if (!block.getMaterial().isSolid()) {
-      Block blockAbove = loc.getRelative(EnumFacing.UP).getBlock();
+    if (!loc.world.getBlockState(loc.pos).getMaterial().isSolid()) {
+      Location locAbove = loc.getRelative(EnumFacing.UP);
+      Block blockAbove = locAbove.getBlock();
 
-      if (blockAbove == null || !blockAbove.getMaterial().isSolid()) {
+      if (blockAbove == null || !loc.world.getBlockState(locAbove.pos).getMaterial().isSolid()) {
         return true;
       }
     }
@@ -171,7 +178,7 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
   @Override
   public String toString() {
     return "BlinkRune{" +
-      "dimension=" + loc.world.provider.getDimensionId() +
+      "dimension=" + loc.world.provider.getDimension() +
       ", x=" + loc.pos.getX() +
       ", y=" + loc.pos.getY() +
       ", z=" + loc.pos.getZ() +
@@ -182,7 +189,7 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    * {@inheritDoc}
    */
   @Override
-  public int compareTo(BlinkRune rune) {
+  public int compareTo(@Nullable BlinkRune rune) {
     if (rune == null) {
       return 0;
     }

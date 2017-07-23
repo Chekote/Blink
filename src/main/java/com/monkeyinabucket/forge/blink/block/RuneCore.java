@@ -5,16 +5,21 @@ import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.RuneManager;
 import com.monkeyinabucket.forge.world.Location;
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+
+import javax.annotation.Nullable;
 
 /**
  * The central block for the Rune.
@@ -35,9 +40,10 @@ public class RuneCore extends Block {
     super(material);
 
     setHardness(1.0F);
-    setStepSound(Block.soundTypeMetal);
-    setUnlocalizedName(Blink.mod_id + "_" + name);
-    setCreativeTab(CreativeTabs.tabBlock);
+    setSoundType(SoundType.METAL);
+    setRegistryName(Blink.mod_id + ":" + name);
+    setUnlocalizedName(getRegistryName().toString());
+    setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
   }
 
   /**
@@ -53,8 +59,8 @@ public class RuneCore extends Block {
    * Called upon block activation (right click on the block.)
    */
   @Override
-  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player,
-                                  EnumFacing side, float hitX, float hitY, float hitZ) {
+  public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand,
+                                  @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
     if (hasRuneShell(world, pos)) {
       switch (FMLCommonHandler.instance().getEffectiveSide()) {
       case SERVER:
@@ -104,7 +110,7 @@ public class RuneCore extends Block {
 
         // column 3, row 2 & 4 and , column 2 & 4, cannot be obsidian
         if ((col == 2 && (row == 1 || row == 3)) || row == 2 && (col == 1 || col == 3)) {
-          if (block != null && block.equals(Blocks.obsidian)) {
+          if (block.equals(Blocks.OBSIDIAN)) {
             return false;
           }
 
@@ -116,7 +122,7 @@ public class RuneCore extends Block {
           continue;
         }
 
-        if (block == null || !block.equals(Blocks.obsidian)) {
+        if (!block.equals(Blocks.OBSIDIAN)) {
           return false;
         }
       }
@@ -149,12 +155,12 @@ public class RuneCore extends Block {
 
       // determine if any of the blocks are overlapping with another rune
       if (runeManager.runeHasOverlap(rune)) {
-  	    player.addChatMessage(new ChatComponentText("Cannot create new rune, it overlaps with an existing rune"));
+  	    player.addChatMessage(new TextComponentString("Cannot create new rune, it overlaps with an existing rune"));
         return;
       }
 
       if (!rune.getSignature().isValid()) {
-        player.addChatMessage(new ChatComponentText("Cannot create new rune, it's signature is invalid"));
+        player.addChatMessage(new TextComponentString("Cannot create new rune, it's signature is invalid"));
         return;
       }
 

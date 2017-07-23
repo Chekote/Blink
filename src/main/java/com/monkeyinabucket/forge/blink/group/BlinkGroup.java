@@ -4,6 +4,7 @@ import com.google.common.base.Joiner;
 import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 /**
@@ -125,7 +126,7 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
    * {@inheritDoc}
    */
   @Override
-  public int compareTo(BlinkGroup group) {
+  public int compareTo(@Nullable BlinkGroup group) {
     if (group == null) {
       return 0;
     }

@@ -1,7 +1,7 @@
 package com.monkeyinabucket.forge.world;
 
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.BlockPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.io.Serializable;
@@ -12,7 +12,7 @@ import java.io.Serializable;
 public class SerializableLocation implements Serializable {
 
   /** The ID of the dimension that this location is within */
-  private int dimensionId;
+  private int dimension;
 
   /** The x coordinate of this location */
   private int x;
@@ -29,7 +29,7 @@ public class SerializableLocation implements Serializable {
    * @param loc the location to serialize
    */
   public SerializableLocation(Location loc) {
-    dimensionId = loc.world.provider.getDimensionId();
+    dimension = loc.world.provider.getDimension();
     x = loc.pos.getX();
     y = loc.pos.getY();
     z = loc.pos.getZ();
@@ -44,7 +44,7 @@ public class SerializableLocation implements Serializable {
   public Location getLocation(MinecraftServer server) {
     World world = null;
     for (World nextWorld : server.worldServers) {
-      if (nextWorld.provider.getDimensionId() == dimensionId) {
+      if (nextWorld.provider.getDimension() == dimension) {
         world = nextWorld;
         break;
       }

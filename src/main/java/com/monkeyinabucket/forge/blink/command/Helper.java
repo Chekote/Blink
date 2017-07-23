@@ -18,7 +18,7 @@ public class Helper {
     if (sender instanceof EntityPlayerMP) {
       EntityPlayerMP player = (EntityPlayerMP) sender;
 
-      return player.mcServer.getConfigurationManager().canSendCommands(player.getGameProfile());
+      return player.mcServer.getPlayerList().canSendCommands(player.getGameProfile());
     }
 
     return false;
