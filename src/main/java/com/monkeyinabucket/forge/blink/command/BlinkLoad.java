@@ -37,7 +37,7 @@ public class BlinkLoad extends BaseCommand implements ICommand {
    * {@inheritDoc}
    */
   @Override
-  public String getCommandName() {
+  public String getName() {
     return BlinkLoad.NAME;
   }
 
@@ -45,7 +45,7 @@ public class BlinkLoad extends BaseCommand implements ICommand {
    * {@inheritDoc}
    */
   @Override
-  public String getCommandUsage(@Nullable ICommandSender sender) {
+  public String getUsage(@Nullable ICommandSender sender) {
     return BlinkLoad.NAME;
   }
 
@@ -75,7 +75,7 @@ public class BlinkLoad extends BaseCommand implements ICommand {
    * {@inheritDoc}
    */
   @Override
-  public List<String> getTabCompletionOptions(
+  public List<String> getTabCompletions(
       MinecraftServer server,
       ICommandSender sender,
       String[] args,

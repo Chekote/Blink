@@ -30,6 +30,7 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -64,6 +65,8 @@ public class Blink {
 
   public static ItemBlock runecoreItem;
 
+  public static Logger log;
+
   @Instance(value = "Blink")
   public static Blink instance;
 
@@ -76,6 +79,8 @@ public class Blink {
 
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
+    log = event.getModLog();
+
     runecore = new RuneCore(Material.IRON);
     runecore.setHarvestLevel("pickaxe", 3);
 
@@ -159,10 +164,10 @@ public class Blink {
     } catch (FileNotFoundException ex) {
       locs = new ArrayList<SerializableLocation>();
     } catch (ClassNotFoundException ex) {
-      Logger.severe(ex.getMessage());
+      log.error(ex.getMessage());
       return;
     } catch (IOException ex) {
-      Logger.severe(ex.getMessage());
+      log.error(ex.getMessage());
       return;
     } finally {
       try {
@@ -170,7 +175,7 @@ public class Blink {
           stream.close();
         }
       } catch (IOException ex) {
-        Logger.severe(ex.getMessage());
+        log.error(ex.getMessage());
       }
     }
 
@@ -196,14 +201,14 @@ public class Blink {
       os.flush();
       os.close();
     } catch (IOException ex) {
-      Logger.severe(ex.getMessage());
+      log.error(ex.getMessage());
     } finally {
       try {
         if (os != null) {
           os.close();
         }
       } catch (IOException ex) {
-        Logger.severe(ex.getMessage());
+        log.error(ex.getMessage());
       }
     }
   }

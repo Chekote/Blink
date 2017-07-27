@@ -43,7 +43,7 @@ public class SerializableLocation implements Serializable {
    */
   public Location getLocation(MinecraftServer server) {
     World world = null;
-    for (World nextWorld : server.worldServers) {
+    for (World nextWorld : server.worlds) {
       if (nextWorld.provider.getDimension() == dimension) {
         world = nextWorld;
         break;

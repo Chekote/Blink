@@ -44,7 +44,7 @@ public class BlinkList extends BaseCommand implements ICommand {
    * {@inheritDoc}
    */
   @Override
-  public String getCommandName() {
+  public String getName() {
     return BlinkList.NAME;
   }
 
@@ -52,7 +52,7 @@ public class BlinkList extends BaseCommand implements ICommand {
    * {@inheritDoc}
    */
   @Override
-  public String getCommandUsage(@Nullable ICommandSender sender) {
+  public String getUsage(@Nullable ICommandSender sender) {
     return BlinkList.NAME;
   }
 
@@ -67,7 +67,7 @@ public class BlinkList extends BaseCommand implements ICommand {
   ) throws CommandException {
     if (sender == null) {
       if (server != null) {
-        server.addChatMessage(new TextComponentString("Warn: Received " + NAME + " command from null sender"));
+        server.sendMessage(new TextComponentString("Warn: Received " + NAME + " command from null sender"));
       }
 
       return;
@@ -75,7 +75,7 @@ public class BlinkList extends BaseCommand implements ICommand {
 
     Set<BlinkGroup> groups = runeManager.getGroups();
     if (groups.size() == 0) {
-      sender.addChatMessage(new TextComponentString("No Runes currently registered"));
+      sender.sendMessage(new TextComponentString("No Runes currently registered"));
     }
 
     for (BlinkGroup group : runeManager.getGroups()) {
@@ -83,7 +83,7 @@ public class BlinkList extends BaseCommand implements ICommand {
           .replaceAll("BlinkSignature", "").split("\n");
 
       for (String item : list) {
-        sender.addChatMessage(new TextComponentString(item));
+        sender.sendMessage(new TextComponentString(item));
       }
     }
   }
@@ -92,7 +92,7 @@ public class BlinkList extends BaseCommand implements ICommand {
    * {@inheritDoc}
    */
   @Override
-  public List<String> getTabCompletionOptions(
+  public List<String> getTabCompletions(
       MinecraftServer server,
       ICommandSender sender,
       String[] args,

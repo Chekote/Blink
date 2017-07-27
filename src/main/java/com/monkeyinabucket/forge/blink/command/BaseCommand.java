@@ -35,7 +35,7 @@ public abstract class BaseCommand implements ICommand {
    * @return the aliases.
    */
   @Override
-  public List<String> getCommandAliases() {
+  public List<String> getAliases() {
     return this.aliases;
   }
 
@@ -45,7 +45,7 @@ public abstract class BaseCommand implements ICommand {
    * @return the commands primary name.
    */
   @Override
-  public abstract String getCommandName();
+  public abstract String getName();
 
   /**
    * Provides usage syntax for this command.
@@ -54,7 +54,7 @@ public abstract class BaseCommand implements ICommand {
    * @return the usage syntax.
    */
   @Override
-  public abstract String getCommandUsage(@Nullable ICommandSender sender);
+  public abstract String getUsage(@Nullable ICommandSender sender);
 
   /**
    * Executes the command.
