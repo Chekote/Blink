@@ -25,7 +25,7 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
    */
   public BlinkGroup(BlinkSignature signature) {
     this.signature = signature;
-    members = new ArrayList<BlinkRune>();
+    members = new ArrayList<>();
   }
 
   /**
@@ -63,7 +63,7 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
    * @return the members
    */
   public ArrayList<BlinkRune> getMembers() {
-    return new ArrayList<BlinkRune>(members);
+    return new ArrayList<>(members);
   }
 
   /**

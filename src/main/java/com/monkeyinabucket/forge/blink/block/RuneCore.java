@@ -39,7 +39,7 @@ public class RuneCore extends Block {
     setHardness(1.0F);
     setSoundType(SoundType.METAL);
     setRegistryName(Blink.mod_id + ":" + name);
-    setUnlocalizedName(getRegistryName().toString());
+    setUnlocalizedName("blink_runecore");
     setCreativeTab(CreativeTabs.BUILDING_BLOCKS);
   }
 

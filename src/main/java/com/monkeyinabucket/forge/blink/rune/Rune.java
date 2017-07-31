@@ -24,7 +24,7 @@ public class Rune {
     int startZ = loc.pos.getZ() - 2;
     int startX = loc.pos.getX() - 2;
 
-    ArrayList<Location> parts = new ArrayList<Location>();
+    ArrayList<Location> parts = new ArrayList<>();
     for (int col = 0; col < 5; ++col) {
       for (int row = 0; row < 5; ++row) {
         BlockPos pos = new BlockPos(startX + row, loc.pos.getY(), startZ + col);

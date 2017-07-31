@@ -38,8 +38,8 @@ public class RuneManager {
    * Constructor
    */
   private RuneManager() {
-    runes = new TreeSet<BlinkRune>();
-    groups = new TreeSet<BlinkGroup>();
+    runes = new TreeSet<>();
+    groups = new TreeSet<>();
   }
 
   /**
@@ -187,7 +187,7 @@ public class RuneManager {
    * @return the list of rune locations
    */
   public ArrayList<SerializableLocation> getLocationsForSave() {
-    ArrayList<SerializableLocation> locs = new ArrayList<SerializableLocation>();
+    ArrayList<SerializableLocation> locs = new ArrayList<>();
 
     // we need to loop through the groups instead of the runes, so that when the
     // runes are loaded

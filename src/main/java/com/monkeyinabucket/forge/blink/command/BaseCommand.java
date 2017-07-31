@@ -26,7 +26,7 @@ public abstract class BaseCommand implements ICommand {
    * Constructor.
    */
   public BaseCommand() {
-    this.aliases = new ArrayList<String>();
+    this.aliases = new ArrayList<>();
   }
 
   /**

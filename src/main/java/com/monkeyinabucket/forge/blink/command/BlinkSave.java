@@ -81,7 +81,7 @@ public class BlinkSave extends BaseCommand implements ICommand {
       String[] args,
       @Nullable BlockPos pos
   ) {
-    return new ArrayList<String>();
+    return new ArrayList<>();
   }
 
   /**

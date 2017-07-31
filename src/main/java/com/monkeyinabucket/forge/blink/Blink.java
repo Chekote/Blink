@@ -8,17 +8,16 @@ import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.RuneManager;
 import com.monkeyinabucket.forge.world.Location;
 import com.monkeyinabucket.forge.world.SerializableLocation;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -28,7 +27,6 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
@@ -42,6 +40,7 @@ import java.util.ArrayList;
  *
  * TODO: Handle events that may change or break a rune: ice melt, piston push, block placed in air signature slot, grass grow, etc.
  */
+@Mod.EventBusSubscriber
 @Mod(modid = "blink", name = "Blink", version = "1.0.0")
 public class Blink {
 
@@ -80,12 +79,32 @@ public class Blink {
   @EventHandler
   public void preInit(FMLPreInitializationEvent event) {
     log = event.getModLog();
+  }
 
+  /**
+   * Registers this mods Blocks.
+   *
+   * @param event the registry event.
+   */
+  @SubscribeEvent
+  public static void registerBlocks(RegistryEvent.Register<Block> event) {
     runecore = new RuneCore(Material.IRON);
     runecore.setHarvestLevel("pickaxe", 3);
 
+    event.getRegistry().register(runecore);
+  }
+
+  /**
+   * Registers this mods Items.
+   *
+   * @param event the registry event.
+   */
+  @SubscribeEvent
+  public static void registerItems(RegistryEvent.Register<Item> event) {
     runecoreItem = new ItemBlock(runecore);
     runecoreItem.setRegistryName(runecore.getRegistryName());
+
+    event.getRegistry().register(runecoreItem);
   }
 
   /**
@@ -93,25 +112,6 @@ public class Blink {
    */
   @EventHandler
   public void onInit(FMLInitializationEvent event) {
-    GameRegistry.register(runecore);
-    GameRegistry.register(runecoreItem);
-
-    ItemStack ironStack = new ItemStack(Items.IRON_INGOT);
-    ItemStack emeraldStack = new ItemStack(Items.EMERALD);
-    ItemStack obsidianStack = new ItemStack(Blocks.OBSIDIAN);
-    GameRegistry.addRecipe(
-      new ItemStack(runecore),
-      "xxx",
-      "yzy",
-      "xxx",
-      'x',
-      ironStack,
-      'y',
-      emeraldStack,
-      'z',
-      obsidianStack
-    );
-
     // setup rendering
     if (event.getSide() == Side.CLIENT) {
       RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
@@ -162,11 +162,8 @@ public class Blink {
       stream = new ObjectInputStream(new FileInputStream(saveFile));
       locs = (ArrayList<SerializableLocation>) stream.readObject();
     } catch (FileNotFoundException ex) {
-      locs = new ArrayList<SerializableLocation>();
-    } catch (ClassNotFoundException ex) {
-      log.error(ex.getMessage());
-      return;
-    } catch (IOException ex) {
+      locs = new ArrayList<>();
+    } catch (ClassNotFoundException | IOException ex) {
       log.error(ex.getMessage());
       return;
     } finally {
