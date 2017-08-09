@@ -6,6 +6,9 @@ import net.minecraft.util.BlockPos;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.monkeyinabucket.forge.blink.Blink;
+import com.monkeyinabucket.forge.world.Location;
+
 /**
  * General Rune class. This class could eventually be the base class for other
  * Runes.
@@ -21,12 +24,12 @@ public class Rune {
    * @return the list of locations
    */
   public Collection<Location> getParts() {
-    int startZ = loc.pos.getZ() - 2;
-    int startX = loc.pos.getX() - 2;
+    int startZ = loc.pos.getZ() - Blink.halfRuneSize;
+    int startX = loc.pos.getX() - Blink.halfRuneSize;
 
     ArrayList<Location> parts = new ArrayList<Location>();
-    for (int col = 0; col < 5; ++col) {
-      for (int row = 0; row < 5; ++row) {
+    for (int col = 0; col < Blink.runeSize; ++col) {
+      for (int row = 0; row < Blink.runeSize; ++row) {
         BlockPos pos = new BlockPos(startX + row, loc.pos.getY(), startZ + col);
         Location nextLoc = new Location(loc.world, pos);
 
@@ -46,10 +49,10 @@ public class Rune {
   public boolean isPart(Location otherLoc) {
     return otherLoc.world.provider.getDimensionId() == loc.world.provider.getDimensionId()
         && otherLoc.pos.getY() == loc.pos.getY()
-        && otherLoc.pos.getZ() >= loc.pos.getZ() - 2
-        && otherLoc.pos.getZ() <= loc.pos.getZ() + 2
-        && otherLoc.pos.getX() >= loc.pos.getX() - 2
-        && otherLoc.pos.getX() <= loc.pos.getX() + 2;
+        && otherLoc.pos.getZ() >= loc.pos.getZ() - Blink.halfRuneSize
+        && otherLoc.pos.getZ() <= loc.pos.getZ() + Blink.halfRuneSize
+        && otherLoc.pos.getX() >= loc.pos.getX() - Blink.halfRuneSize
+        && otherLoc.pos.getX() <= loc.pos.getX() + Blink.halfRuneSize;
   }
 
   /**
