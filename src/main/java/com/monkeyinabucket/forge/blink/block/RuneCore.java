@@ -1,5 +1,6 @@
 package com.monkeyinabucket.forge.blink.block;
 
+import com.monkeyinabucket.forge.blink.Blink;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -61,10 +62,11 @@ public class RuneCore extends Block {
   }
 
   /**
-   * Determines if the specified Block is the center of a rune (has a
-   * "Rune Shell"). Currently a rune shell is defined as the obsidian shell of a
-   * BlinkRune: (Y == RuneCore, X == Obsidian)
-   * 
+   * Determines if the specified Block is the center of a rune (has a "Rune Shell"). Currently a rune shell is defined
+   * as the obsidian shell of a BlinkRune: (Y == RuneCore, X == Obsidian)
+   *
+   * For example, if Blink.runeSize is 5, a valid rune would be:
+   *
    * <pre>
    *  X X X X X
    *  X X   X X
@@ -82,17 +84,19 @@ public class RuneCore extends Block {
   protected boolean hasRuneShell(World world, int x, int y, int z) {
     // We were passed the coordinates for the center, but we need to start at the
     // North/West corner
-    x -= 2;
-    z -= 2;
+    x -= Blink.halfRuneSize;
+    z -= Blink.halfRuneSize;
+
+    int center = Blink.halfRuneSize;
 
     // loop over the columns and rows, checking for obsidian
     // note: the first row is row 0, not row 1. same for columns.
-    for (int col = 0; col < 5; ++col) {
-      for (int row = 0; row < 5; ++row) {
+    for (int col = 0; col < Blink.runeSize; ++col) {
+      for (int row = 0; row < Blink.runeSize; ++row) {
         Block block = world.getBlock(x + col, y, z + row);
 
-        // column 3, row 2 & 4 and , column 2 & 4, cannot be obsidian
-        if ((col == 2 && (row == 1 || row == 3)) || row == 2 && (col == 1 || col == 3)) {
+        // blocks immediately north, south, east & west of the center cannot be obsidian
+        if ((col == center && (row == center - 1 || row == center + 1)) || row == center && (col == center - 1 || col == center + 1)) {
           if (block != null && block.equals(Blocks.obsidian)) {
             return false;
           }
@@ -101,7 +105,7 @@ public class RuneCore extends Block {
         }
 
         // center block is the Rune Core, so we ignore it
-        if (col == 2 && row == 2) {
+        if (col == center && row == center) {
           continue;
         }
 
