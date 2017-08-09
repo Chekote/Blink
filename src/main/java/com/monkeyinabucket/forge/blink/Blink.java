@@ -11,6 +11,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
@@ -53,6 +55,15 @@ public class Blink {
   @SuppressWarnings("FieldCanBeLocal")
   private static String SAVE_FILE_NAME = "blink.sav";
 
+  /** Configuration options for the mod */
+  public static Configuration config;
+
+  /** The size that runes have to be */
+  public static int runeSize;
+
+  /** Half size of the rune (excluding center). Stored for convenience */
+  public static int halfRuneSize;
+
   /** The data file that will be used to save and load rune locations */
   protected String saveFile;
 
@@ -75,6 +86,68 @@ public class Blink {
   public void preInit(FMLPreInitializationEvent event) {
     runecore = new RuneCore(Material.iron);
     runecore.setHarvestLevel("pickaxe", 3);
+
+    config = new Configuration(event.getSuggestedConfigurationFile());
+
+    syncConfig();
+  }
+
+  /**
+   * Loads the mod config and saves any changes to disk.
+   *
+   * @throws IllegalArgumentException if the loaded runeSize is not an integer.
+   * @throws IllegalArgumentException if the loaded runeSize is less than 3.
+   * @throws IllegalArgumentException if the loaded runeSize is not an odd number.
+   */
+  public static void syncConfig() throws IllegalArgumentException {
+    try {
+      // Load config
+      config.load();
+
+      // Read props from config
+      Property runeSizeProp = config.get(
+          Configuration.CATEGORY_GENERAL,
+          "runeSize",
+          5,
+          "The size that valid runes must be. Must be an odd integer >= 3."
+      );
+
+      validateRuneSizeProp(runeSizeProp);
+
+      runeSize = runeSizeProp.getInt();
+      halfRuneSize = (int) Math.floor(runeSize / 2);
+    } catch (Exception e) {
+      Logger.warning("Failed loading config: " + e.getMessage());
+    } finally {
+      if (config.hasChanged()) {
+        config.save();
+      }
+    }
+  }
+
+  /**
+   * Validates a runeSize property.
+   *
+   * A valid runeSize is on odd integer greater than or equal to 3.
+   *
+   * @param  prop The property to validate
+   * @throws IllegalArgumentException if the property value is not an integer.
+   * @throws IllegalArgumentException if the property value is less than 3.
+   * @throws IllegalArgumentException if the property value is not an odd number.
+   */
+  protected static void validateRuneSizeProp(Property prop) throws IllegalArgumentException {
+    if (!prop.isIntValue()) {
+      throw new IllegalArgumentException("runeSize must be an integer");
+    }
+
+    int runeSizeVal = prop.getInt();
+    if (runeSizeVal < 3) {
+      throw new IllegalArgumentException("runeSize must be greater than or equal to 3");
+    }
+
+    if (runeSizeVal % 2 == 0) {
+      throw new IllegalArgumentException("runeSize must be an odd number");
+    }
   }
 
   /**

@@ -3,6 +3,7 @@ package com.monkeyinabucket.forge.blink.rune;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.monkeyinabucket.forge.blink.Blink;
 import com.monkeyinabucket.forge.world.Location;
 
 /**
@@ -20,12 +21,12 @@ public class Rune {
    * @return the list of locations
    */
   public Collection<Location> getParts() {
-    int startZ = loc.z - 2;
-    int startX = loc.x - 2;
+    int startZ = loc.z - Blink.halfRuneSize;
+    int startX = loc.x - Blink.halfRuneSize;
 
     ArrayList<Location> parts = new ArrayList<Location>();
-    for (int col = 0; col < 5; ++col) {
-      for (int row = 0; row < 5; ++row) {
+    for (int col = 0; col < Blink.runeSize; ++col) {
+      for (int row = 0; row < Blink.runeSize; ++row) {
         Location nextLoc = new Location(loc.world, startX + row, loc.y, startZ + col);
 
         parts.add(nextLoc);
@@ -43,8 +44,8 @@ public class Rune {
    */
   public boolean isPart(Location otherLoc) {
     return otherLoc.world.provider.dimensionId == loc.world.provider.dimensionId
-        && otherLoc.y == loc.y && otherLoc.z >= loc.z - 2 && otherLoc.z <= loc.z + 2
-        && otherLoc.x >= loc.x - 2 && otherLoc.x <= loc.x + 2;
+        && otherLoc.y == loc.y && otherLoc.z >= loc.z - Blink.halfRuneSize && otherLoc.z <= loc.z + Blink.halfRuneSize
+        && otherLoc.x >= loc.x - Blink.halfRuneSize && otherLoc.x <= loc.x + Blink.halfRuneSize;
   }
 
   /**
