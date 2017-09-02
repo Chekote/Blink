@@ -1,23 +1,21 @@
-package com.monkeyinabucket.forge.blink.command;
+package com.monkeyinabucket.blink.command;
+
+import com.monkeyinabucket.blink.minecraft.command.Sender;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.command.ICommand;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.server.dedicated.DedicatedServer;
-
 /**
- * Handler for the /BlinkLoad command.
+ * Base class for all blink commands
  */
-public abstract class BaseCommand implements ICommand {
+public abstract class BaseCommand {
 
-  /** List of aliases that can be used to invoke this command. */
-  protected List<String> aliases;
+  ArrayList<String> aliases;
 
   /**
    * Constructor.
    */
+  @SuppressWarnings("WeakerAccess")
   public BaseCommand() {
     this.aliases = new ArrayList<String>();
   }
@@ -27,7 +25,7 @@ public abstract class BaseCommand implements ICommand {
    *
    * @return the aliases.
    */
-  @Override
+  @SuppressWarnings("unused")
   public List getCommandAliases() {
     return this.aliases;
   }
@@ -37,7 +35,7 @@ public abstract class BaseCommand implements ICommand {
    *
    * @return the commands primary name.
    */
-  @Override
+  @SuppressWarnings("unused")
   public abstract String getCommandName();
 
   /**
@@ -46,17 +44,17 @@ public abstract class BaseCommand implements ICommand {
    * @param sender the command sender.
    * @return the usage syntax.
    */
-  @Override
-  public abstract String getCommandUsage(ICommandSender sender);
+  @SuppressWarnings("unused")
+  public abstract String getCommandUsage(Sender sender);
 
   /**
    * Executes the command.
    *
-   * @param sender  the command sender.
-   * @param command the full command execution string.
+   * @param sender      the command sender.
+   * @param command     the full command execution string.
    */
-  @Override
-  public abstract void processCommand(ICommandSender sender, String[] command);
+  @SuppressWarnings("unused")
+  public abstract void processCommand(Sender sender, String[] command);
 
   /**
    * Determines if a particular command sender can execute this command.
@@ -66,9 +64,9 @@ public abstract class BaseCommand implements ICommand {
    * @param sender the command sender to check.
    * @return true if the sender can execute the command, false if not.
    */
-  @Override
-  public boolean canCommandSenderUseCommand(ICommandSender sender) {
-    return Helper.isOperator(sender) || sender instanceof DedicatedServer;
+  @SuppressWarnings("unused")
+  public boolean canCommandSenderUseCommand(Sender sender) {
+    return sender.isOperator() || sender.isServer();
   }
 
   /**
@@ -78,8 +76,8 @@ public abstract class BaseCommand implements ICommand {
    * @param command the command being executed.
    * @return the list of auto-completion options.
    */
-  @Override
-  public List addTabCompletionOptions(ICommandSender sender, String[] command) {
+  @SuppressWarnings("unused")
+  public List addTabCompletionOptions(Sender sender, String[] command) {
     return null;
   }
 
@@ -90,7 +88,7 @@ public abstract class BaseCommand implements ICommand {
    * @param i       the index of the parameter to check.
    * @return true if the index is a username parameter, false if not.
    */
-  @Override
+  @SuppressWarnings("unused")
   public boolean isUsernameIndex(String[] command, int i) {
     return false;
   }
@@ -98,7 +96,7 @@ public abstract class BaseCommand implements ICommand {
   /**
    * {@inheritDoc}
    */
-  @Override
+  @SuppressWarnings("unused")
   public int compareTo(Object object) {
     return 0;
   }

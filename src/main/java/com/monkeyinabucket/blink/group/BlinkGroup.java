@@ -1,10 +1,12 @@
-package com.monkeyinabucket.forge.blink.group;
+package com.monkeyinabucket.blink.group;
 
 import java.util.ArrayList;
 
 import com.google.common.base.Joiner;
-import com.monkeyinabucket.forge.blink.rune.BlinkRune;
-import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
+import com.monkeyinabucket.blink.rune.BlinkRune;
+import com.monkeyinabucket.blink.rune.BlinkSignature;
+
+import javax.annotation.Nonnull;
 
 /**
  * Represents a group of BlinkRunes in a specific order, united by a common BlinkSignature.
@@ -12,10 +14,10 @@ import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 public class BlinkGroup implements Comparable<BlinkGroup> {
 
   /** The BlinkSignature that unites the BlinkRunes in this group */
-  protected BlinkSignature signature;
+  private BlinkSignature signature;
 
   /** The BlinkRunes in this group */
-  protected ArrayList<BlinkRune> members;
+  private ArrayList<BlinkRune> members;
 
   /**
    * Constructor
@@ -125,11 +127,7 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
    * {@inheritDoc}
    */
   @Override
-  public int compareTo(BlinkGroup group) {
-    if (group == null) {
-      return 0;
-    }
-
+  public int compareTo(@Nonnull BlinkGroup group) {
     if (group.getSignature().equals(signature)) {
       return 0;
     }

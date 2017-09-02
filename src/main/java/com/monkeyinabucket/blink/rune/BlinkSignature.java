@@ -1,6 +1,7 @@
-package com.monkeyinabucket.forge.blink.rune;
+package com.monkeyinabucket.blink.rune;
 
-import net.minecraft.block.Block;
+
+import com.monkeyinabucket.blink.minecraft.block.Type;
 
 /**
  * Represents a blink signature. A signature is a collection of four blocks:
@@ -9,59 +10,23 @@ import net.minecraft.block.Block;
  */
 public class BlinkSignature implements Cloneable {
 
-  /** The Block in the North position */
-  protected Block north;
+  /** The BlockEvent in the North position */
+  private Type north;
 
-  /** The Block in the East position */
-  protected Block east;
+  /** The BlockEvent in the East position */
+  private Type east;
 
-  /** The Block in the south position */
-  protected Block south;
+  /** The BlockEvent in the south position */
+  private Type south;
 
-  /** The Block in the west position */
-  protected Block west;
+  /** The BlockEvent in the west position */
+  private Type west;
 
-  public BlinkSignature(Block north, Block east, Block south, Block west) {
+  BlinkSignature(Type north, Type east, Type south, Type west) {
     this.north = north;
     this.east = east;
     this.south = south;
     this.west = west;
-  }
-
-  /**
-   * Returns the material in the North position of this BlinkSignature.
-   * 
-   * @return the Block
-   */
-  public Block getNorth() {
-    return north;
-  }
-
-  /**
-   * Returns the material in the East position of this BlinkSignature.
-   * 
-   * @return the Block
-   */
-  public Block getEast() {
-    return east;
-  }
-
-  /**
-   * Returns the material in the South position of this BlinkSignature.
-   * 
-   * @return the Block
-   */
-  public Block getSouth() {
-    return south;
-  }
-
-  /**
-   * Returns the material in the West position of this BlinkSignature.
-   * 
-   * @return the Material
-   */
-  public Block getWest() {
-    return west;
   }
 
   /**
@@ -71,8 +36,8 @@ public class BlinkSignature implements Cloneable {
    * @return true if equal, false if not
    */
   public boolean equals(BlinkSignature signature) {
-    return blockEquals(signature.getNorth(), north) && blockEquals(signature.getEast(), east)
-        && blockEquals(signature.getSouth(), south) && blockEquals(signature.getWest(), west);
+    return blockEquals(signature.north, north) && blockEquals(signature.east, east)
+        && blockEquals(signature.south, south) && blockEquals(signature.west, west);
   }
 
   /**
@@ -82,7 +47,7 @@ public class BlinkSignature implements Cloneable {
    * @param block2 the second block to compare.
    * @return true if the blocks are equal, false if not.
    */
-  protected boolean blockEquals(Block block1, Block block2) {
+  private boolean blockEquals(Type block1, Type block2) {
     if (block1 == null) {
       return block2 == null;
     }
@@ -107,6 +72,7 @@ public class BlinkSignature implements Cloneable {
    * 
    * @return the copy
    */
+  @SuppressWarnings("MethodDoesntCallSuperMethod")
   public BlinkSignature clone() {
     return new BlinkSignature(north, east, south, west);
   }

@@ -1,4 +1,4 @@
-package com.monkeyinabucket.forge.blink;
+package com.monkeyinabucket.blink;
 
 import cpw.mods.fml.relauncher.FMLRelaunchLog;
 
