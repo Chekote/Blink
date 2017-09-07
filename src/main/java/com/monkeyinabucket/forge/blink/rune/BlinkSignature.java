@@ -2,6 +2,9 @@ package com.monkeyinabucket.forge.blink.rune;
 
 import net.minecraft.block.Block;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 /**
  * Represents a blink signature. A signature is a collection of four blocks:
  * North, South, East and West. Each of these blocks is positioned one block in
@@ -117,11 +120,21 @@ public class BlinkSignature implements Cloneable {
    * @return the string
    */
   public String toString() {
-    return "BlinkSignature{" +
-      "n=" + north +
-      ", e=" + east +
-      ", s=" + south +
-      ", w=" + west +
-    "}";
+    return "BlinkSignature" + toJsonBuilder().build().toString();
+  }
+
+  /**
+   * Provides a JsonObjectBuilder that describes this Location.
+   *
+   * This method is intended for use in saving data, and debugging.
+   *
+   * @return the builder.
+   */
+  public JsonObjectBuilder toJsonBuilder() {
+    return Json.createObjectBuilder()
+        .add("n", Block.blockRegistry.getNameForObject(north))
+        .add("e", Block.blockRegistry.getNameForObject(east))
+        .add("s", Block.blockRegistry.getNameForObject(south))
+        .add("w", Block.blockRegistry.getNameForObject(west));
   }
 }
