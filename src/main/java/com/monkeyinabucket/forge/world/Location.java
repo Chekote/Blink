@@ -6,6 +6,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 /**
  * Describes a position within a world.
  */
@@ -116,11 +119,21 @@ public class Location {
    * {@inheritDoc}
    */
   public String toString() {
-    return "Location{" +
-      "d=" + world.provider.dimensionId +
-      ", x=" + x +
-      ", y=" + y +
-      ", z=" + z +
-    "}";
+    return "Location" + toJsonBuilder().build().toString();
+  }
+
+  /**
+   * Provides a JsonObjectBuilder that describes this Location.
+   *
+   * This method is intended for use in saving data, and debugging.
+   *
+   * @return the builder.
+   */
+  public JsonObjectBuilder toJsonBuilder() {
+    return Json.createObjectBuilder()
+        .add("d", world.provider.dimensionId)
+        .add("x", x)
+        .add("y", y)
+        .add("z", z);
   }
 }
