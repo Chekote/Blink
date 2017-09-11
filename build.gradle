@@ -1,4 +1,3 @@
-
 // For those who want the bleeding edge
 buildscript {
     repositories {
@@ -37,7 +36,17 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
 dependencies {
+    embed(
+        [group: 'javax.json',    name: 'javax.json-api', version: '1.0'],
+        [group: 'org.glassfish', name: 'javax.json',     version: '1.0.4']
+    )
+
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -64,6 +73,10 @@ dependencies {
 jar {
     // exclude Photoshop files
     exclude '**/*.psd'
+
+    from configurations.embed.collect {
+        it.isDirectory() ? it : zipTree(it)
+    }
 }
 
 processResources
