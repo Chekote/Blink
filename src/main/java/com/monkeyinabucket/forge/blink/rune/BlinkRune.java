@@ -10,6 +10,9 @@ import com.monkeyinabucket.forge.blink.group.BlinkGroup;
 import com.monkeyinabucket.forge.blink.group.NoSuchMemberException;
 import com.monkeyinabucket.forge.world.Location;
 
+import javax.json.Json;
+import javax.json.JsonObjectBuilder;
+
 /**
  * Represents a BlinkRune.
  */
@@ -35,6 +38,20 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
     this.signature = new BlinkSignature(loc.getRelative(ForgeDirection.NORTH).getBlock(), loc
         .getRelative(ForgeDirection.EAST).getBlock(), loc.getRelative(ForgeDirection.SOUTH)
         .getBlock(), loc.getRelative(ForgeDirection.WEST).getBlock());
+
+    runeManager = RuneManager.getInstance();
+  }
+
+  /**
+   * Constructor
+   *
+   * @param loc the Location of the BlinkRune.
+   * @param sig the Signature of the BlinkRune.
+   */
+  public BlinkRune(Location loc, BlinkSignature sig) {
+    // save defensive copies
+    this.loc = loc.clone();
+    this.signature = sig.clone();
 
     runeManager = RuneManager.getInstance();
   }
@@ -171,12 +188,18 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    */
   @Override
   public String toString() {
-    return "BlinkRune{" +
-      "dimension=" + loc.world.provider.dimensionId +
-      ", x=" + loc.x +
-      ", y=" + loc.y +
-      ", z=" + loc.z +
-    "}";
+    return "BlinkRune" + toJsonBuilder().build().toString();
+  }
+
+  /**
+   * Provides a JsonObjectBuilder that describes this BlinkRune.
+   *
+   * This method is intended for use in saving data, and debugging.
+   *
+   * @return the builder.
+   */
+  public JsonObjectBuilder toJsonBuilder() {
+    return loc.toJsonBuilder();
   }
 
   /**

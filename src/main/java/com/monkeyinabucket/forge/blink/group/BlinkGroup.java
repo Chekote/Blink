@@ -6,6 +6,10 @@ import com.google.common.base.Joiner;
 import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
+
 /**
  * Represents a group of BlinkRunes in a specific order, united by a common BlinkSignature.
  */
@@ -113,12 +117,25 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
    * @return the string
    */
   public String toString() {
-    return "BlinkGroup{\n" +
-      "\tsig=" + signature + ",\n" +
-      "\trunes=[\n" +
-        "\t\t" + Joiner.on(",\n\t\t").join(members) + "\n" +
-      "\t]\n" +
-    "}";
+    return "BlinkGroup" + toJsonBuilder().build().toString();
+  }
+
+  /**
+   * Provides a JsonObjectBuilder that describes this BlinkGroup.
+   *
+   * This method is intended for use in saving data, and debugging.
+   *
+   * @return the builder.
+   */
+  public JsonObjectBuilder toJsonBuilder() {
+    JsonArrayBuilder runes = Json.createArrayBuilder();
+    for (BlinkRune member : members) {
+      runes.add(member.getLocation().toJsonBuilder());
+    }
+
+    return Json.createObjectBuilder()
+        .add("sig", signature.toJsonBuilder())
+        .add("runes", runes);
   }
 
   /**
