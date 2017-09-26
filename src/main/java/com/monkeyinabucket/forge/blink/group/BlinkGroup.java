@@ -2,13 +2,10 @@ package com.monkeyinabucket.forge.blink.group;
 
 import java.util.ArrayList;
 
-import com.google.common.base.Joiner;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
-
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
 
 /**
  * Represents a group of BlinkRunes in a specific order, united by a common BlinkSignature.
@@ -117,25 +114,27 @@ public class BlinkGroup implements Comparable<BlinkGroup> {
    * @return the string
    */
   public String toString() {
-    return "BlinkGroup" + toJsonBuilder().build().toString();
+    return "BlinkGroup" + toJson().toString();
   }
 
   /**
-   * Provides a JsonObjectBuilder that describes this BlinkGroup.
+   * Provides a JsonObject that describes this BlinkGroup.
    *
    * This method is intended for use in saving data, and debugging.
    *
    * @return the builder.
    */
-  public JsonObjectBuilder toJsonBuilder() {
-    JsonArrayBuilder runes = Json.createArrayBuilder();
+  public JsonObject toJson() {
+    JsonArray runes = new JsonArray();
     for (BlinkRune member : members) {
-      runes.add(member.getLocation().toJsonBuilder());
+      runes.add(member.getLocation().toJson());
     }
 
-    return Json.createObjectBuilder()
-        .add("sig", signature.toJsonBuilder())
-        .add("runes", runes);
+    JsonObject group = new JsonObject();
+    group.add("sig", signature.toJson());
+    group.add("runes", runes);
+
+    return group;
   }
 
   /**

@@ -33,8 +33,6 @@ configurations {
 
 dependencies {
     embed(
-        [group: 'javax.json',    name: 'javax.json-api', version: '1.0'],
-        [group: 'org.glassfish', name: 'javax.json',     version: '1.0.4']
     )
 
     // you may put jars on which you depend on in ./libs

@@ -3,6 +3,8 @@ package com.monkeyinabucket.forge.blink;
 import java.io.*;
 import java.util.ArrayList;
 
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
@@ -11,7 +13,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.client.model.obj.GroupObject;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -39,8 +40,6 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
-
-import javax.json.*;
 
 /**
  * Main class for the Blink plugin. Handles the enabling and disabling process,
@@ -220,7 +219,7 @@ public class Blink {
 
     if ((new File(legacySaveFile)).isFile()) {
       loadRunesFromLegacy();
-    } else {
+    } else if ((new File(jsonSaveFile)).isFile()) {
       loadRunesFromJson();
     }
 
@@ -259,54 +258,43 @@ public class Blink {
     }
   }
 
-  protected void loadRunesFromJson() {
+  protected void loadRunesFromJson() throws JsonParseException {
     MinecraftServer server = MinecraftServer.getServer();
-    InputStream stream = null;
     try {
-      stream = new FileInputStream(jsonSaveFile);
+      JsonParser parser = new JsonParser();
 
-      JsonReader reader = Json.createReader(stream);
+      JsonElement element = parser.parse(new JsonReader(new FileReader(jsonSaveFile)));
 
-      JsonArray groups = reader.readArray();
-
-      for (JsonValue groupVal : groups) {
+      for (JsonElement groupVal : element.getAsJsonArray()) {
         JsonObject groupObj = (JsonObject) groupVal;
 
-        JsonObject jsonSig = groupObj.getJsonObject("sig");
+        JsonObject jsonSig = groupObj.getAsJsonObject("sig");
 
         System.out.println(groupObj.toString());
 
         BlinkSignature sig = new BlinkSignature(
-            (Block) Block.blockRegistry.getObject(jsonSig.getString("n")),
-            (Block) Block.blockRegistry.getObject(jsonSig.getString("e")),
-            (Block) Block.blockRegistry.getObject(jsonSig.getString("s")),
-            (Block) Block.blockRegistry.getObject(jsonSig.getString("w"))
+            (Block) Block.blockRegistry.getObject(jsonSig.getAsJsonPrimitive("n").getAsString()),
+            (Block) Block.blockRegistry.getObject(jsonSig.getAsJsonPrimitive("e").getAsString()),
+            (Block) Block.blockRegistry.getObject(jsonSig.getAsJsonPrimitive("s").getAsString()),
+            (Block) Block.blockRegistry.getObject(jsonSig.getAsJsonPrimitive("w").getAsString())
         );
 
-        for (JsonValue runeVal : groupObj.getJsonArray("runes")) {
+        for (JsonElement runeVal : groupObj.getAsJsonArray("runes")) {
           JsonObject runeObj = (JsonObject) runeVal;
 
           Location loc = new Location(
-              server.worldServerForDimension(runeObj.getInt("d")),
-              runeObj.getInt("x"),
-              runeObj.getInt("y"),
-              runeObj.getInt("z")
+              server.worldServerForDimension(runeObj.getAsJsonPrimitive("d").getAsInt()),
+              runeObj.getAsJsonPrimitive("x").getAsInt(),
+              runeObj.getAsJsonPrimitive("y").getAsInt(),
+              runeObj.getAsJsonPrimitive("z").getAsInt()
           );
 
           BlinkRune rune = new BlinkRune(loc, sig);
           runeManager.addRune(rune);
         }
       }
-    } catch (FileNotFoundException e) {
+    } catch (IOException e) {
       // nop
-    } finally {
-      try {
-        if (stream != null) {
-          stream.close();
-        }
-      } catch (IOException ex) {
-        Logger.severe(ex.getMessage());
-      }
     }
   }
 
@@ -315,7 +303,7 @@ public class Blink {
    */
   public void saveRunes() {
     FileOutputStream os = null;
-    String json = runeManager.toJsonBuilder().build().toString();
+    String json = runeManager.toJsonBuilder().toString();
     try {
       os = new FileOutputStream(jsonSaveFile);
       os.write(json.getBytes(), 0, json.length());
