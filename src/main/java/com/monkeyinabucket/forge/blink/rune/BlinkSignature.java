@@ -1,5 +1,7 @@
 package com.monkeyinabucket.forge.blink.rune;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.block.Block;
 
 /**
@@ -117,11 +119,24 @@ public class BlinkSignature implements Cloneable {
    * @return the string
    */
   public String toString() {
-    return "BlinkSignature{" +
-      "n=" + north +
-      ", e=" + east +
-      ", s=" + south +
-      ", w=" + west +
-    "}";
+    return "BlinkSignature" + toJson().toString();
+  }
+
+  /**
+   * Provides a JsonObject that describes this Location.
+   *
+   * This method is intended for use in saving data, and debugging.
+   *
+   * @return the builder.
+   */
+  public JsonObject toJson() {
+    JsonObject object = new JsonObject();
+
+    object.add("n", new JsonPrimitive(Block.blockRegistry.getNameForObject(north).toString()));
+    object.add("e", new JsonPrimitive(Block.blockRegistry.getNameForObject(east).toString()));
+    object.add("s", new JsonPrimitive(Block.blockRegistry.getNameForObject(south).toString()));
+    object.add("w", new JsonPrimitive(Block.blockRegistry.getNameForObject(west).toString()));
+
+    return object;
   }
 }
