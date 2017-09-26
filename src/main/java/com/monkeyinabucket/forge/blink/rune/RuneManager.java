@@ -3,11 +3,9 @@ package com.monkeyinabucket.forge.blink.rune;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.gson.JsonArray;
 import com.monkeyinabucket.forge.blink.group.BlinkGroup;
 import com.monkeyinabucket.forge.world.Location;
-
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 
 /**
  * Manages runes, groups and their life-cycles.
@@ -188,13 +186,13 @@ public class RuneManager {
    *
    * @return the builder.
    */
-  public JsonArrayBuilder toJsonBuilder() {
-    JsonArrayBuilder builder = Json.createArrayBuilder();
+  public JsonArray toJsonBuilder() {
+    JsonArray array = new JsonArray();
 
     for (BlinkGroup group : groups) {
-      builder.add(group.toJsonBuilder());
+      array.add(group.toJson());
     }
 
-    return builder;
+    return array;
   }
 }

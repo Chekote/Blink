@@ -1,9 +1,8 @@
 package com.monkeyinabucket.forge.blink.rune;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.block.Block;
-
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
 
 /**
  * Represents a blink signature. A signature is a collection of four blocks:
@@ -120,21 +119,24 @@ public class BlinkSignature implements Cloneable {
    * @return the string
    */
   public String toString() {
-    return "BlinkSignature" + toJsonBuilder().build().toString();
+    return "BlinkSignature" + toJson().toString();
   }
 
   /**
-   * Provides a JsonObjectBuilder that describes this Location.
+   * Provides a JsonObject that describes this Location.
    *
    * This method is intended for use in saving data, and debugging.
    *
    * @return the builder.
    */
-  public JsonObjectBuilder toJsonBuilder() {
-    return Json.createObjectBuilder()
-        .add("n", Block.blockRegistry.getNameForObject(north))
-        .add("e", Block.blockRegistry.getNameForObject(east))
-        .add("s", Block.blockRegistry.getNameForObject(south))
-        .add("w", Block.blockRegistry.getNameForObject(west));
+  public JsonObject toJson() {
+    JsonObject object = new JsonObject();
+
+    object.add("n", new JsonPrimitive(Block.blockRegistry.getNameForObject(north)));
+    object.add("e", new JsonPrimitive(Block.blockRegistry.getNameForObject(east)));
+    object.add("s", new JsonPrimitive(Block.blockRegistry.getNameForObject(south)));
+    object.add("w", new JsonPrimitive(Block.blockRegistry.getNameForObject(west)));
+
+    return object;
   }
 }

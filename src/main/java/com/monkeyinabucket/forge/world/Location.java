@@ -1,13 +1,12 @@
 package com.monkeyinabucket.forge.world;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
 
 /**
  * Describes a position within a world.
@@ -119,21 +118,24 @@ public class Location {
    * {@inheritDoc}
    */
   public String toString() {
-    return "Location" + toJsonBuilder().build().toString();
+    return "Location" + toJson().toString();
   }
 
   /**
-   * Provides a JsonObjectBuilder that describes this Location.
+   * Provides a JsonObject that describes this Location.
    *
    * This method is intended for use in saving data, and debugging.
    *
    * @return the builder.
    */
-  public JsonObjectBuilder toJsonBuilder() {
-    return Json.createObjectBuilder()
-        .add("d", world.provider.dimensionId)
-        .add("x", x)
-        .add("y", y)
-        .add("z", z);
+  public JsonObject toJson() {
+    JsonObject object = new JsonObject();
+
+    object.add("d", new JsonPrimitive(world.provider.dimensionId));
+    object.add("x", new JsonPrimitive(x));
+    object.add("y", new JsonPrimitive(y));
+    object.add("z", new JsonPrimitive(z));
+
+    return object;
   }
 }

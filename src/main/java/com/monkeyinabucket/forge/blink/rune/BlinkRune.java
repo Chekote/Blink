@@ -1,5 +1,6 @@
 package com.monkeyinabucket.forge.blink.rune;
 
+import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,9 +10,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import com.monkeyinabucket.forge.blink.group.BlinkGroup;
 import com.monkeyinabucket.forge.blink.group.NoSuchMemberException;
 import com.monkeyinabucket.forge.world.Location;
-
-import javax.json.Json;
-import javax.json.JsonObjectBuilder;
 
 /**
  * Represents a BlinkRune.
@@ -188,18 +186,18 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    */
   @Override
   public String toString() {
-    return "BlinkRune" + toJsonBuilder().build().toString();
+    return "BlinkRune" + toJson().toString();
   }
 
   /**
-   * Provides a JsonObjectBuilder that describes this BlinkRune.
+   * Provides a JsonObject that describes this BlinkRune.
    *
    * This method is intended for use in saving data, and debugging.
    *
    * @return the builder.
    */
-  public JsonObjectBuilder toJsonBuilder() {
-    return loc.toJsonBuilder();
+  public JsonObject toJson() {
+    return loc.toJson();
   }
 
   /**
