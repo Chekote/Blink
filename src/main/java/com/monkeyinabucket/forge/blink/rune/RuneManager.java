@@ -1,10 +1,8 @@
 package com.monkeyinabucket.forge.blink.rune;
 
+import com.google.gson.JsonArray;
 import com.monkeyinabucket.forge.blink.group.BlinkGroup;
 import com.monkeyinabucket.forge.world.Location;
-import com.monkeyinabucket.forge.world.SerializableLocation;
-
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -181,24 +179,19 @@ public class RuneManager {
   }
 
   /**
-   * Provides a list of SerializebleLocations for each registered BlinkRune for
-   * saving.
-   * 
-   * @return the list of rune locations
+   * Provides a JsonArrayBuilder that describes all rune groups.
+   *
+   * This method is intended for use in saving data, and debugging.
+   *
+   * @return the builder.
    */
-  public ArrayList<SerializableLocation> getLocationsForSave() {
-    ArrayList<SerializableLocation> locs = new ArrayList<SerializableLocation>();
+  public JsonArray toJsonBuilder() {
+    JsonArray array = new JsonArray();
 
-    // we need to loop through the groups instead of the runes, so that when the
-    // runes are loaded
-    // later, they are created and added back to groups in the same order.
     for (BlinkGroup group : groups) {
-      ArrayList<BlinkRune> members = group.getMembers();
-      for (BlinkRune rune : members) {
-        locs.add(new SerializableLocation(rune.getLocation()));
-      }
+      array.add(group.toJson());
     }
 
-    return locs;
+    return array;
   }
 }
