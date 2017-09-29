@@ -1,5 +1,7 @@
 package com.monkeyinabucket.forge.world;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
@@ -104,11 +106,24 @@ public class Location {
    * {@inheritDoc}
    */
   public String toString() {
-    return "Location{" +
-      "d=" + world.provider.getDimension() +
-      ", x=" + pos.getX() +
-      ", y=" + pos.getY() +
-      ", z=" + pos.getZ() +
-    "}";
+    return "Location" + toJson().toString();
+  }
+
+  /**
+   * Provides a JsonObject that describes this Location.
+   *
+   * This method is intended for use in saving data, and debugging.
+   *
+   * @return the builder.
+   */
+  public JsonObject toJson() {
+    JsonObject object = new JsonObject();
+
+    object.add("d", new JsonPrimitive(world.provider.getDimension()));
+    object.add("x", new JsonPrimitive(pos.getX()));
+    object.add("y", new JsonPrimitive(pos.getY()));
+    object.add("z", new JsonPrimitive(pos.getZ()));
+
+    return object;
   }
 }
