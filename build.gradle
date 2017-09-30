@@ -32,7 +32,15 @@ minecraft {
     // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
 }
 
+configurations {
+    embed
+    compile.extendsFrom(embed)
+}
+
 dependencies {
+    embed(
+    )
+
     // you may put jars on which you depend on in ./libs
     // or you may define them like so..
     //compile "some.group:artifact:version:classifier"
@@ -59,6 +67,10 @@ dependencies {
 jar {
     // exclude Photoshop files
     exclude '**/*.psd'
+
+    from configurations.embed.collect {
+        it.isDirectory() ? it : zipTree(it)
+    }
 }
 
 processResources {
