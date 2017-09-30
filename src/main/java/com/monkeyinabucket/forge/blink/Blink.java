@@ -8,6 +8,11 @@ import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.RuneManager;
 import com.monkeyinabucket.forge.world.Location;
 import com.monkeyinabucket.forge.world.SerializableLocation;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
+import java.io.*;
+import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -16,6 +21,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
@@ -31,9 +38,6 @@ import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
-
-import java.io.*;
-import java.util.ArrayList;
 
 /**
  * Main class for the Blink plugin. Handles the enabling and disabling process,
@@ -52,9 +56,12 @@ public class Blink {
   /** Flag to track whether the runes save file has already been loaded */
   private Boolean runeFileLoaded = false;
 
-  /** The name of the rune save file. This will be stored in the world folder */
+  /** The name of the legacy rune save file. This will be stored in the world folder */
   @SuppressWarnings("FieldCanBeLocal")
-  private static String SAVE_FILE_NAME = mod_id + ".sav";
+  private static String LEGACY_SAVE_FILE_NAME = "blink.sav";
+
+  /** The name of the json rune save file. This will be stored in the world folder */
+  private static String JSON_SAVE_FILE_NAME = "blink_runes.json";
 
   /** Configuration options for the mod */
   public static Configuration config;
@@ -65,8 +72,11 @@ public class Blink {
   /** Half size of the rune (excluding center). Stored for convenience */
   public static int halfRuneSize;
 
+  /** The legacy save file. This will be used to load runes if it is present. */
+  protected String legacySaveFile;
+
   /** The data file that will be used to save and load rune locations */
-  protected String saveFile;
+  protected String jsonSaveFile;
 
   /** The primary object used to manage runes in the plugin */
   protected final RuneManager runeManager = RuneManager.getInstance();
@@ -210,7 +220,11 @@ public class Blink {
 
     MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
-    saveFile = "saves" + "/" + server.getFolderName() + '/' + SAVE_FILE_NAME;
+    legacySaveFile = "saves" + "/" + server.getFolderName() + '/'
+        + LEGACY_SAVE_FILE_NAME;
+
+    jsonSaveFile = "saves" + "/" + server.getFolderName() + '/'
+        + JSON_SAVE_FILE_NAME;
   }
 
   /**
@@ -229,10 +243,20 @@ public class Blink {
   public void loadRunes() {
     runeManager.clearRunes();
 
+    if ((new File(legacySaveFile)).isFile()) {
+      loadRunesFromLegacy();
+    } else if ((new File(jsonSaveFile)).isFile()) {
+      loadRunesFromJson();
+    }
+
+    runeFileLoaded = true;
+  }
+
+  protected void loadRunesFromLegacy() {
     ArrayList<SerializableLocation> locs;
     ObjectInputStream stream = null;
     try {
-      stream = new ObjectInputStream(new FileInputStream(saveFile));
+      stream = new ObjectInputStream(new FileInputStream(legacySaveFile));
       locs = (ArrayList<SerializableLocation>) stream.readObject();
     } catch (FileNotFoundException ex) {
       locs = new ArrayList<>();
@@ -255,19 +279,59 @@ public class Blink {
       BlinkRune rune = new BlinkRune(loc);
       runeManager.addRune(rune);
     }
+  }
 
-    runeFileLoaded = true;
+  protected void loadRunesFromJson() throws JsonParseException {
+    MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+    try {
+      JsonParser parser = new JsonParser();
+
+      JsonElement element = parser.parse(new JsonReader(new FileReader(jsonSaveFile)));
+
+      for (JsonElement groupVal : element.getAsJsonArray()) {
+        JsonObject groupObj = (JsonObject) groupVal;
+
+        JsonObject jsonSig = groupObj.getAsJsonObject("sig");
+
+        System.out.println(groupObj.toString());
+
+        BlinkSignature sig = new BlinkSignature(
+            Block.REGISTRY.getObject(new ResourceLocation(jsonSig.getAsJsonPrimitive("n").getAsString())),
+            Block.REGISTRY.getObject(new ResourceLocation(jsonSig.getAsJsonPrimitive("e").getAsString())),
+            Block.REGISTRY.getObject(new ResourceLocation(jsonSig.getAsJsonPrimitive("s").getAsString())),
+            Block.REGISTRY.getObject(new ResourceLocation(jsonSig.getAsJsonPrimitive("w").getAsString()))
+        );
+
+        for (JsonElement runeVal : groupObj.getAsJsonArray("runes")) {
+          JsonObject runeObj = (JsonObject) runeVal;
+
+          Location loc = new Location(
+              server.getWorld(runeObj.getAsJsonPrimitive("d").getAsInt()),
+              new BlockPos(
+                  runeObj.getAsJsonPrimitive("x").getAsInt(),
+                  runeObj.getAsJsonPrimitive("y").getAsInt(),
+                  runeObj.getAsJsonPrimitive("z").getAsInt()
+              )
+          );
+
+          BlinkRune rune = new BlinkRune(loc, sig);
+          runeManager.addRune(rune);
+        }
+      }
+    } catch (IOException e) {
+      // nop
+    }
   }
 
   /**
    * Saves the currently registered runes to a save file in the world folder.
    */
   public void saveRunes() {
-    ArrayList<SerializableLocation> locs = runeManager.getLocationsForSave();
-    ObjectOutputStream os = null;
+    FileOutputStream os = null;
+    String json = runeManager.toJsonBuilder().toString();
     try {
-      os = new ObjectOutputStream(new FileOutputStream(saveFile));
-      os.writeObject(locs);
+      os = new FileOutputStream(jsonSaveFile);
+      os.write(json.getBytes(), 0, json.length());
       os.flush();
       os.close();
     } catch (IOException ex) {
@@ -279,6 +343,14 @@ public class Blink {
         }
       } catch (IOException ex) {
         log.error(ex.getMessage());
+      }
+    }
+
+    // delete legacy file
+    File file = new File(legacySaveFile);
+    if (file.isFile()) {
+      if (!file.delete()) {
+        log.warn("Failed to delete legacy save file");
       }
     }
   }
