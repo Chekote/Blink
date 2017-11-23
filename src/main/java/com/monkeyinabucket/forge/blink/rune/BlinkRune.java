@@ -1,6 +1,7 @@
 package com.monkeyinabucket.forge.blink.rune;
 
 import com.google.gson.JsonObject;
+import com.monkeyinabucket.forge.blink.Blink;
 import com.monkeyinabucket.forge.blink.group.BlinkGroup;
 import com.monkeyinabucket.forge.blink.group.NoSuchMemberException;
 import com.monkeyinabucket.forge.world.Location;
@@ -96,9 +97,11 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    * BlinkRune will set the entire BlinkRune on fire.
    */
   public void onDamage() {
-    for (Location loc : getParts()) {
-      if (loc.world.isAirBlock(loc.pos.add(0, 1, 0))) {
-        loc.getRelative(EnumFacing.UP).setBlock(Blocks.FIRE);
+    if(Blink.burning) {
+      for (Location loc : getParts()) {
+        if (loc.world.isAirBlock(loc.pos.add(0, 1, 0))) {
+          loc.getRelative(EnumFacing.UP).setBlock(Blocks.FIRE);
+        }
       }
     }
   }
