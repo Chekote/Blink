@@ -203,6 +203,10 @@ public class Blink {
     legacySaveFile = path + LEGACY_SAVE_FILE_NAME;
 
     jsonSaveFile = path + JSON_SAVE_FILE_NAME;
+
+    if (!runeFileLoaded) {
+      loadRunes();
+    }
   }
 
   /**
@@ -332,28 +336,6 @@ public class Blink {
         Logger.warning("Failed to delete legacy save file");
       }
     }
-  }
-
-  /**
-   * Handles Dimension load events (Forge calls Dimensions Worlds). Checks to
-   * ensure that the rune save file is loaded.
-   *
-   * The file will only be loaded if the world is not remote. If the world is
-   * remote, then the server is responsible for saving and loading the runes.
-   *
-   * @param event The world load event.
-   */
-  @SubscribeEvent
-  public void onWorldLoad(WorldEvent.Load event) {
-    if (runeFileLoaded) {
-      return;
-    }
-
-    if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-      return;
-    }
-
-    loadRunes();
   }
 
   /**
