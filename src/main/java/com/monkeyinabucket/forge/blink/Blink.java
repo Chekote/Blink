@@ -39,6 +39,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
@@ -215,11 +217,13 @@ public class Blink {
 
     MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 
-    legacySaveFile = "saves" + "/" + server.getFolderName() + '/'
-        + LEGACY_SAVE_FILE_NAME;
+    String path = Files.isDirectory(Paths.get("saves"))
+        ? "saves/" + server.getFolderName() + '/'
+        : server.getFolderName() + '/';
 
-    jsonSaveFile = "saves" + "/" + server.getFolderName() + '/'
-        + JSON_SAVE_FILE_NAME;
+    legacySaveFile = path + LEGACY_SAVE_FILE_NAME;
+
+    jsonSaveFile = path + JSON_SAVE_FILE_NAME;
   }
 
   /**
