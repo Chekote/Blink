@@ -12,6 +12,8 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -208,11 +210,13 @@ public class Blink {
     MinecraftForge.EVENT_BUS.register(this);
     FMLCommonHandler.instance().bus().register(this);
 
-    legacySaveFile = "saves" + "/" + MinecraftServer.getServer().getFolderName() + '/'
-        + LEGACY_SAVE_FILE_NAME;
+    String path = Files.isDirectory(Paths.get("saves"))
+        ? "saves/" + MinecraftServer.getServer().getFolderName() + '/'
+        : MinecraftServer.getServer().getFolderName() + '/';
 
-    jsonSaveFile = "saves" + "/" + MinecraftServer.getServer().getFolderName() + '/'
-        + JSON_SAVE_FILE_NAME;
+    legacySaveFile = path + LEGACY_SAVE_FILE_NAME;
+
+    jsonSaveFile = path + JSON_SAVE_FILE_NAME;
   }
 
   /**
