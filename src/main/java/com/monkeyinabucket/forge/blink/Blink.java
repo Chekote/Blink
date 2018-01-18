@@ -1,6 +1,8 @@
 package com.monkeyinabucket.forge.blink;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import com.google.gson.*;
@@ -194,11 +196,13 @@ public class Blink {
     MinecraftForge.EVENT_BUS.register(this);
     FMLCommonHandler.instance().bus().register(this);
 
-    legacySaveFile = "saves" + "/" + MinecraftServer.getServer().getFolderName() + '/'
-        + LEGACY_SAVE_FILE_NAME;
+    String path = Files.isDirectory(Paths.get("saves"))
+        ? "saves/" + MinecraftServer.getServer().getFolderName() + '/'
+        : MinecraftServer.getServer().getFolderName() + '/';
 
-    jsonSaveFile = "saves" + "/" + MinecraftServer.getServer().getFolderName() + '/'
-        + JSON_SAVE_FILE_NAME;
+    legacySaveFile = path + LEGACY_SAVE_FILE_NAME;
+
+    jsonSaveFile = path + JSON_SAVE_FILE_NAME;
   }
 
   /**
