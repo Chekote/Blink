@@ -167,6 +167,8 @@ public class RuneCore extends Block {
       runeManager.addRune(rune);
 
       rune.onCreate();
+
+      Blink.instance.saveRunes();
     }
   }
 }
