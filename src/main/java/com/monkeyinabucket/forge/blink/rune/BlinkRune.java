@@ -97,11 +97,11 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
    * BlinkRune will set the entire BlinkRune on fire.
    */
   public void onDamage() {
-    if(Blink.burning) {
       for (Location loc : getParts()) {
         if (loc.world.isAirBlock(loc.x, loc.y + 1, loc.z)) {
           loc.getRelative(ForgeDirection.UP).setBlock(Blocks.fire);
         }
+    if (Blink.burning) {
       }
     }
   }

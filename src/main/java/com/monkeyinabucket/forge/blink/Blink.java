@@ -132,15 +132,15 @@ public class Blink {
       halfRuneSize = (int) Math.floor(runeSize / 2);
 
       Property burningProp = config.get(
-              Configuration.CATEGORY_GENERAL,
-              "burning",
-              true,
-              "Should the rune burn up on destruction?."
+          Configuration.CATEGORY_GENERAL,
+          "burning",
+          true,
+          "Should the rune burn up on destruction?."
       );
 
       validateBurningProp(burningProp);
-      burning = burningProp.getBoolean();
 
+      burning = burningProp.getBoolean();
     } catch (Exception e) {
       Logger.warning("Failed loading config: " + e.getMessage());
     } finally {
