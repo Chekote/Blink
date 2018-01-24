@@ -94,7 +94,7 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
 
   /**
    * Invoked when any Block in this BlinkRune is damaged. Damaging a Block of a
-   * BlinkRune will set the entire BlinkRune on fire.
+   * BlinkRune will set the entire BlinkRune on fire if the "burning" config option is enabled.
    */
   public void onDamage() {
       for (Location loc : getParts()) {
