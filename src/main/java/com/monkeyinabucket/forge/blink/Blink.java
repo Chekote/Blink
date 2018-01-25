@@ -89,7 +89,7 @@ public class Blink {
 
   public static Logger log;
 
-  @Instance(value = "Blink")
+  @Instance(value = "blink")
   public static Blink instance;
 
   @EventHandler
