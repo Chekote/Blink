@@ -83,7 +83,7 @@ public class Blink {
 
   public static Block runecore;
 
-  @Instance(value = "Blink")
+  @Instance(value = "blink")
   public static Blink instance;
 
   @EventHandler
