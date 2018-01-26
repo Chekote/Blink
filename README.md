@@ -84,6 +84,8 @@ When you use a Rune to teleport, you will be transported to the next Rune with t
 
 ## Configuration
 
+Configuration for this mod is saved in the blink.cfg file. You can either create the file yourself, or the config file will be generated when you first launch Minecraft with the mod installed.
+
 ### Rune Size
 
 By default the rune size is 5. Values of 3 or more are supported. The value must be an odd integer. The smallest valid rune size is 3. You can change this value via the runeSize configuration option of the general section in the blink.cfg file:
@@ -113,4 +115,15 @@ For example, a rune of size 3 would be constructed as follows:
 ![Image](doc/images/dirt.png)
 ![Image](doc/images/obsidian.png)
 
-Note: This config file will be generated when you first launch Minecraft with the mod installed.
+### Burning on damage
+
+By default the runes will catch on fire if they are damaged. The value must be a boolean. Damage is defined as being hit, regardless of whether or not a block breaks. You can disable this behavior via the burning configuration option of the general section in the blink.cfg file:
+
+```
+# Configuration file
+
+general {
+    # Should the rune burn up on destruction?.
+    B:burning=true
+}
+```
