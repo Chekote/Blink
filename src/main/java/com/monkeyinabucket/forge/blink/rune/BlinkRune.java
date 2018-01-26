@@ -1,6 +1,7 @@
 package com.monkeyinabucket.forge.blink.rune;
 
 import com.google.gson.JsonObject;
+import com.monkeyinabucket.forge.blink.Blink;
 import net.minecraft.block.Block;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,9 +94,18 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
 
   /**
    * Invoked when any Block in this BlinkRune is damaged. Damaging a Block of a
-   * BlinkRune will set the entire BlinkRune on fire.
+   * BlinkRune will set the entire BlinkRune on fire if the "burning" config option is enabled.
    */
   public void onDamage() {
+    if (Blink.burning) {
+      setFire();
+    }
+  }
+
+  /**
+   * Sets the surface of the rune alight.
+   */
+  private void setFire() {
     for (Location loc : getParts()) {
       if (loc.world.isAirBlock(loc.x, loc.y + 1, loc.z)) {
         loc.getRelative(ForgeDirection.UP).setBlock(Blocks.fire);
