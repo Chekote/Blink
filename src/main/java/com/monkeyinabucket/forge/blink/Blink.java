@@ -72,6 +72,9 @@ public class Blink {
   /** Half size of the rune (excluding center). Stored for convenience */
   public static int halfRuneSize;
 
+  /** Burning Effect on destruction of the rune **/
+  public static boolean burning;
+
   /** The legacy save file. This will be used to load runes if it is present. */
   protected String legacySaveFile;
 
@@ -127,6 +130,17 @@ public class Blink {
 
       runeSize = runeSizeProp.getInt();
       halfRuneSize = (int) Math.floor(runeSize / 2);
+
+      Property burningProp = config.get(
+          Configuration.CATEGORY_GENERAL,
+          "burning",
+          true,
+          "Should the rune burn up on destruction?."
+      );
+
+      validateBurningProp(burningProp);
+
+      burning = burningProp.getBoolean();
     } catch (Exception e) {
       Logger.warning("Failed loading config: " + e.getMessage());
     } finally {
@@ -158,6 +172,20 @@ public class Blink {
 
     if (runeSizeVal % 2 == 0) {
       throw new IllegalArgumentException("runeSize must be an odd number");
+    }
+  }
+
+  /**
+   * Validates a burning property
+   *
+   * Valid options are true or false.
+   *
+   * @param prop
+   * @throws IllegalArgumentException if the property is not boolean.
+   */
+  protected static void validateBurningProp(Property prop) throws IllegalArgumentException{
+    if (!prop.isBooleanValue()) {
+      throw new IllegalArgumentException("burning must be true or false");
     }
   }
 
