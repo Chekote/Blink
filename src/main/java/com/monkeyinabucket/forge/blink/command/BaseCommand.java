@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.dedicated.DedicatedServer;
 
 /**
@@ -68,7 +69,17 @@ public abstract class BaseCommand implements ICommand {
    */
   @Override
   public boolean canCommandSenderUseCommand(ICommandSender sender) {
-    return Helper.isOperator(sender) || sender instanceof DedicatedServer;
+    try {
+      Class.forName("net.minecraft.server.dedicated.DedicatedServer");
+
+      if (sender instanceof DedicatedServer) {
+        return true;
+      }
+    } catch (ClassNotFoundException e) {
+      // nop
+    }
+
+    return Helper.isOperator(sender);
   }
 
   /**
