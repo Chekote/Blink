@@ -10,6 +10,7 @@ import com.monkeyinabucket.forge.world.Location;
 import com.monkeyinabucket.forge.world.SerializableLocation;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import com.monkeyinabucket.forge.blink.command.BlinkCreate;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -95,6 +96,7 @@ public class Blink {
 
   @EventHandler
   public void onServerLoadStart(FMLServerStartingEvent event) {
+    event.registerServerCommand(new BlinkCreate());
     event.registerServerCommand(new BlinkList());
     event.registerServerCommand(new BlinkLoad());
     event.registerServerCommand(new BlinkSave());
