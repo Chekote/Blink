@@ -7,13 +7,10 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentString;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -86,26 +83,5 @@ public class BlinkList extends BaseCommand implements ICommand {
         sender.sendMessage(new TextComponentString(item));
       }
     }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public List<String> getTabCompletions(
-      MinecraftServer server,
-      ICommandSender sender,
-      String[] args,
-      @Nullable BlockPos pos
-  ) {
-    return new ArrayList<String>();
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public int compareTo(ICommand o) {
-    return 0;
   }
 }
