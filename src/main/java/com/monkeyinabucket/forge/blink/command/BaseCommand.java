@@ -6,6 +6,7 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.math.BlockPos;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -27,6 +28,27 @@ public abstract class BaseCommand implements ICommand {
    */
   public BaseCommand() {
     this.aliases = new ArrayList<>();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public List<String> getTabCompletions(
+      MinecraftServer server,
+      ICommandSender sender,
+      String[] args,
+      @Nullable BlockPos pos
+  ) {
+    return new ArrayList<String>();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int compareTo(ICommand o) {
+    return 0;
   }
 
   /**
