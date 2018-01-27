@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import com.monkeyinabucket.forge.blink.command.BlinkCreate;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 import cpw.mods.fml.relauncher.Side;
 import net.minecraft.block.Block;
@@ -91,6 +92,7 @@ public class Blink {
 
   @EventHandler
   public void onServerLoadStart(FMLServerStartingEvent event) {
+    event.registerServerCommand(new BlinkCreate());
     event.registerServerCommand(new BlinkList());
     event.registerServerCommand(new BlinkLoad());
     event.registerServerCommand(new BlinkSave());
