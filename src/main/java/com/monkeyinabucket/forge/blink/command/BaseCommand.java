@@ -3,6 +3,7 @@ package com.monkeyinabucket.forge.blink.command;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.util.BlockPos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,27 @@ public abstract class BaseCommand implements ICommand {
    */
   public BaseCommand() {
     this.aliases = new ArrayList<String>();
+  }
+
+  /**
+   * Provides a list of available options for tab auto-completion.
+   *
+   * @param sender the command sender.
+   * @param args   the arguments that were passed to the command.
+   * @param pos    the position of the block that the command is being executed against.
+   * @return the list of auto-completion options.
+   */
+  @Override
+  public List<String> addTabCompletionOptions(ICommandSender sender, String[] args, BlockPos pos) {
+    return null;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public int compareTo(ICommand o) {
+    return 0;
   }
 
   /**

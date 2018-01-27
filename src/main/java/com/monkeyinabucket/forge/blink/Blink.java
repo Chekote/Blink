@@ -15,6 +15,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import com.monkeyinabucket.forge.blink.command.BlinkCreate;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -93,6 +94,7 @@ public class Blink {
 
   @EventHandler
   public void onServerLoadStart(FMLServerStartingEvent event) {
+    event.registerServerCommand(new BlinkCreate());
     event.registerServerCommand(new BlinkList());
     event.registerServerCommand(new BlinkLoad());
     event.registerServerCommand(new BlinkSave());
