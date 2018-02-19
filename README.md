@@ -82,6 +82,14 @@ Once you have constructed and activated two or more Runes with the same signatur
 
 When you use a Rune to teleport, you will be transported to the next Rune with the same signature. You will be transported to each Rune with the same signature in the same order that each Rune was activated.
 
+### Damage
+
+Since the rune stores a lot of energy it is rather volatile. If the rune is damaged in any way (punching, hitting with a weapon/tool etc), it will immediately catch fire. The fire will eventually go out of the rune is not damaged any further.
+
+### Destruction
+
+Breaking any block of the rune will destroy it. When a rune is destroyed the energy will be discharged in the form of a lightning strike. You can repair the rune by replacing the missing blocks and re-activating it.
+
 ## Configuration
 
 Configuration for this mod is saved in the blink.cfg file. You can either create the file yourself, or the config file will be generated when you first launch Minecraft with the mod installed.
