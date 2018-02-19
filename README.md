@@ -135,3 +135,7 @@ general {
     B:burning=true
 }
 ```
+
+# Contributors
+
+* failgod-marcus (blackrabbit)
