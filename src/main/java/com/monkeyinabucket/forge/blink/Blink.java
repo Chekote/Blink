@@ -150,17 +150,7 @@ public class Blink {
       // Load config
       config.load();
 
-      // Read props from config
-      Property burningProp = config.get(
-          Configuration.CATEGORY_GENERAL,
-          "burning",
-          true,
-          "Should the rune burn up on destruction?."
-      );
-
-      validateBurningProp(burningProp);
-
-      burning = burningProp.getBoolean();
+      loadBurningConfig(config);
       loadRuneSizeConfig(config);
     } catch (Exception e) {
       log.warn("Failed loading config: " + e.getMessage());
@@ -188,6 +178,29 @@ public class Blink {
     validateBurningProp(burningProp);
 
     burning = burningProp.getBoolean();
+  }
+
+  /**
+   * Loads the config for the runeSize option.
+   *
+   * @param  config the config to read from.
+   * @throws IllegalArgumentException if the property value is not an integer.
+   * @throws IllegalArgumentException if the property value is less than 3.
+   * @throws IllegalArgumentException if the property value is not an odd number.
+   */
+  private static void loadRuneSizeConfig(Configuration config) throws IllegalArgumentException {
+    // Read props from config
+    Property runeSizeProp = config.get(
+        Configuration.CATEGORY_GENERAL,
+        "runeSize",
+        5,
+        "The size that valid runes must be. Must be an odd integer >= 3."
+    );
+
+    validateRuneSizeProp(runeSizeProp);
+
+    runeSize = runeSizeProp.getInt();
+    halfRuneSize = (int) Math.floor(runeSize / 2);
   }
 
   /**
