@@ -151,13 +151,7 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
       return;
     }
 
-    // We need to find two stacked blocks of empty space for the player to blink
-    // safely, this could ultimately be the top of the world.
-    Location targetLoc = targetRune.getLocation().getRelative(EnumFacing.UP);
-    while (targetLoc.getBlock() != null) {
-      if (isValidDestination(targetLoc)) {
-        break;
-      }
+    Location targetLoc = targetRune.getDestination();
 
       targetLoc = targetLoc.getRelative(EnumFacing.UP);
     }
@@ -167,6 +161,27 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
     }
 
     player.setPositionAndUpdate(targetLoc.pos.getX() + 0.5, targetLoc.pos.getY(), targetLoc.pos.getZ() + 0.5);
+  }
+
+  /**
+   * Provides the location that the player will teleport to when teleporting to this rune.
+   *
+   * This might be the block above the runes center, but we need to find two stacked blocks of empty space for the
+   * player to blink safely. This might be higher if the rune is buried. This could ultimately be the top of the world.
+   *
+   * @return the destination.
+   */
+  protected Location getDestination() {
+    Location destination = this.getLocation().getRelative(EnumFacing.UP);
+    while (destination.getBlock() != null) {
+      if (isValidDestination(destination)) {
+        break;
+      }
+
+      destination = destination.getRelative(EnumFacing.UP);
+    }
+
+    return destination;
   }
 
   /**
