@@ -3,8 +3,10 @@ package com.monkeyinabucket.forge.world;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
@@ -49,6 +51,15 @@ public class Location {
   public Location(PlayerInteractEvent event) {
     this.world = event.getWorld();
     this.pos = event.getPos();
+  }
+
+  /**
+   * Returns the distance to the specified location.
+   *
+   * @return the distance.
+   */
+  public double getDistance(Location ref, EntityPlayer player) {
+    return pos.getDistance(ref.pos.getX(), ref.pos.getY(), ref.pos.getZ());
   }
 
   /**

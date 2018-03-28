@@ -1,16 +1,13 @@
 package com.monkeyinabucket.forge.blink;
 
 import com.monkeyinabucket.forge.blink.block.RuneCore;
-import com.monkeyinabucket.forge.blink.command.BlinkList;
-import com.monkeyinabucket.forge.blink.command.BlinkLoad;
-import com.monkeyinabucket.forge.blink.command.BlinkSave;
+import com.monkeyinabucket.forge.blink.command.*;
 import com.monkeyinabucket.forge.blink.rune.BlinkRune;
 import com.monkeyinabucket.forge.blink.rune.RuneManager;
 import com.monkeyinabucket.forge.world.Location;
 import com.monkeyinabucket.forge.world.SerializableLocation;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
-import com.monkeyinabucket.forge.blink.command.BlinkCreate;
 import com.monkeyinabucket.forge.blink.rune.BlinkSignature;
 import java.io.*;
 import java.nio.file.Files;
@@ -32,7 +29,6 @@ import net.minecraftforge.common.config.Property;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -76,6 +72,12 @@ public class Blink {
 
   /** Burning Effect on destruction of the rune **/
   public static boolean burning;
+
+  /** Teleport cost in levels per meter **/
+  public static double levelCostPerMeter;
+
+  /** Teleport cost for travelling to a different dimension **/
+  public static int levelCostForDimensionTransit;
 
   /** The legacy save file. This will be used to load runes if it is present. */
   protected String legacySaveFile;
@@ -151,6 +153,8 @@ public class Blink {
       config.load();
 
       loadBurningConfig(config);
+      loadLevelCostForDimensionTransit(config);
+      loadLevelCostPerMeter(config);
       loadRuneSizeConfig(config);
     } catch (Exception e) {
       log.warn("Failed loading config: " + e.getMessage());
@@ -178,6 +182,48 @@ public class Blink {
     validateBurningProp(burningProp);
 
     burning = burningProp.getBoolean();
+  }
+
+  /**
+   * Loads the config for the "level cost for dimension transit" option.
+   *
+   * @param  config the config to read from.
+   * @throws IllegalArgumentException if the property is not an int.
+   */
+  private static void loadLevelCostForDimensionTransit(Configuration config) throws IllegalArgumentException {
+    Property prop = config.get(
+        Configuration.CATEGORY_GENERAL,
+        "levelCostForDimensionTransit",
+        0,
+        "How much should teleporting to a different dimension cost in levels? Must be an int >= 0"
+    );
+
+    if (!prop.isIntValue()) {
+      throw new IllegalArgumentException("level cost for dimension transit must be an int");
+    }
+
+    levelCostForDimensionTransit = prop.getInt();
+  }
+
+  /**
+   * Loads the config for the "level cost per meter" option.
+   *
+   * @param  config the config to read from.
+   * @throws IllegalArgumentException if the property is not a double.
+   */
+  private static void loadLevelCostPerMeter(Configuration config) throws IllegalArgumentException {
+    Property prop = config.get(
+        Configuration.CATEGORY_GENERAL,
+        "levelCostPerMeter",
+        0.0,
+        "How much should teleporting to another rune cost in levels per meter? Must be a double >= 0.0"
+    );
+
+    if (!prop.isDoubleValue()) {
+      throw new IllegalArgumentException("level cost per meter must be a double");
+    }
+
+    levelCostPerMeter = prop.getDouble();
   }
 
   /**
