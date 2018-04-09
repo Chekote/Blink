@@ -127,3 +127,25 @@ general {
     B:burning=true
 }
 ```
+
+### Travel cost
+
+By default, traveling via the runes is free. However, there are two configuration settings that you can set to apply a level cost for traveling:
+
+```
+# Configuration file
+
+# How much should teleporting to a different dimension cost in levels? Must be an int >= 0
+I:levelCostForDimensionTransit=0
+
+# How much should teleporting to another rune cost in levels per meter? Must be a double >= 0.0
+D:levelCostPerMeter=0.0
+```
+
+The level cost for dimension travel will be applied if the destination rune is not in the same dimension as the source rune.
+
+The level cost per meter will be applied based on the distance between the two rune cores. The resulting double will be rounded up to the nearest int.
+
+The total travel cost is the dimension travel (if applicable) added to the calculated distance cost rounded up to the nearest int.
+
+If the player has enough levels to cover the travel cost, then they will be teleported and the cost deducted from their levels. If the player does not have enough levels to cover the travel cost, the teleportation will fail. This will be indicated by a fizzle sound and a puff of smoke coming out of the rune core.
