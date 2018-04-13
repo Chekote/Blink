@@ -9,8 +9,14 @@ import javax.annotation.Nullable;
 import net.minecraft.block.Block;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 
 /**
  * Represents a BlinkRune.
@@ -151,22 +157,101 @@ public class BlinkRune extends Rune implements Comparable<BlinkRune> {
       return;
     }
 
-    // We need to find two stacked blocks of empty space for the player to blink
-    // safely, this could ultimately be the top of the world.
-    Location targetLoc = targetRune.getLocation().getRelative(EnumFacing.UP);
-    while (targetLoc.getBlock() != null) {
-      if (isValidDestination(targetLoc)) {
-        break;
-      }
+    Location targetLoc = targetRune.getDestination();
+    int travelCost = this.getTravelCost(targetRune, player);
 
-      targetLoc = targetLoc.getRelative(EnumFacing.UP);
+    if (player.experienceLevel < travelCost) {
+      this.onActivateFail(player);
+      return;
     }
+
+    player.addExperienceLevel(-travelCost);
 
     if (targetLoc.world.provider.getDimension() != player.dimension) {
       player.changeDimension(targetLoc.world.provider.getDimension());
     }
 
     player.setPositionAndUpdate(targetLoc.pos.getX() + 0.5, targetLoc.pos.getY(), targetLoc.pos.getZ() + 0.5);
+  }
+
+  /**
+   * Event handler for when a player attempts to activate a rune, but it fails.
+   *
+   * @param player the player that attempted to activate the rune.
+   */
+  protected void onActivateFail(EntityPlayer player) {
+    EnumParticleTypes particle = EnumParticleTypes.SMOKE_LARGE;
+    boolean longDistance = false;
+    double x = this.loc.pos.getX() + 0.5;
+    double y = this.loc.pos.getY() + 1;
+    double z = this.loc.pos.getZ() + 0.5;
+    int count = 1;
+    double xOffset = 0.0;
+    double yOffset = 0.0;
+    double zOffset = 0.0;
+    double speed = 0.0;
+
+    World world = player.getEntityWorld();
+
+    if (!(world instanceof WorldServer)) {
+      return;
+    }
+
+    WorldServer worldServer = (WorldServer) world;
+
+    if (player instanceof EntityPlayerMP) {
+      EntityPlayerMP playerMP = (EntityPlayerMP) player;
+      worldServer.spawnParticle(playerMP, particle, longDistance, x, y, z, count, xOffset, yOffset, zOffset, speed);
+    } else {
+      worldServer.spawnParticle(particle, longDistance, x, y, z, count, xOffset, yOffset, zOffset, speed);
+    }
+
+    worldServer.playSound(null, x, y, z, SoundEvents.ENTITY_BLAZE_SHOOT, SoundCategory.BLOCKS, 1.0F, 1.0F);
+  }
+
+  /**
+   * Provides the cost in levels for travelling from this rune to the specified rune.
+   *
+   * @param  targetRune the rune being travelled to.
+   * @return the cost
+   */
+  protected int getTravelCost(BlinkRune targetRune, EntityPlayer player) {
+    Location targetLoc = targetRune.getLocation();
+
+    int cost = 0;
+    if (Blink.levelCostPerMeter > 0) {
+      double distance = this.getLocation().getDistance(targetLoc, player);
+      cost += Math.ceil(distance * Blink.levelCostPerMeter);
+    }
+
+    if (Blink.levelCostForDimensionTransit > 0) {
+      if (this.loc.world.provider.getDimension() != targetLoc.world.provider.getDimension()) {
+        cost += Blink.levelCostForDimensionTransit;
+      }
+    }
+
+    return cost;
+  }
+
+  /**
+   * Provides the location that the player will teleport to when teleporting to this rune.
+   *
+   * This might be the block above the runes center, but we need to find two stacked blocks of empty space for the
+   * player to blink safely. This might be higher if the rune is buried. This could ultimately be the top of the world.
+   *
+   * @return the destination.
+   */
+  protected Location getDestination() {
+    Location destination = this.getLocation().getRelative(EnumFacing.UP);
+    while (destination.getBlock() != null) {
+      if (isValidDestination(destination)) {
+        break;
+      }
+
+      destination = destination.getRelative(EnumFacing.UP);
+    }
+
+    return destination;
   }
 
   /**

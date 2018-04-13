@@ -79,6 +79,12 @@ public class Blink {
   /** Burning Effect on destruction of the rune **/
   public static boolean burning;
 
+  /** Teleport cost in levels per meter **/
+  public static double levelCostPerMeter;
+
+  /** Teleport cost for travelling to a different dimension **/
+  public static int levelCostForDimensionTransit;
+
   /** The legacy save file. This will be used to load runes if it is present. */
   protected String legacySaveFile;
 
@@ -128,29 +134,10 @@ public class Blink {
       // Load config
       config.load();
 
-      // Read props from config
-      Property runeSizeProp = config.get(
-          Configuration.CATEGORY_GENERAL,
-          "runeSize",
-          5,
-          "The size that valid runes must be. Must be an odd integer >= 3."
-      );
-
-      validateRuneSizeProp(runeSizeProp);
-
-      runeSize = runeSizeProp.getInt();
-      halfRuneSize = (int) Math.floor(runeSize / 2);
-
-      Property burningProp = config.get(
-          Configuration.CATEGORY_GENERAL,
-          "burning",
-          true,
-          "Should the rune burn up on destruction?."
-      );
-
-      validateBurningProp(burningProp);
-
-      burning = burningProp.getBoolean();
+      loadBurningConfig(config);
+      loadLevelCostForDimensionTransit(config);
+      loadLevelCostPerMeter(config);
+      loadRuneSizeConfig(config);
     } catch (Exception e) {
       Logger.warning("Failed loading config: " + e.getMessage());
     } finally {
@@ -158,6 +145,90 @@ public class Blink {
         config.save();
       }
     }
+  }
+
+  /**
+   * Loads the config for the burning option.
+   *
+   * @param  config the config to read from.
+   * @throws IllegalArgumentException if the property is not boolean.
+   */
+  private static void loadBurningConfig(Configuration config) throws IllegalArgumentException {
+    Property burningProp = config.get(
+        Configuration.CATEGORY_GENERAL,
+        "burning",
+        true,
+        "Should the rune burn up on destruction?."
+    );
+
+    validateBurningProp(burningProp);
+
+    burning = burningProp.getBoolean();
+  }
+
+  /**
+   * Loads the config for the "level cost for dimension transit" option.
+   *
+   * @param  config the config to read from.
+   * @throws IllegalArgumentException if the property is not an int.
+   */
+  private static void loadLevelCostForDimensionTransit(Configuration config) throws IllegalArgumentException {
+    Property prop = config.get(
+        Configuration.CATEGORY_GENERAL,
+        "levelCostForDimensionTransit",
+        0,
+        "How much should teleporting to a different dimension cost in levels? Must be an int >= 0"
+    );
+
+    if (!prop.isIntValue()) {
+      throw new IllegalArgumentException("level cost for dimension transit must be an int");
+    }
+
+    levelCostForDimensionTransit = prop.getInt();
+  }
+
+  /**
+   * Loads the config for the "level cost per meter" option.
+   *
+   * @param  config the config to read from.
+   * @throws IllegalArgumentException if the property is not a double.
+   */
+  private static void loadLevelCostPerMeter(Configuration config) throws IllegalArgumentException {
+    Property prop = config.get(
+        Configuration.CATEGORY_GENERAL,
+        "levelCostPerMeter",
+        0.0,
+        "How much should teleporting to another rune cost in levels per meter? Must be a double >= 0.0"
+    );
+
+    if (!prop.isDoubleValue()) {
+      throw new IllegalArgumentException("level cost per meter must be a double");
+    }
+
+    levelCostPerMeter = prop.getDouble();
+  }
+
+  /**
+   * Loads the config for the runeSize option.
+   *
+   * @param  config the config to read from.
+   * @throws IllegalArgumentException if the property value is not an integer.
+   * @throws IllegalArgumentException if the property value is less than 3.
+   * @throws IllegalArgumentException if the property value is not an odd number.
+   */
+  private static void loadRuneSizeConfig(Configuration config) throws IllegalArgumentException {
+    // Read props from config
+    Property runeSizeProp = config.get(
+        Configuration.CATEGORY_GENERAL,
+        "runeSize",
+        5,
+        "The size that valid runes must be. Must be an odd integer >= 3."
+    );
+
+    validateRuneSizeProp(runeSizeProp);
+
+    runeSize = runeSizeProp.getInt();
+    halfRuneSize = (int) Math.floor(runeSize / 2);
   }
 
   /**
